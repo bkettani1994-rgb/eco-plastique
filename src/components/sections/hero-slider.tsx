@@ -31,7 +31,7 @@ const slides: Slide[] = [
   })),
 ];
 
-const SLIDE_DURATION = 3000;
+const SLIDE_DURATION = 5000;
 
 export function HeroSlider() {
   const [index, setIndex] = useState(0);
