@@ -17,7 +17,9 @@ export function TrustLogos() {
         <p className="mb-6 text-center text-sm font-medium uppercase tracking-wide text-gray-500">
           Ils nous font confiance
         </p>
-        <div className="scrollbar-hide overflow-hidden">
+        <div className="scrollbar-hide relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-light-gray to-transparent sm:w-32" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-light-gray to-transparent sm:w-32" />
           <div className="flex w-max animate-marquee gap-12">
             {logos.map((logo, index) => (
               <div
