@@ -6,9 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
 import { navLinks, siteConfig, whatsappLink } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/lib/cart-context";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { itemCount } = useCart();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-sm">
@@ -39,16 +41,16 @@ export function Header() {
             <MessageCircle size={18} />
             WhatsApp
           </Link>
-          <button
-            type="button"
+          <Link
+            href="/panier"
             aria-label="Panier"
             className="relative flex h-10 w-10 items-center justify-center rounded-xl text-dark-gray transition-colors hover:bg-light-gray"
           >
             <ShoppingCart size={20} />
             <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
-              0
+              {itemCount}
             </span>
-          </button>
+          </Link>
         </div>
 
         <button
@@ -103,6 +105,14 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
+                <Link
+                  href="/panier"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2 text-base font-medium text-dark-gray transition-colors hover:text-primary"
+                >
+                  <ShoppingCart size={18} />
+                  Panier ({itemCount})
+                </Link>
               </nav>
 
               <Link

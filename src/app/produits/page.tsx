@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, PackageX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { products } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -101,12 +102,15 @@ export default function ProduitsPage() {
                       </span>
                     ) : null}
                   </div>
-                  <Link
-                    href={`/produits/${product.slug}`}
-                    className="mt-2 inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
-                  >
-                    Voir le produit
-                  </Link>
+                  <div className="mt-2 flex flex-col gap-2">
+                    <Link
+                      href={`/produits/${product.slug}`}
+                      className="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-dark"
+                    >
+                      Voir le produit
+                    </Link>
+                    <AddToCartButton product={product} className="w-full px-4 py-2.5" />
+                  </div>
                 </CardContent>
               </Card>
             ))}

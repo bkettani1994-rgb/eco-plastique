@@ -18,7 +18,7 @@ export function WhatsappOrder({ product }: WhatsappOrderProps) {
       href={whatsappLink(message)}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg"
+      className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-primary px-6 py-3.5 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-white"
     >
       <MessageCircle size={18} />
       Commander sur WhatsApp
