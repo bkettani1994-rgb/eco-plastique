@@ -9,7 +9,7 @@ export function FeaturedProducts() {
     <section className="bg-light-gray py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <h2 className="text-2xl font-bold text-dark-gray sm:text-3xl">Nos produits phares</h2>
+          <h2 className="text-2xl font-bold text-dark-gray sm:text-3xl">Nos produits</h2>
           <p className="mt-2 text-gray-600">Sélectionnés pour leur qualité et leur confort</p>
         </div>
 
