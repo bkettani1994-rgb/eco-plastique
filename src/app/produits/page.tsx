@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, PackageX } from "lucide-react";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { Card, CardContent } from "@/components/ui/card";
 import { products } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
@@ -79,8 +79,14 @@ export default function ProduitsPage() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {filteredProducts.map((product) => (
               <Card key={product.id} className="flex flex-col overflow-hidden">
-                <div className="p-4 pb-0">
-                  <ImagePlaceholder aspect="square" />
+                <div className="relative aspect-square overflow-hidden">
+                  <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    className="object-cover"
+                  />
                 </div>
                 <CardContent className="flex flex-1 flex-col gap-2">
                   <h2 className="font-semibold text-dark-gray">{product.name}</h2>

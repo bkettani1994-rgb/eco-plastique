@@ -1,4 +1,4 @@
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
@@ -12,7 +12,16 @@ export function ProductHero({ product }: ProductHeroProps) {
   return (
     <section className="bg-light-gray py-12 sm:py-16">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
-        <ImagePlaceholder aspect="square" iconSize={44} label={product.name} />
+        <div className="relative aspect-square overflow-hidden rounded-2xl shadow-md">
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
 
         <div className="space-y-6">
           <Badge>{product.category}</Badge>

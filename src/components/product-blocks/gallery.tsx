@@ -1,4 +1,4 @@
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
+import Image from "next/image";
 import { Product } from "@/data/products";
 
 interface GalleryProps {
@@ -14,11 +14,15 @@ export function Gallery({ product }: GalleryProps) {
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {product.images.map((image, index) => (
-            <ImagePlaceholder
-              key={image}
-              aspect="square"
-              label={`${product.name} - photo ${index + 1}`}
-            />
+            <div key={image} className="relative aspect-square overflow-hidden rounded-xl">
+              <Image
+                src={image}
+                alt={`${product.name} - photo ${index + 1}`}
+                fill
+                sizes="(min-width: 1024px) 25vw, 50vw"
+                className="object-cover"
+              />
+            </div>
           ))}
         </div>
       </div>
