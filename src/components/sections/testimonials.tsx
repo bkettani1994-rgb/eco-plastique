@@ -2,24 +2,22 @@
 
 import { Star } from "lucide-react";
 import { testimonials } from "@/data/site";
-import { useLang } from "@/lib/language-context";
 
 function getInitials(name: string): string {
   return name.split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
 }
 
 export function Testimonials() {
-  const { t, tr } = useLang();
 
   return (
     <section className="bg-light-gray py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <h2 className="text-2xl font-bold text-dark-gray sm:text-3xl">
-            {t("Avis de nos clients", tr.testimonials.heading)}
+            Avis de nos clients
           </h2>
           <p className="mt-2 text-gray-600">
-            {t("Ce que pensent nos clients de nos produits", tr.testimonials.subheading)}
+            Ce que nos clients disent de nos produits
           </p>
         </div>
 

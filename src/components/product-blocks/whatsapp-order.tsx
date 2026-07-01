@@ -1,31 +1,27 @@
-"use client";
-
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import { Product } from "@/data/products";
 import { whatsappLink } from "@/data/site";
 import { formatPrice } from "@/lib/utils";
-import { useLang } from "@/lib/language-context";
 
 interface WhatsappOrderProps {
   product: Product;
 }
 
 export function WhatsappOrder({ product }: WhatsappOrderProps) {
-  const { t, tr } = useLang();
-
-  const messageFr = `Bonjour, je suis intéressé par ${product.name} (${formatPrice(product.price)}). Pouvez-vous me donner plus d'informations ?`;
-  const messageAr = `${tr.product_blocks.whatsapp_msg} ${product.name} (${formatPrice(product.price)}). ${tr.product_blocks.whatsapp_msg_suffix}`;
+  const message = `Bonjour, je suis intéressé par ${product.name} (${formatPrice(
+    product.price,
+  )}). Pouvez-vous me donner plus d'informations ?`;
 
   return (
     <Link
-      href={whatsappLink(t(messageFr, messageAr))}
+      href={whatsappLink(message)}
       target="_blank"
       rel="noopener noreferrer"
       className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-primary px-6 py-3.5 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-white"
     >
       <MessageCircle size={18} />
-      {t("Commander sur WhatsApp", tr.product_blocks.order_whatsapp)}
+      Commander sur WhatsApp
     </Link>
   );
 }

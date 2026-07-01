@@ -5,16 +5,11 @@ import Image from "next/image";
 import { Globe, AtSign, MessageCircle, Mail, MapPin, Phone } from "lucide-react";
 import { navLinks, siteConfig, socialLinks, whatsappLink } from "@/data/site";
 import { Newsletter } from "@/components/newsletter";
-import { useLang } from "@/lib/language-context";
 
 const socialIcons = { Facebook: Globe, Instagram: AtSign };
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const { lang, t, tr } = useLang();
-
-  const navLabel = (label: string) =>
-    lang === "ar" ? (tr.nav[label as keyof typeof tr.nav] ?? label) : label;
 
   return (
     <footer className="bg-dark-gray text-gray-300">
@@ -49,13 +44,13 @@ export function Footer() {
 
         <div className="space-y-3">
           <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
-            {t("Navigation", tr.footer.nav_title)}
+            Navigation
           </h3>
           <ul className="space-y-2 text-sm">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="transition-colors hover:text-primary">
-                  {navLabel(link.label)}
+                  {link.label}
                 </Link>
               </li>
             ))}
@@ -64,7 +59,7 @@ export function Footer() {
 
         <div className="space-y-3">
           <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
-            {t("Contact", tr.footer.contact_title)}
+            Contact
           </h3>
           <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2">
@@ -87,7 +82,7 @@ export function Footer() {
                 className="flex items-center gap-2 transition-colors hover:text-primary"
               >
                 <MessageCircle size={16} className="text-primary" />
-                {t("Discuter sur WhatsApp", tr.footer.whatsapp_chat)}
+                Discuter sur WhatsApp
               </a>
             </li>
           </ul>
@@ -95,20 +90,17 @@ export function Footer() {
 
         <div className="space-y-3">
           <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
-            {t("Newsletter", tr.footer.newsletter_title)}
+            Newsletter
           </h3>
           <p className="text-sm text-gray-400">
-            {t(
-              "Recevez nos offres et nouveautés directement par e-mail.",
-              tr.footer.newsletter_sub,
-            )}
+            Recevez nos offres et nouveautés directement par e-mail.
           </p>
           <Newsletter />
         </div>
       </div>
 
       <div className="border-t border-white/10 px-4 py-6 text-center text-xs text-gray-500">
-        © {year} {siteConfig.businessName}. {t("Tous droits réservés.", tr.footer.rights)}
+        © {year} {siteConfig.businessName}. Tous droits réservés.
       </div>
     </footer>
   );

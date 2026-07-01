@@ -5,11 +5,9 @@ import Image from "next/image";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
-import { useLang } from "@/lib/language-context";
 
 export default function PanierPage() {
   const { items, updateQuantity, removeItem, subtotal } = useCart();
-  const { t, tr } = useLang();
 
   if (items.length === 0) {
     return (
@@ -17,16 +15,16 @@ export default function PanierPage() {
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4 text-center sm:px-6 lg:px-8">
           <ShoppingBag size={48} className="text-gray-300" />
           <h1 className="text-2xl font-bold text-dark-gray">
-            {t("Votre panier est vide", tr.cart.empty_title)}
+            {""}
           </h1>
           <p className="text-gray-500">
-            {t("Parcourez nos produits et ajoutez-les à votre panier.", tr.cart.empty_sub)}
+            {""}
           </p>
           <Link
             href="/produits"
             className="mt-4 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark"
           >
-            {t("Voir les produits", tr.cart.view_products)}
+            {""}
           </Link>
         </div>
       </section>
@@ -37,7 +35,7 @@ export default function PanierPage() {
     <section className="bg-white py-12 sm:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <h1 className="mb-8 text-3xl font-bold text-dark-gray">
-          {t("Votre panier", tr.cart.title)}
+          {""}
         </h1>
 
         <div className="flex flex-col gap-4">
@@ -74,11 +72,11 @@ export default function PanierPage() {
 
         <div className="mt-8 flex flex-col items-end gap-4 border-t border-gray-100 pt-6">
           <div className="flex items-center gap-3 text-lg">
-            <span className="text-gray-500">{t("Sous-total :", tr.cart.subtotal)}</span>
+            <span className="text-gray-500">{""}</span>
             <span className="font-bold text-primary">{formatPrice(subtotal)}</span>
           </div>
           <Link href="/commande" className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg">
-            {t("Passer la commande", tr.cart.checkout)}
+            {""}
           </Link>
         </div>
       </div>
