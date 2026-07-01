@@ -129,19 +129,21 @@ export function Header() {
         {isOpen && (
           <motion.div
             className="fixed inset-0 z-50 md:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
           >
-            {/* Backdrop — separate from panel so it doesn't bleed through */}
-            <div
-              className="absolute inset-0 bg-black/50"
+            {/* Backdrop */}
+            <motion.div
+              className="absolute inset-0"
+              style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             />
 
             {/* Panel — sibling to backdrop, fully opaque white */}
             <motion.div
-              className="absolute left-0 top-0 z-10 flex h-full w-72 flex-col gap-6 bg-white p-6 shadow-xl"
+              className="absolute left-0 top-0 z-10 flex h-full w-72 flex-col gap-6 p-6 shadow-xl"
+              style={{ backgroundColor: '#ffffff', opacity: 1 }}
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
