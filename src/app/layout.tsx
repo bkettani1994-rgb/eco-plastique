@@ -13,6 +13,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ecoplastique.ma"),
+  icons: {
+    icon: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782941967/Design_sans_titre_90_t0ux3e.png",
+    apple: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782941967/Design_sans_titre_90_t0ux3e.png",
+  },
   title: {
     default: "Eco Plastique | Nappes PVC, Protège-matelas et Oreillers médicaux au Maroc",
     template: "%s | Eco Plastique",
