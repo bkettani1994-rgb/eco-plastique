@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
 import { navLinks, siteConfig, whatsappLink } from "@/data/site";
@@ -15,8 +16,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-primary">{siteConfig.businessName}</span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
+            alt={siteConfig.businessName}
+            width={160}
+            height={50}
+            priority
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -83,7 +91,13 @@ export function Header() {
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex items-center justify-between">
-                <span className="text-lg font-bold text-primary">{siteConfig.businessName}</span>
+                <Image
+                  src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
+                  alt={siteConfig.businessName}
+                  width={130}
+                  height={40}
+                  className="h-8 w-auto object-contain"
+                />
                 <button
                   type="button"
                   aria-label="Fermer le menu"
