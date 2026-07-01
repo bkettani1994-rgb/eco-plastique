@@ -45,9 +45,9 @@ const SIZES: { label: string; price: number }[] = [
 ];
 
 const OFFERS = [
-  { qty: 1, label: "1 pièce",  priceMultiplier: 1,    badge: null },
-  { qty: 2, label: "2 pièces", priceMultiplier: 1.85, badge: "−8%" },
-  { qty: 3, label: "3 pièces", priceMultiplier: 2.6,  badge: "Meilleure offre" },
+  { qty: 1, label: "1 pièce",  priceMultiplier: 1,   badge: null },
+  { qty: 2, label: "2 pièces", priceMultiplier: 1.90, badge: "−5%" },
+  { qty: 3, label: "3 pièces", priceMultiplier: 2.70, badge: "−10%" },
 ];
 
 const TRUST_BADGES = [
