@@ -16,6 +16,15 @@ interface Slide {
   image: string;
 }
 
+const PRODUCT_IMAGES: Record<string, string> = {
+  "protege-matelas-impermeable":
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Protege-Matelas_tmrezb.png",
+  "oreiller-cervical-medical":
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937215/Oreiller_cervicale_jpyife.png",
+  "oreiller-memoire-forme":
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Oreiller_Simple_cmja5s.png",
+};
+
 const slides: Slide[] = [
   {
     title: "Le confort et la protection pour votre maison",
@@ -27,7 +36,7 @@ const slides: Slide[] = [
     title: product.name,
     ctaLabel: "Voir le produit",
     ctaHref: `/produits/${product.slug}`,
-    image: product.images[0],
+    image: PRODUCT_IMAGES[product.slug] ?? product.images[0],
   })),
 ];
 
