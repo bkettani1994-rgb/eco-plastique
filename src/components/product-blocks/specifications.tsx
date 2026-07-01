@@ -1,15 +1,20 @@
+"use client";
+
 import { Product } from "@/data/products";
+import { useLang } from "@/lib/language-context";
 
 interface SpecificationsProps {
   product: Product;
 }
 
 export function Specifications({ product }: SpecificationsProps) {
+  const { t, tr } = useLang();
+
   return (
     <section className="bg-light-gray py-12 sm:py-16">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray sm:text-3xl">
-          Spécifications techniques
+          {t("Spécifications techniques", tr.product_blocks.specifications)}
         </h2>
         <div className="overflow-hidden rounded-2xl bg-white shadow-md">
           {product.specifications.map((spec, index) => (

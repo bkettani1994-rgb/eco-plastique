@@ -1,5 +1,8 @@
+"use client";
+
 import { Star } from "lucide-react";
 import { Product } from "@/data/products";
+import { useLang } from "@/lib/language-context";
 
 interface ProductTestimonialsProps {
   product: Product;
@@ -15,6 +18,8 @@ function getInitials(name: string): string {
 }
 
 export function ProductTestimonials({ product }: ProductTestimonialsProps) {
+  const { t, tr } = useLang();
+
   if (!product.testimonials || product.testimonials.length === 0) {
     return null;
   }
@@ -23,7 +28,7 @@ export function ProductTestimonials({ product }: ProductTestimonialsProps) {
     <section className="bg-light-gray py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray sm:text-3xl">
-          Avis clients
+          {t("Avis clients", tr.product_blocks.testimonials)}
         </h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {product.testimonials.map((testimonial) => (
