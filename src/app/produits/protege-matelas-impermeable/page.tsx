@@ -29,7 +29,7 @@ const PRODUCT = {
 
 const HERO_IMAGE = "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937765/004_1_ygeg4d.jpg";
 
-const GALLERY = [HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE];
+const GALLERY = [HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE];
 
 const SIZES: { label: string; price: number }[] = [
   { label: "60×120 cm",  price: 119 },
