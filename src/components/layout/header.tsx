@@ -32,7 +32,7 @@ export function Header() {
     lang === "ar" ? (tr.nav[label as keyof typeof tr.nav] ?? label) : label;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white">
       {/* ── Desktop ─────────────────────────────────────────────── */}
       <div className="mx-auto hidden max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:flex lg:px-8">
         <Link href="/" className="flex items-center">
