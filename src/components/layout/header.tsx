@@ -9,13 +9,6 @@ import { navLinks, siteConfig, whatsappLink } from "@/data/site";
 import { useCart } from "@/lib/cart-context";
 import { useLang } from "@/lib/language-context";
 
-const NAV_AR: Record<string, string> = {
-  Accueil: "الرئيسية",
-  Produits: "المنتجات",
-  "À propos": "من نحن",
-  Contact: "اتصل بنا",
-};
-
 function LangToggle({ className = "" }: { className?: string }) {
   const { lang, toggle } = useLang();
   return (
@@ -33,11 +26,14 @@ function LangToggle({ className = "" }: { className?: string }) {
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const { itemCount } = useCart();
-  const { lang, t } = useLang();
+  const { lang, t, tr } = useLang();
+
+  const navLabel = (label: string) =>
+    lang === "ar" ? (tr.nav[label as keyof typeof tr.nav] ?? label) : label;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-sm">
-      {/* ── Desktop ─────────────────────────────────────────────────── */}
+      {/* ── Desktop ─────────────────────────────────────────────── */}
       <div className="mx-auto hidden max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:flex lg:px-8">
         <Link href="/" className="flex items-center">
           <Image
@@ -57,7 +53,7 @@ export function Header() {
               href={link.href}
               className="text-sm font-medium text-dark-gray transition-colors hover:text-primary"
             >
-              {lang === "ar" ? (NAV_AR[link.label] ?? link.label) : link.label}
+              {navLabel(link.label)}
             </Link>
           ))}
         </nav>
@@ -86,8 +82,8 @@ export function Header() {
         </div>
       </div>
 
-      {/* ── Mobile ──────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-4 py-3 md:hidden">
+      {/* ── Mobile top bar ──────────────────────────────────────── */}
+      <div className="relative flex items-center justify-between bg-white px-4 py-3 md:hidden">
         {/* Left: hamburger */}
         <button
           type="button"
@@ -98,7 +94,7 @@ export function Header() {
           <Menu size={24} />
         </button>
 
-        {/* Center: logo */}
+        {/* Center: logo (absolute to stay truly centered) */}
         <Link href="/" className="absolute left-1/2 -translate-x-1/2">
           <Image
             src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
@@ -128,24 +124,28 @@ export function Header() {
         </div>
       </div>
 
-      {/* ── Mobile slide-in menu ─────────────────────────────────────── */}
+      {/* ── Mobile slide-in drawer ──────────────────────────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black/40 md:hidden"
+            className="fixed inset-0 z-50 md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
           >
+            {/* Backdrop — separate from panel so it doesn't bleed through */}
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Panel — sibling to backdrop, fully opaque white */}
             <motion.div
-              className="absolute left-0 top-0 flex h-full w-72 flex-col gap-6 p-6 shadow-lg"
-              style={{ backgroundColor: "#ffffff" }}
+              className="absolute left-0 top-0 z-10 flex h-full w-72 flex-col gap-6 bg-white p-6 shadow-xl"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              transition={{ type: "tween", duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()}
+              transition={{ type: "tween", duration: 0.28 }}
             >
               <div className="flex items-center justify-between">
                 <Image
@@ -173,7 +173,7 @@ export function Header() {
                     onClick={() => setIsOpen(false)}
                     className="text-base font-medium text-dark-gray transition-colors hover:text-primary"
                   >
-                    {lang === "ar" ? (NAV_AR[link.label] ?? link.label) : link.label}
+                    {navLabel(link.label)}
                   </Link>
                 ))}
                 <Link

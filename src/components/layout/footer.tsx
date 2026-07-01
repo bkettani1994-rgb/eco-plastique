@@ -1,21 +1,32 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
 import { Globe, AtSign, MessageCircle, Mail, MapPin, Phone } from "lucide-react";
 import { navLinks, siteConfig, socialLinks, whatsappLink } from "@/data/site";
 import { Newsletter } from "@/components/newsletter";
+import { useLang } from "@/lib/language-context";
 
-const socialIcons = {
-  Facebook: Globe,
-  Instagram: AtSign,
-};
+const socialIcons = { Facebook: Globe, Instagram: AtSign };
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const { lang, t, tr } = useLang();
+
+  const navLabel = (label: string) =>
+    lang === "ar" ? (tr.nav[label as keyof typeof tr.nav] ?? label) : label;
 
   return (
     <footer className="bg-dark-gray text-gray-300">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="space-y-3">
-          <span className="text-xl font-bold text-white">{siteConfig.businessName}</span>
+          <Image
+            src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
+            alt={siteConfig.businessName}
+            width={140}
+            height={44}
+            className="h-10 w-auto object-contain brightness-0 invert"
+          />
           <p className="text-sm leading-relaxed text-gray-400">{siteConfig.description}</p>
           <div className="flex items-center gap-3 pt-2">
             {socialLinks.map((social) => {
@@ -37,12 +48,14 @@ export function Footer() {
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">Navigation</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
+            {t("Navigation", tr.footer.nav_title)}
+          </h3>
           <ul className="space-y-2 text-sm">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="transition-colors hover:text-primary">
-                  {link.label}
+                  {navLabel(link.label)}
                 </Link>
               </li>
             ))}
@@ -50,7 +63,9 @@ export function Footer() {
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">Contact</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
+            {t("Contact", tr.footer.contact_title)}
+          </h3>
           <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2">
               <Phone size={16} className="text-primary" />
@@ -72,23 +87,28 @@ export function Footer() {
                 className="flex items-center gap-2 transition-colors hover:text-primary"
               >
                 <MessageCircle size={16} className="text-primary" />
-                Discuter sur WhatsApp
+                {t("Discuter sur WhatsApp", tr.footer.whatsapp_chat)}
               </a>
             </li>
           </ul>
         </div>
 
         <div className="space-y-3">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">Newsletter</h3>
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
+            {t("Newsletter", tr.footer.newsletter_title)}
+          </h3>
           <p className="text-sm text-gray-400">
-            Recevez nos offres et nouveautés directement par e-mail.
+            {t(
+              "Recevez nos offres et nouveautés directement par e-mail.",
+              tr.footer.newsletter_sub,
+            )}
           </p>
           <Newsletter />
         </div>
       </div>
 
       <div className="border-t border-white/10 px-4 py-6 text-center text-xs text-gray-500">
-        © {year} {siteConfig.businessName}. Tous droits réservés.
+        © {year} {siteConfig.businessName}. {t("Tous droits réservés.", tr.footer.rights)}
       </div>
     </footer>
   );

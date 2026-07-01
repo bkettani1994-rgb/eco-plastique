@@ -1,14 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { translations } from "@/lib/translations";
 
-type Lang = "fr" | "ar";
+export type Lang = "fr" | "ar";
 
 interface LanguageContextValue {
   lang: Lang;
   toggle: () => void;
   t: (fr: string, ar: string) => string;
   isAr: boolean;
+  tr: typeof translations;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -32,7 +34,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const isAr = lang === "ar";
 
   return (
-    <LanguageContext.Provider value={{ lang, toggle, t, isAr }}>
+    <LanguageContext.Provider value={{ lang, toggle, t, isAr, tr: translations }}>
       {children}
     </LanguageContext.Provider>
   );
