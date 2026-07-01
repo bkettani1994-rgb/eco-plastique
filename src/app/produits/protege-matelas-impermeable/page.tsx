@@ -27,19 +27,27 @@ const PRODUCT = {
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Protege-Matelas_tmrezb.png",
 };
 
-const GALLERY = [
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Protege-Matelas_tmrezb.png",
-  "https://picsum.photos/seed/pm-lifestyle-1/800/800",
-  "https://picsum.photos/seed/pm-lifestyle-2/800/800",
-  "https://picsum.photos/seed/pm-lifestyle-3/800/800",
+const HERO_IMAGE = "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937765/004_1_ygeg4d.jpg";
+
+const GALLERY = [HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE];
+
+const SIZES: { label: string; price: number }[] = [
+  { label: "60×120 cm",  price: 119 },
+  { label: "90×190 cm",  price: 149 },
+  { label: "120×190 cm", price: 159 },
+  { label: "140×190 cm", price: 169 },
+  { label: "140×200 cm", price: 179 },
+  { label: "160×190 cm", price: 199 },
+  { label: "160×200 cm", price: 209 },
+  { label: "180×200 cm", price: 219 },
+  { label: "190×200 cm", price: 229 },
+  { label: "200×200 cm", price: 239 },
 ];
 
-const SIZES = ["90×190 cm", "140×190 cm", "160×200 cm", "180×200 cm"];
-
 const OFFERS = [
-  { qty: 1, label: "1 pièce", price: 229, oldPrice: 299, badge: null },
-  { qty: 2, label: "2 pièces", price: 399, oldPrice: 598, badge: "−33%" },
-  { qty: 3, label: "3 pièces", price: 549, oldPrice: 897, badge: "Meilleure offre" },
+  { qty: 1, label: "1 pièce",  priceMultiplier: 1,    badge: null },
+  { qty: 2, label: "2 pièces", priceMultiplier: 1.85, badge: "−8%" },
+  { qty: 3, label: "3 pièces", priceMultiplier: 2.6,  badge: "Meilleure offre" },
 ];
 
 const TRUST_BADGES = [
@@ -121,6 +129,9 @@ export default function ProtegeMatelasPage() {
   const [activeImg, setActiveImg] = useState(0);
   const [selectedSize, setSelectedSize] = useState(SIZES[0]);
   const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
+
+  const unitPrice = selectedSize.price;
+  const totalPrice = Math.round(unitPrice * selectedOffer.priceMultiplier);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // inline order form state
@@ -133,8 +144,8 @@ export default function ProtegeMatelasPage() {
 
     const orderItem = {
       slug: PRODUCT.slug,
-      name: `${PRODUCT.name} — ${selectedSize} × ${selectedOffer.qty}`,
-      price: Math.round(selectedOffer.price / selectedOffer.qty),
+      name: `${PRODUCT.name} — ${selectedSize.label} × ${selectedOffer.qty}`,
+      price: Math.round(totalPrice / selectedOffer.qty),
       image: PRODUCT.image,
       quantity: selectedOffer.qty,
     };
@@ -145,8 +156,8 @@ export default function ProtegeMatelasPage() {
     saveLastOrder({
       id: generateOrderId(),
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Taille : ${selectedSize}` },
-      total: selectedOffer.price,
+      customer: { ...form, notes: `Taille : ${selectedSize.label}` },
+      total: totalPrice,
       createdAt: new Date().toISOString(),
     });
 
@@ -210,21 +221,22 @@ export default function ProtegeMatelasPage() {
             {/* Size selector */}
             <div>
               <p className="mb-2 text-sm font-semibold text-dark-gray">
-                Taille : <span className="text-primary">{selectedSize}</span>
+                Taille : <span className="text-primary">{selectedSize.label}</span>
+                <span className="ml-2 font-normal text-gray-400">— {unitPrice} MAD / pièce</span>
               </p>
               <div className="flex flex-wrap gap-2">
                 {SIZES.map((size) => (
                   <button
-                    key={size}
+                    key={size.label}
                     type="button"
                     onClick={() => setSelectedSize(size)}
-                    className={`rounded-lg border-2 px-4 py-2 text-sm font-medium transition-all ${
-                      selectedSize === size
+                    className={`rounded-lg border-2 px-3 py-2 text-sm font-medium transition-all ${
+                      selectedSize.label === size.label
                         ? "border-primary bg-primary text-white"
                         : "border-gray-200 text-dark-gray hover:border-primary"
                     }`}
                   >
-                    {size}
+                    {size.label}
                   </button>
                 ))}
               </div>
@@ -234,48 +246,52 @@ export default function ProtegeMatelasPage() {
             <div>
               <p className="mb-2 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
               <div className="flex flex-col gap-2">
-                {OFFERS.map((offer) => (
-                  <button
-                    key={offer.qty}
-                    type="button"
-                    onClick={() => setSelectedOffer(offer)}
-                    className={`relative flex items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-all ${
-                      selectedOffer.qty === offer.qty
-                        ? "border-primary bg-primary/5"
-                        : "border-gray-200 hover:border-primary/40"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                          selectedOffer.qty === offer.qty
-                            ? "border-primary bg-primary"
-                            : "border-gray-300"
-                        }`}
-                      >
-                        {selectedOffer.qty === offer.qty && (
-                          <Check size={11} className="text-white" />
-                        )}
+                {OFFERS.map((offer) => {
+                  const offerTotal = Math.round(unitPrice * offer.priceMultiplier);
+                  const offerOld = unitPrice * offer.qty;
+                  return (
+                    <button
+                      key={offer.qty}
+                      type="button"
+                      onClick={() => setSelectedOffer(offer)}
+                      className={`relative flex items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-all ${
+                        selectedOffer.qty === offer.qty
+                          ? "border-primary bg-primary/5"
+                          : "border-gray-200 hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
+                            selectedOffer.qty === offer.qty
+                              ? "border-primary bg-primary"
+                              : "border-gray-300"
+                          }`}
+                        >
+                          {selectedOffer.qty === offer.qty && (
+                            <Check size={11} className="text-white" />
+                          )}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-dark-gray">{offer.label}</span>
+                          {offer.badge && (
+                            <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">
+                              {offer.badge}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <span className="font-semibold text-dark-gray">{offer.label}</span>
-                        {offer.badge && (
-                          <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">
-                            {offer.badge}
+                      <div className="text-right">
+                        <span className="text-lg font-bold text-primary">{offerTotal} MAD</span>
+                        {offer.qty > 1 && (
+                          <span className="ml-2 text-sm text-gray-400 line-through">
+                            {offerOld} MAD
                           </span>
                         )}
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-lg font-bold text-primary">{offer.price} MAD</span>
-                      {offer.oldPrice && (
-                        <span className="ml-2 text-sm text-gray-400 line-through">
-                          {offer.oldPrice} MAD
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -319,7 +335,7 @@ export default function ProtegeMatelasPage() {
                 className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
               >
                 <ShoppingCart size={18} />
-                {submitting ? "Traitement…" : `Commander — ${selectedOffer.price} MAD`}
+                {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
               </button>
               <p className="text-center text-xs text-gray-400">
                 Paiement à la livraison · Livraison sous 24–72h au Maroc
