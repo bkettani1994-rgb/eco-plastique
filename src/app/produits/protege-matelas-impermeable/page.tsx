@@ -181,17 +181,17 @@ export default function ProtegeMatelasPage() {
                 className="object-cover"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-5 gap-2">
               {GALLERY.map((src, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setActiveImg(i)}
-                  className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
+                  className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
                     i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="80px" />
+                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="20vw" />
                 </button>
               ))}
             </div>
