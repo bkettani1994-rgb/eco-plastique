@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+// framer-motion removed from mobile drawer to avoid stacking context issues
 import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
 import { navLinks, siteConfig, whatsappLink } from "@/data/site";
 import { useCart } from "@/lib/cart-context";
@@ -125,30 +125,26 @@ export function Header() {
       </div>
 
       {/* ── Mobile slide-in drawer ──────────────────────────────── */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="fixed inset-0 z-50 md:hidden"
+      {isOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999 }} className="md:hidden">
+          {/* Backdrop */}
+          <div
+            style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.55)' }}
+            onClick={() => setIsOpen(false)}
+          />
+          {/* Panel */}
+          <div
+            style={{
+              position: 'absolute', top: 0, left: 0,
+              width: '18rem', height: '100%',
+              backgroundColor: '#ffffff',
+              zIndex: 10,
+              display: 'flex', flexDirection: 'column', gap: '1.5rem',
+              padding: '1.5rem',
+              boxShadow: '4px 0 24px rgba(0,0,0,0.18)',
+              overflowY: 'auto',
+            }}
           >
-            {/* Backdrop */}
-            <motion.div
-              className="absolute inset-0"
-              style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-            />
-
-            {/* Panel — sibling to backdrop, fully opaque white */}
-            <motion.div
-              className="absolute left-0 top-0 z-10 flex h-full w-72 flex-col gap-6 p-6 shadow-xl"
-              style={{ backgroundColor: '#ffffff', opacity: 1 }}
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "tween", duration: 0.28 }}
-            >
               <div className="flex items-center justify-between">
                 <Image
                   src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
@@ -197,10 +193,9 @@ export function Header() {
                 <MessageCircle size={18} />
                 {t("Commander sur WhatsApp", "اطلب عبر واتساب")}
               </Link>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+        </div>
+      )}
     </header>
   );
 }
