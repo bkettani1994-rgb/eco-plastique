@@ -45,9 +45,9 @@ const SIZES: { label: string; price: number }[] = [
 ];
 
 const OFFERS = [
-  { qty: 1, label: "1 pièce",  priceMultiplier: 1,   badge: null },
-  { qty: 2, label: "2 pièces", priceMultiplier: 1.90, badge: "−5%" },
-  { qty: 3, label: "3 pièces", priceMultiplier: 2.70, badge: "−10%" },
+  { qty: 1, label: "1 pièce",  discount: 1,    badge: null },
+  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%" },
+  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%" },
 ];
 
 const TRUST_BADGES = [
@@ -127,12 +127,23 @@ export default function ProtegeMatelasPage() {
   const { addItem, clearCart, items } = useCart();
 
   const [activeImg, setActiveImg] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(SIZES[0]);
   const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
-
-  const unitPrice = selectedSize.price;
-  const totalPrice = Math.round(unitPrice * selectedOffer.priceMultiplier);
+  // one size selection per slot in the offer
+  const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([SIZES[0]]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  function handleOfferChange(offer: typeof OFFERS[0]) {
+    setSelectedOffer(offer);
+    setChosenSizes(Array.from({ length: offer.qty }, (_, i) => chosenSizes[i] ?? SIZES[0]));
+  }
+
+  function handleSizeChange(slotIndex: number, sizeLabel: string) {
+    const found = SIZES.find((s) => s.label === sizeLabel) ?? SIZES[0];
+    setChosenSizes((prev) => prev.map((s, i) => (i === slotIndex ? found : s)));
+  }
+
+  const baseTotal = chosenSizes.reduce((sum, s) => sum + s.price, 0);
+  const totalPrice = Math.round(baseTotal * selectedOffer.discount);
 
   // inline order form state
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
@@ -142,9 +153,10 @@ export default function ProtegeMatelasPage() {
     e.preventDefault();
     setSubmitting(true);
 
+    const sizeSummary = chosenSizes.map((s) => s.label).join(", ");
     const orderItem = {
       slug: PRODUCT.slug,
-      name: `${PRODUCT.name} — ${selectedSize.label} × ${selectedOffer.qty}`,
+      name: `${PRODUCT.name} (${sizeSummary})`,
       price: Math.round(totalPrice / selectedOffer.qty),
       image: PRODUCT.image,
       quantity: selectedOffer.qty,
@@ -156,7 +168,7 @@ export default function ProtegeMatelasPage() {
     saveLastOrder({
       id: generateOrderId(),
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Taille : ${selectedSize.label}` },
+      customer: { ...form, notes: `Tailles : ${sizeSummary}` },
       total: totalPrice,
       createdAt: new Date().toISOString(),
     });
@@ -218,78 +230,85 @@ export default function ProtegeMatelasPage() {
               </div>
             </div>
 
-            {/* Size selector */}
-            <div>
-              <p className="mb-2 text-sm font-semibold text-dark-gray">
-                Taille : <span className="text-primary">{selectedSize.label}</span>
-                <span className="ml-2 font-normal text-gray-400">— {unitPrice} MAD / pièce</span>
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {SIZES.map((size) => (
-                  <button
-                    key={size.label}
-                    type="button"
-                    onClick={() => setSelectedSize(size)}
-                    className={`rounded-lg border-2 px-3 py-2 text-sm font-medium transition-all ${
-                      selectedSize.label === size.label
-                        ? "border-primary bg-primary text-white"
-                        : "border-gray-200 text-dark-gray hover:border-primary"
-                    }`}
-                  >
-                    {size.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Quantity offers */}
+            {/* Quantity offers + size dropdowns */}
             <div>
               <p className="mb-2 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
-                  const offerTotal = Math.round(unitPrice * offer.priceMultiplier);
-                  const offerOld = unitPrice * offer.qty;
+                  const isSelected = selectedOffer.qty === offer.qty;
+                  // preview price uses current chosenSizes if selected, else default
+                  const previewBase = isSelected
+                    ? baseTotal
+                    : SIZES[0].price * offer.qty;
+                  const previewTotal = Math.round(previewBase * offer.discount);
+                  const previewOld = Math.round(previewBase);
+
                   return (
-                    <button
+                    <div
                       key={offer.qty}
-                      type="button"
-                      onClick={() => setSelectedOffer(offer)}
-                      className={`relative flex items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-all ${
-                        selectedOffer.qty === offer.qty
-                          ? "border-primary bg-primary/5"
-                          : "border-gray-200 hover:border-primary/40"
+                      className={`rounded-xl border-2 transition-all ${
+                        isSelected ? "border-primary bg-primary/5" : "border-gray-200"
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
-                            selectedOffer.qty === offer.qty
-                              ? "border-primary bg-primary"
-                              : "border-gray-300"
-                          }`}
-                        >
-                          {selectedOffer.qty === offer.qty && (
-                            <Check size={11} className="text-white" />
-                          )}
+                      {/* Offer header row */}
+                      <button
+                        type="button"
+                        onClick={() => handleOfferChange(offer)}
+                        className="flex w-full items-center justify-between px-4 py-3 text-left"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 ${
+                              isSelected ? "border-primary bg-primary" : "border-gray-300"
+                            }`}
+                          >
+                            {isSelected && <Check size={11} className="text-white" />}
+                          </div>
+                          <div>
+                            <span className="font-semibold text-dark-gray">{offer.label}</span>
+                            {offer.badge && (
+                              <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">
+                                {offer.badge}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        <div>
-                          <span className="font-semibold text-dark-gray">{offer.label}</span>
-                          {offer.badge && (
-                            <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">
-                              {offer.badge}
+                        <div className="text-right">
+                          <span className="text-lg font-bold text-primary">
+                            {isSelected ? totalPrice : previewTotal} MAD
+                          </span>
+                          {offer.qty > 1 && (
+                            <span className="ml-2 text-sm text-gray-400 line-through">
+                              {isSelected ? baseTotal : previewOld} MAD
                             </span>
                           )}
                         </div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-lg font-bold text-primary">{offerTotal} MAD</span>
-                        {offer.qty > 1 && (
-                          <span className="ml-2 text-sm text-gray-400 line-through">
-                            {offerOld} MAD
-                          </span>
-                        )}
-                      </div>
-                    </button>
+                      </button>
+
+                      {/* Size dropdowns — visible only when offer is selected */}
+                      {isSelected && (
+                        <div className="flex flex-col gap-2 border-t border-primary/20 px-4 pb-4 pt-3">
+                          {Array.from({ length: offer.qty }).map((_, slotIndex) => (
+                            <div key={slotIndex} className="flex items-center gap-3">
+                              <span className="w-16 flex-shrink-0 text-xs text-gray-500">
+                                Pièce {slotIndex + 1}
+                              </span>
+                              <select
+                                value={chosenSizes[slotIndex]?.label ?? SIZES[0].label}
+                                onChange={(e) => handleSizeChange(slotIndex, e.target.value)}
+                                className="flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                              >
+                                {SIZES.map((s) => (
+                                  <option key={s.label} value={s.label}>
+                                    {s.label} — {s.price} MAD
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
