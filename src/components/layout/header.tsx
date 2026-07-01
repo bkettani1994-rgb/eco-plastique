@@ -81,9 +81,7 @@ export function Header() {
             onClick={() => setIsOpen(false)}
           >
             <motion.div
-              className={cn(
-                "absolute right-0 top-0 flex h-full w-72 flex-col gap-6 bg-white p-6 shadow-lg",
-              )}
+              className="absolute right-0 top-0 flex h-full w-72 flex-col gap-6 p-6 shadow-lg" style={{ backgroundColor: '#ffffff' }}
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
