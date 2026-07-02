@@ -74,7 +74,7 @@ export const products: Product[] = [
   {
     id: "1",
     slug: "nappe-pvc-sur-mesure",
-    name: "Nappe PVC sur mesure",
+    name: "Nappes en PVC sur mesure",
     nameAr: "غطاء طاولة PVC مقاس مخصص",
     category: "Nappes",
     categoryAr: "أغطية الطاولة",
