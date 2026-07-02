@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <HeroSlider />
-      <hr className="border-t-2 border-gray-200" />
+      <hr className="border-t-4 border-gray-200" />
       <TrustLogos />
       <FeaturedProducts />
       <WhyChooseUs />
