@@ -333,7 +333,7 @@ export const products: Product[] = [
   {
     id: "3",
     slug: "oreiller-cervical-medical",
-    name: "Oreiller cervical médical",
+    name: "Oreiller ergonomique cervical médical",
     nameAr: "وسادة عنقية طبية",
     category: "Oreillers médicaux",
     categoryAr: "وسائد طبية",
