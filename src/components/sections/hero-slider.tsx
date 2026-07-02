@@ -27,12 +27,14 @@ const PRODUCT_IMAGES: Record<string, string> = {
 };
 
 const PRODUCT_MOBILE_IMAGES: Record<string, string> = {
+  "nappe-pvc-sur-mesure":
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783008751/Oreiller_Medical_2_copy_gtlw8u.png",
   "protege-matelas-impermeable":
-    "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937765/004_1_ygeg4d.jpg",
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783008751/PROTEGE_MATELAS__erlqsp.png",
   "oreiller-cervical-medical":
-    "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937765/Poste_1-1_Memory-2_f0val2.jpg",
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783008751/Oreiller_Medical_2_bb5yb0.png",
   "oreiller-memoire-forme":
-    "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937764/Poste-1-1-Memory-Foam-Pillow-1_1_vnwejn.jpg",
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783008751/Oreiller_Medical__lgn38h.png",
 };
 
 const slides: Slide[] = [
@@ -117,7 +119,7 @@ export function HeroSlider() {
           </motion.div>
         </AnimatePresence>
 
-        <SlideContent slide={slide} index={index} />
+        <MobileSlideContent slide={slide} />
         <SlideDots index={index} setIndex={setIndex} />
       </section>
     </>
@@ -161,6 +163,20 @@ function SlideContent({ slide, index }: { slide: Slide; index: number }) {
           </motion.div>
         </AnimatePresence>
       </div>
+    </div>
+  );
+}
+
+function MobileSlideContent({ slide }: { slide: Slide }) {
+  return (
+    <div className="absolute bottom-10 left-0 right-0 z-10 flex justify-center">
+      <Link
+        href={slide.ctaHref}
+        className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg"
+      >
+        Voir le produit
+        <ArrowRight size={16} />
+      </Link>
     </div>
   );
 }
