@@ -38,12 +38,6 @@ const PRODUCT_MOBILE_IMAGES: Record<string, string> = {
 };
 
 const slides: Slide[] = [
-  {
-    title: "Le confort et la protection pour votre maison",
-    ctaLabel: "Découvrir nos produits",
-    ctaHref: "/produits",
-    image: "https://picsum.photos/seed/eco-plastique-brand/1600/700",
-  },
   ...products.map((product) => ({
     title: product.name,
     ctaLabel: "Voir le produit",
