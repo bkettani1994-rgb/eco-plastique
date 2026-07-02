@@ -34,7 +34,6 @@ export function FeaturedProducts() {
               </div>
               <CardContent className="flex flex-1 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4">
                 <h3 className="text-sm font-semibold text-dark-gray sm:text-base">{product.name}</h3>
-                <p className="line-clamp-2 text-xs text-gray-500 sm:text-sm">{product.shortDescription}</p>
                 <div className="mt-auto flex flex-wrap items-center gap-1 pt-2">
                   <span className="text-sm font-bold text-primary sm:text-base">
                     {formatPrice(product.price)}

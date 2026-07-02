@@ -89,8 +89,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-3/800/800",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-4/800/800",
     ],
-    price: 199,
-    oldPrice: 249,
+    price: 150,
     features: [
       "Découpe sur mesure selon les dimensions exactes de votre table",
       "PVC épais et résistant aux taches, à l'huile et à l'eau",
@@ -227,8 +226,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/protege-matelas-impermeable-2/800/800",
       "https://picsum.photos/seed/protege-matelas-impermeable-3/800/800",
     ],
-    price: 229,
-    oldPrice: 299,
+    price: 119,
     features: [
       "Membrane imperméable et respirante",
       "Surface douce et confortable au contact de la peau",
@@ -347,8 +345,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/oreiller-cervical-medical-2/800/800",
       "https://picsum.photos/seed/oreiller-cervical-medical-3/800/800",
     ],
-    price: 329,
-    oldPrice: 399,
+    price: 250,
     features: [
       "Forme ergonomique à double hauteur",
       "Soutien optimal de la nuque et des cervicales",
@@ -476,8 +473,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/oreiller-memoire-forme-2/800/800",
       "https://picsum.photos/seed/oreiller-memoire-forme-3/800/800",
     ],
-    price: 379,
-    oldPrice: 449,
+    price: 199,
     features: [
       "Mousse à mémoire de forme viscoélastique",
       "S'adapte à la chaleur et à la pression du corps",
