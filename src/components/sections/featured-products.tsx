@@ -36,7 +36,7 @@ export function FeaturedProducts() {
                 <h3 className="text-sm font-semibold text-dark-gray sm:text-base">{product.name}</h3>
                 <div className="mt-auto flex flex-wrap items-center gap-1 pt-2">
                   <span className="text-sm font-bold text-primary sm:text-base">
-                    {formatPrice(product.price)}
+                    {product.fromPrice ? "À partir de " : ""}{formatPrice(product.price)}
                   </span>
                   {product.oldPrice ? (
                     <span className="text-xs text-gray-400 line-through sm:text-sm">

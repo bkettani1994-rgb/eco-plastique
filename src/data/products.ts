@@ -40,6 +40,7 @@ export interface Product {
   longDescription: string;
   images: string[];
   price: number;
+  fromPrice?: boolean;
   oldPrice?: number;
   features: string[];
   featuresAr?: string[];
@@ -90,6 +91,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-4/800/800",
     ],
     price: 150,
+    fromPrice: true,
     features: [
       "Découpe sur mesure selon les dimensions exactes de votre table",
       "PVC épais et résistant aux taches, à l'huile et à l'eau",
@@ -227,6 +229,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/protege-matelas-impermeable-3/800/800",
     ],
     price: 119,
+    fromPrice: true,
     features: [
       "Membrane imperméable et respirante",
       "Surface douce et confortable au contact de la peau",
@@ -474,6 +477,7 @@ export const products: Product[] = [
       "https://picsum.photos/seed/oreiller-memoire-forme-3/800/800",
     ],
     price: 199,
+    fromPrice: true,
     features: [
       "Mousse à mémoire de forme viscoélastique",
       "S'adapte à la chaleur et à la pression du corps",
