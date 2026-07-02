@@ -23,18 +23,20 @@ export function FeaturedProducts() {
         <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
           {products.map((product) => (
             <Card key={product.id} className="flex flex-col overflow-hidden">
-              <div className="relative aspect-square overflow-hidden">
+              <Link href={`/produits/${product.slug}`} className="relative aspect-square overflow-hidden block">
                 <Image
                   src={product.images[0]}
                   alt={product.name}
                   fill
                   sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="object-cover"
+                  className="object-cover transition-transform hover:scale-105"
                 />
-              </div>
-              <CardContent className="flex flex-1 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4">
-                <h3 className="text-sm font-semibold text-dark-gray sm:text-base">{product.name}</h3>
-                <div className="mt-auto flex flex-wrap items-center gap-1 pt-2">
+              </Link>
+              <CardContent className="flex flex-1 flex-col p-3 sm:p-4">
+                <Link href={`/produits/${product.slug}`} className="text-sm font-semibold text-dark-gray hover:text-primary sm:text-base">
+                  {product.name}
+                </Link>
+                <div className="flex flex-wrap items-center gap-1">
                   <span className="text-sm font-bold text-primary sm:text-base">
                     {product.fromPrice ? "À partir de " : ""}{formatPrice(product.price)}
                   </span>
@@ -44,7 +46,7 @@ export function FeaturedProducts() {
                     </span>
                   ) : null}
                 </div>
-                <div className="mt-1">
+                <div className="mt-auto pt-2">
                   <Link
                     href={`/produits/${product.slug}`}
                     className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-primary-dark sm:px-4 sm:py-2.5 sm:text-sm"
