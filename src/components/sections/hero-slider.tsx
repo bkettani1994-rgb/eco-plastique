@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
@@ -48,9 +48,11 @@ const slides: Slide[] = [
 ];
 
 const SLIDE_DURATION = 5000;
+const SWIPE_THRESHOLD = 50;
 
 export function HeroSlider() {
   const [index, setIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -59,12 +61,34 @@ export function HeroSlider() {
     return () => clearInterval(timer);
   }, []);
 
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) >= SWIPE_THRESHOLD) {
+      setIndex((current) =>
+        delta > 0
+          ? (current + 1) % slides.length
+          : (current - 1 + slides.length) % slides.length
+      );
+    }
+    touchStartX.current = null;
+  }
+
   const slide = slides[index];
 
   return (
     <>
       {/* Desktop: 1920×720 ratio */}
-      <section className="relative hidden w-full overflow-hidden sm:block" style={{ aspectRatio: "1920/720" }}>
+      <section
+        className="relative hidden w-full overflow-hidden sm:block"
+        style={{ aspectRatio: "1920/720" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -85,12 +109,18 @@ export function HeroSlider() {
           </motion.div>
         </AnimatePresence>
 
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/40 to-transparent" />
         <SlideContent slide={slide} index={index} />
         <SlideDots index={index} setIndex={setIndex} />
       </section>
 
-      {/* Mobile: 1×1 square ratio */}
-      <section className="relative block w-full overflow-hidden sm:hidden" style={{ aspectRatio: "1080/1270" }}>
+      {/* Mobile: 1080×1270 ratio */}
+      <section
+        className="relative block w-full overflow-hidden sm:hidden"
+        style={{ aspectRatio: "1080/1270" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -111,6 +141,7 @@ export function HeroSlider() {
           </motion.div>
         </AnimatePresence>
 
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
         <MobileSlideContent slide={slide} />
         <SlideDots index={index} setIndex={setIndex} />
       </section>
@@ -190,7 +221,7 @@ function SlideDots({
           onClick={() => setIndex(dotIndex)}
           className={cn(
             "h-2 rounded-full transition-all",
-            dotIndex === index ? "w-8 bg-white" : "w-2 bg-white/40",
+            dotIndex === index ? "w-8 bg-white" : "w-2 bg-white/60",
           )}
         />
       ))}

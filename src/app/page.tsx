@@ -1,5 +1,4 @@
 import { HeroSlider } from "@/components/sections/hero-slider";
-import { TrustLogos } from "@/components/sections/trust-logos";
 import { FeaturedProducts } from "@/components/sections/featured-products";
 import { WhyChooseUs } from "@/components/sections/why-choose-us";
 import { Testimonials } from "@/components/sections/testimonials";
@@ -11,7 +10,6 @@ export default function Home() {
     <>
       <HeroSlider />
       <hr className="border-t-4 border-gray-200" />
-      <TrustLogos />
       <FeaturedProducts />
       <WhyChooseUs />
       <Testimonials />
