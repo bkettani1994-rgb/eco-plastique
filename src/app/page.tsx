@@ -8,6 +8,7 @@ import { Cta } from "@/components/sections/cta";
 export default function Home() {
   return (
     <>
+      <hr className="border-t-4 border-gray-200" />
       <HeroSlider />
       <hr className="border-t-4 border-gray-200" />
       <FeaturedProducts />
