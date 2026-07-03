@@ -174,7 +174,7 @@ export default function OreillercervicalPage() {
     <main className="bg-white">
       {/* ── 1. HERO ─────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
           {/* Gallery */}
           <div className="flex flex-col gap-3">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
