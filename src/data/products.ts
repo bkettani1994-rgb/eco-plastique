@@ -224,7 +224,7 @@ export const products: Product[] = [
     longDescription:
       "Notre protège-matelas imperméable forme une barrière efficace contre les liquides, la transpiration et les acariens, tout en restant doux et respirant au contact de la peau. Idéal pour les enfants, les personnes âgées ou simplement pour prolonger la durée de vie de votre matelas, il se glisse facilement grâce à ses élastiques renforcés aux quatre coins et reste parfaitement en place toute la nuit. Disponible dans toutes les tailles standards marocaines, il se lave en machine et sèche rapidement, pour une hygiène irréprochable au quotidien.",
     images: [
-      "https://picsum.photos/seed/protege-matelas-impermeable-1/800/800",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075175/001_1_xiz0o3.jpg",
       "https://picsum.photos/seed/protege-matelas-impermeable-2/800/800",
       "https://picsum.photos/seed/protege-matelas-impermeable-3/800/800",
     ],
@@ -344,7 +344,7 @@ export const products: Product[] = [
     longDescription:
       "Conçu pour épouser parfaitement les courbes de votre cou et de votre tête, notre oreiller cervical médical aide à réduire les tensions musculaires, les douleurs cervicales et les maux de tête liés à une mauvaise posture nocturne. Sa mousse orthopédique à densité contrôlée offre un double niveau de hauteur, idéal que vous dormiez sur le dos ou sur le côté. Recommandé par des professionnels de la santé, c'est un allié indispensable pour retrouver un sommeil réparateur et se réveiller sans douleurs.",
     images: [
-      "https://picsum.photos/seed/oreiller-cervical-medical-1/800/800",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-1_1_knigst.jpg",
       "https://picsum.photos/seed/oreiller-cervical-medical-2/800/800",
       "https://picsum.photos/seed/oreiller-cervical-medical-3/800/800",
     ],
@@ -472,7 +472,7 @@ export const products: Product[] = [
     longDescription:
       "Notre oreiller à mémoire de forme utilise une mousse viscoélastique haute qualité qui réagit à la chaleur et à la pression de votre corps pour offrir un soutien parfaitement personnalisé. Il retrouve sa forme initiale après chaque utilisation, garantissant un confort constant nuit après nuit, tout en réduisant les points de pression sur la tête, le cou et les épaules. Sa housse respirante et amovible se lave facilement, pour un confort durable et une hygiène irréprochable.",
     images: [
-      "https://picsum.photos/seed/oreiller-memoire-forme-1/800/800",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-1_1_ln75yv.jpg",
       "https://picsum.photos/seed/oreiller-memoire-forme-2/800/800",
       "https://picsum.photos/seed/oreiller-memoire-forme-3/800/800",
     ],
