@@ -235,8 +235,8 @@ export default function ProtegeMatelasPage() {
             </div>
 
             {/* Quantity offers + size dropdowns */}
-            <div>
-              <p className="mb-2 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
+            <div className="rounded-2xl border-2 p-4" style={{ borderColor: "#f97316" }}>
+              <p className="mb-3 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
               <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
                   const isSelected = selectedOffer.qty === offer.qty;
@@ -247,9 +247,8 @@ export default function ProtegeMatelasPage() {
                   return (
                     <div
                       key={offer.qty}
-                      className={`rounded-xl border-2 transition-all ${
-                        isSelected ? "border-primary bg-primary/5" : "border-gray-200"
-                      }`}
+                      className="rounded-xl border-2 transition-all"
+                      style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
                     >
                       <button
                         type="button"
@@ -258,9 +257,8 @@ export default function ProtegeMatelasPage() {
                       >
                         <div className="flex items-center gap-3">
                           <div
-                            className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 ${
-                              isSelected ? "border-primary bg-primary" : "border-gray-300"
-                            }`}
+                            className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 transition-all"
+                            style={isSelected ? { borderColor: "#f97316", backgroundColor: "#f97316" } : { borderColor: "#d1d5db" }}
                           >
                             {isSelected && <Check size={11} className="text-white" />}
                           </div>
@@ -314,7 +312,7 @@ export default function ProtegeMatelasPage() {
             </div>
 
             {/* Order form */}
-            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border border-gray-200 bg-light-gray p-5">
+            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border-2 bg-light-gray p-5" style={{ borderColor: "#f97316" }}>
               <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <input
