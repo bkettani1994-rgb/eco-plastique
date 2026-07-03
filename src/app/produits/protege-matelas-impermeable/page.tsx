@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Check,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Shield,
   Droplets,
   Wind,
@@ -136,6 +138,18 @@ export default function ProtegeMatelasPage() {
   const { addItem, clearCart } = useCart();
 
   const [activeImg, setActiveImg] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  function prevImg() { setActiveImg((i) => (i - 1 + GALLERY.length) % GALLERY.length); }
+  function nextImg() { setActiveImg((i) => (i + 1) % GALLERY.length); }
+  function onTouchStart(e: React.TouchEvent) { touchStartX.current = e.touches[0].clientX; }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 40) delta > 0 ? nextImg() : prevImg();
+    touchStartX.current = null;
+  }
+
   const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
   const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([SIZES[0]]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -190,7 +204,11 @@ export default function ProtegeMatelasPage() {
         <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
           {/* Gallery */}
           <div className="flex flex-col gap-3">
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
+            <div
+              className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray"
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+            >
               <Image
                 src={GALLERY[activeImg]}
                 alt={PRODUCT.name}
@@ -199,18 +217,44 @@ export default function ProtegeMatelasPage() {
                 sizes="(max-width:1024px) 100vw, 50vw"
                 className="object-cover"
               />
+              <button
+                type="button"
+                onClick={prevImg}
+                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow transition hover:bg-white"
+                aria-label="Image précédente"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                type="button"
+                onClick={nextImg}
+                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow transition hover:bg-white"
+                aria-label="Image suivante"
+              >
+                <ChevronRight size={20} />
+              </button>
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                {GALLERY.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveImg(i)}
+                    className={`h-1.5 rounded-full transition-all ${i === activeImg ? "w-5 bg-primary" : "w-1.5 bg-white/70"}`}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="scrollbar-hide flex gap-2 overflow-x-auto pb-1">
-              {GALLERY.map((src, i) => (
+            <div className="grid grid-cols-5 gap-2">
+              {GALLERY.slice(0, 5).map((src, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setActiveImg(i)}
-                  className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-all sm:h-20 sm:w-20 ${
+                  className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
                     i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="80px" />
+                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="20vw" />
                 </button>
               ))}
             </div>
