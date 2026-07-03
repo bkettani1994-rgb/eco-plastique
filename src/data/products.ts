@@ -344,7 +344,7 @@ export const products: Product[] = [
     longDescription:
       "Conçu pour épouser parfaitement les courbes de votre cou et de votre tête, notre oreiller cervical médical aide à réduire les tensions musculaires, les douleurs cervicales et les maux de tête liés à une mauvaise posture nocturne. Sa mousse orthopédique à densité contrôlée offre un double niveau de hauteur, idéal que vous dormiez sur le dos ou sur le côté. Recommandé par des professionnels de la santé, c'est un allié indispensable pour retrouver un sommeil réparateur et se réveiller sans douleurs.",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-1_1_knigst.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-2_1_jxnez8.jpg",
       "https://picsum.photos/seed/oreiller-cervical-medical-2/800/800",
       "https://picsum.photos/seed/oreiller-cervical-medical-3/800/800",
     ],
