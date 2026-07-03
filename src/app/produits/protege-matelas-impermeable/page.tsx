@@ -389,13 +389,13 @@ export default function ProtegeMatelasPage() {
               block.imageLeft ? "" : "lg:flex-row-reverse"
             }`}
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl lg:w-1/2">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray lg:w-1/2">
               <Image
                 src={block.image}
                 alt={block.title}
                 fill
                 sizes="(max-width:1024px) 100vw, 50vw"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
             <div className="flex flex-col gap-4 lg:w-1/2">
