@@ -67,25 +67,25 @@ const TRUST_BADGES = [
 
 const LIFESTYLE_BLOCKS = [
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/005_r9yooe.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
     title: "Une protection invisible, un confort absolu",
     text: "Notre membrane TPU ultra-fine forme une barrière étanche sans le bruissement plastique des protections classiques. Vous dormez sur une surface douce, silencieuse et fraîche — exactement comme sans protection, mais avec toute la sécurité qu'il vous faut.",
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/006_d8xctj.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091043/A2_ymk4qg.jpg",
     title: "Idéal pour toute la famille",
     text: "Que ce soit pour protéger le matelas de votre enfant des accidents nocturnes, pour une personne âgée ou simplement pour prévenir la transpiration, notre protège-matelas s'adapte à tous les besoins. Une seule solution pour toute la maison.",
     imageLeft: false,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/007_lz0ynk.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A6_pgu8ij.jpg",
     title: "Installation en 30 secondes chrono",
     text: "Grâce aux quatre élastiques renforcés disposés aux coins, le protège-matelas se pose et se retire en quelques secondes. Il reste parfaitement fixé toute la nuit, même sur les matelas les plus épais, sans se décaler ni se plier.",
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/008_ztwspw.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A8_an5y7s.jpg",
     title: "Entretien sans contrainte",
     text: "Lavable en machine à 40 °C, il sèche rapidement à l'air libre et conserve toutes ses propriétés imperméables après chaque lavage. Pas de traitement spécial, pas de sèche-linge nécessaire — une hygiène irréprochable avec le minimum d'effort.",
     imageLeft: false,
