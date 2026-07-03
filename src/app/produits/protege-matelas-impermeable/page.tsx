@@ -27,9 +27,18 @@ const PRODUCT = {
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Protege-Matelas_tmrezb.png",
 };
 
-const HERO_IMAGE = "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937765/004_1_ygeg4d.jpg";
+const HERO_IMAGE = "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075175/001_1_xiz0o3.jpg";
 
-const GALLERY = [HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE];
+const GALLERY = [
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075175/001_1_xiz0o3.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/002_ipw8wg.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/007_lz0ynk.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/005_r9yooe.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/008_ztwspw.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/006_d8xctj.jpg",
+];
 
 const SIZES: { label: string; price: number }[] = [
   { label: "60×120 cm",  price: 119 },
@@ -191,7 +200,7 @@ export default function ProtegeMatelasPage() {
                 className="object-cover"
               />
             </div>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-8 gap-2">
               {GALLERY.map((src, i) => (
                 <button
                   key={i}
