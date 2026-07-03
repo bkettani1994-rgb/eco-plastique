@@ -314,15 +314,15 @@ export default function ProtegeMatelasPage() {
             </div>
 
             {/* Order form */}
-            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border border-gray-100 bg-light-gray p-5">
-              <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
+            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border-2 border-primary bg-primary/5 p-5">
+              <p className="font-bold text-primary">Vos coordonnées de livraison</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <input
                   required
                   placeholder="Nom complet"
                   value={form.fullName}
                   onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
                 <input
                   required
@@ -330,7 +330,7 @@ export default function ProtegeMatelasPage() {
                   placeholder="Téléphone (06…)"
                   value={form.phone}
                   onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
               </div>
               <input
@@ -338,14 +338,14 @@ export default function ProtegeMatelasPage() {
                 placeholder="Ville"
                 value={form.city}
                 onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
               />
               <input
                 required
                 placeholder="Adresse de livraison"
                 value={form.address}
                 onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
               />
               <button
                 type="submit"
@@ -355,7 +355,7 @@ export default function ProtegeMatelasPage() {
                 <ShoppingCart size={18} />
                 {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
               </button>
-              <p className="text-center text-xs text-gray-400">
+              <p className="text-center text-xs text-primary/70">
                 Paiement à la livraison · Livraison sous 24–72h au Maroc
               </p>
             </form>
