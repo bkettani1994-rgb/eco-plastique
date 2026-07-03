@@ -36,10 +36,9 @@ const GALLERY = [
 ];
 
 const SIZES: { label: string; price: number }[] = [
-  { label: "Moelleux — 50×70 cm", price: 199 },
-  { label: "Ferme — 50×70 cm",    price: 199 },
-  { label: "Moelleux — 60×80 cm", price: 229 },
-  { label: "Ferme — 60×80 cm",    price: 229 },
+  { label: "15 cm", price: 199 },
+  { label: "17 cm", price: 229 },
+  { label: "19 cm", price: 249 },
 ];
 
 const OFFERS = [
