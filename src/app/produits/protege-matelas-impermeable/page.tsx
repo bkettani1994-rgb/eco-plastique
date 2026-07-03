@@ -272,7 +272,7 @@ export default function ProtegeMatelasPage() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
+                          <span className="text-base font-bold" style={{ color: "#f97316" }}>
                             {isSelected ? totalPrice : previewTotal} MAD
                           </span>
                           {offer.qty > 1 && (
