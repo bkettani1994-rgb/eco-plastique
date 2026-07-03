@@ -35,9 +35,6 @@ const GALLERY = [
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/007_lz0ynk.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/005_r9yooe.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/008_ztwspw.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/006_d8xctj.jpg",
 ];
 
 const SIZES: { label: string; price: number }[] = [
