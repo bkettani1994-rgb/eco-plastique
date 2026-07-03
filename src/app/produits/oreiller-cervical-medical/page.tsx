@@ -36,8 +36,7 @@ const GALLERY = [
 ];
 
 const SIZES: { label: string; price: number }[] = [
-  { label: "Standard (50×30 cm)", price: 250 },
-  { label: "Large (60×35 cm)",    price: 290 },
+  { label: "Oreiller cervical", price: 249 },
 ];
 
 const OFFERS = [
@@ -273,7 +272,7 @@ export default function OreillercervicalPage() {
                         </div>
                       </button>
 
-                      {isSelected && (
+                      {isSelected && SIZES.length > 1 && (
                         <div className="flex flex-col gap-2 border-t border-primary/20 px-4 pb-4 pt-3">
                           {Array.from({ length: offer.qty }).map((_, slotIndex) => (
                             <div key={slotIndex} className="flex items-center gap-3">
