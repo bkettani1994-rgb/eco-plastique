@@ -56,25 +56,25 @@ const TRUST_BADGES = [
 
 const LIFESTYLE_BLOCKS = [
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-4_1_ja02lu.jpg",
     title: "Un soutien cervical conçu par des experts",
     text: "Notre oreiller ergonomique a été développé en collaboration avec des kinésithérapeutes pour offrir un maintien optimal de la nuque. Sa forme anatomique s'adapte naturellement à la courbure de votre colonne vertébrale, que vous dormiez sur le dos ou sur le côté.",
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091043/A2_ymk4qg.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-7_1_cj0y6i.jpg",
     title: "Fini les douleurs au réveil",
     text: "Cervicalgies, raideurs matinales, maux de tête — ces problèmes sont souvent liés à un mauvais positionnement de la tête pendant le sommeil. Notre oreiller cervical maintient votre cou dans l'alignement parfait toute la nuit, pour un réveil reposé et sans douleur.",
     imageLeft: false,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A6_pgu8ij.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-6_1_fhebyb.jpg",
     title: "Mousse à mémoire de forme haute densité",
     text: "Fabriqué en mousse viscoélastique certifiée, il épouse précisément la forme de votre tête et de votre nuque, sans s'affaisser ni créer de points de pression. Il retrouve sa forme initiale à chaque réveil, garantissant le même soutien nuit après nuit.",
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A8_an5y7s.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-5_1_siqxfa.jpg",
     title: "Housse hygiénique et facile d'entretien",
     text: "La housse en bambou respirante est amovible et lavable en machine à 40 °C. Elle régule la chaleur et l'humidité pour un confort thermique optimal. Anti-acariens et hypoallergénique, elle convient aux peaux sensibles et aux personnes allergiques.",
     imageLeft: false,
