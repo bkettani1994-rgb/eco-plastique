@@ -28,11 +28,11 @@ const PRODUCT = {
 };
 
 const GALLERY = [
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075175/001_1_xiz0o3.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/002_ipw8wg.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/007_lz0ynk.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-3_1_lydfvm.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-1_1_ln75yv.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-4_1_pspeqa.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093865/Poste-1-1-Memory-Foam-Pillow-5_1_mtysbd.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-2_1_jhkk7z.jpg",
 ];
 
 const SIZES: { label: string; price: number }[] = [
@@ -58,25 +58,25 @@ const TRUST_BADGES = [
 
 const LIFESTYLE_BLOCKS = [
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-3_1_lydfvm.jpg",
     title: "La mousse qui s'adapte à vous, pas l'inverse",
     text: "Notre mousse viscoélastique à mémoire de forme réagit à la chaleur de votre corps pour épouser exactement la forme de votre tête et de votre nuque. Elle répartit les points de pression de façon uniforme, éliminant les zones de tension qui causent les douleurs matinales.",
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091043/A2_ymk4qg.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-1_1_ln75yv.jpg",
     title: "Un sommeil plus profond, une récupération optimale",
     text: "En éliminant les inconforts liés au positionnement de la tête, notre oreiller favorise les phases de sommeil profond. Vous vous endormez plus vite, vous bougez moins la nuit et vous vous réveillez réellement reposé, prêt à affronter votre journée.",
     imageLeft: false,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A6_pgu8ij.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-4_1_pspeqa.jpg",
     title: "Disponible en deux fermetés pour votre confort",
     text: "Chaque personne a ses préférences : certains aiment un oreiller moelleux qui enveloppe, d'autres préfèrent un soutien plus ferme. C'est pourquoi nous proposons deux niveaux de fermeté pour que vous trouviez exactement ce dont vous avez besoin.",
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A8_an5y7s.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093865/Poste-1-1-Memory-Foam-Pillow-5_1_mtysbd.jpg",
     title: "Housse douce et hygiénique",
     text: "La housse en microfibre ultra-douce est amovible et lavable en machine à 40 °C. Traitée anti-acariens, elle maintient un environnement sain nuit après nuit, idéal pour les personnes allergiques. Elle sèche rapidement et conserve sa douceur après chaque lavage.",
     imageLeft: false,
