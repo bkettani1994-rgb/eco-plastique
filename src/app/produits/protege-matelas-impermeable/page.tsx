@@ -250,11 +250,6 @@ export default function ProtegeMatelasPage() {
                       className="relative rounded-xl border-2 transition-all"
                       style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
                     >
-                      {offer.popular && (
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-bold text-white whitespace-nowrap" style={{ backgroundColor: "#f97316" }}>
-                          ⭐ Le plus populaire
-                        </span>
-                      )}
                       <button
                         type="button"
                         onClick={() => handleOfferChange(offer)}
