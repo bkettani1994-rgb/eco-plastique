@@ -28,11 +28,11 @@ const PRODUCT = {
 };
 
 const GALLERY = [
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075175/001_1_xiz0o3.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/002_ipw8wg.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/007_lz0ynk.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-1_1_knigst.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-2_1_jxnez8.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-7_1_cj0y6i.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-4_1_ja02lu.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-3_1_rsvqh0.jpg",
 ];
 
 const SIZES: { label: string; price: number }[] = [
