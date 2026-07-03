@@ -267,14 +267,14 @@ export default function ProtegeMatelasPage() {
                           <div>
                             <span className="font-semibold text-dark-gray">{offer.label}</span>
                             {offer.badge && (
-                              <span className="ml-2 rounded-full bg-primary px-2.5 py-1 text-xs font-extrabold text-white shadow-sm">
+                              <span className="ml-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#f97316" }}>
                                 {offer.badge}
                               </span>
                             )}
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-xl font-extrabold text-primary">
+                          <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
                             {isSelected ? totalPrice : previewTotal} MAD
                           </span>
                           {offer.qty > 1 && (
@@ -347,9 +347,9 @@ export default function ProtegeMatelasPage() {
                 onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
                 className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
               />
-              <div className="flex items-center justify-between rounded-xl bg-primary/10 px-4 py-3">
+              <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
                 <span className="text-sm font-semibold text-dark-gray">Total à payer</span>
-                <span className="text-xl font-extrabold text-primary">{totalPrice} MAD</span>
+                <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>{totalPrice} MAD</span>
               </div>
               <button
                 type="submit"
