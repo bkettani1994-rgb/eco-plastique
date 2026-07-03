@@ -27,50 +27,55 @@ const PRODUCT = {
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937215/Oreiller_cervicale_jpyife.png",
 };
 
-const HERO_IMAGE = "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937215/Oreiller_cervicale_jpyife.png";
-const GALLERY = [HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE];
+const GALLERY = [
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075175/001_1_xiz0o3.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/002_ipw8wg.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/007_lz0ynk.jpg",
+];
 
-const MODELS: { label: string; price: number }[] = [
-  { label: "Standard (50×30 cm)",  price: 250 },
-  { label: "Large (60×35 cm)",     price: 290 },
+const SIZES: { label: string; price: number }[] = [
+  { label: "Standard (50×30 cm)", price: 250 },
+  { label: "Large (60×35 cm)",    price: 290 },
 ];
 
 const OFFERS = [
-  { qty: 1, label: "1 pièce",  discount: 1,    badge: null },
-  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%" },
-  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%" },
+  { qty: 1, label: "1 pièce",  discount: 1,    badge: null,   popular: false },
+  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%",  popular: true },
+  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%", popular: false },
 ];
 
 const TRUST_BADGES = [
-  { icon: Brain,     label: "Ergonomique",        desc: "Conçu avec des spécialistes" },
-  { icon: Wind,      label: "Respirant",           desc: "Housse en bambou ventilée" },
-  { icon: Shield,    label: "Anti-acariens",       desc: "Hypoallergénique certifié" },
-  { icon: Truck,     label: "Livraison rapide",    desc: "Partout au Maroc" },
-  { icon: RotateCcw, label: "Retour 30 jours",    desc: "Satisfait ou remboursé" },
-  { icon: Star,      label: "4.8 / 5",             desc: "Basé sur 180+ avis" },
+  { icon: Brain,     label: "Ergonomique",      desc: "Conçu avec des spécialistes" },
+  { icon: Wind,      label: "Respirant",         desc: "Housse en bambou ventilée" },
+  { icon: Shield,    label: "Anti-acariens",     desc: "Hypoallergénique certifié" },
+  { icon: Truck,     label: "Livraison rapide",  desc: "Partout au Maroc" },
+  { icon: RotateCcw, label: "Retour 30 jours",  desc: "Satisfait ou remboursé" },
+  { icon: Star,      label: "4.8 / 5",           desc: "Basé sur 180+ avis" },
 ];
 
 const LIFESTYLE_BLOCKS = [
   {
-    image: "https://picsum.photos/seed/oc-block-1/900/700",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075173/003_nhvv4f.jpg",
     title: "Un soutien cervical conçu par des experts",
     text: "Notre oreiller ergonomique a été développé en collaboration avec des kinésithérapeutes pour offrir un maintien optimal de la nuque. Sa forme anatomique s'adapte naturellement à la courbure de votre colonne vertébrale, que vous dormiez sur le dos ou sur le côté.",
     imageLeft: true,
   },
   {
-    image: "https://picsum.photos/seed/oc-block-2/900/700",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091043/A2_ymk4qg.jpg",
     title: "Fini les douleurs au réveil",
     text: "Cervicalgies, raideurs matinales, maux de tête — ces problèmes sont souvent liés à un mauvais positionnement de la tête pendant le sommeil. Notre oreiller cervical maintient votre cou dans l'alignement parfait toute la nuit, pour un réveil reposé et sans douleur.",
     imageLeft: false,
   },
   {
-    image: "https://picsum.photos/seed/oc-block-3/900/700",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A6_pgu8ij.jpg",
     title: "Mousse à mémoire de forme haute densité",
     text: "Fabriqué en mousse viscoélastique certifiée, il épouse précisément la forme de votre tête et de votre nuque, sans s'affaisser ni créer de points de pression. Il retrouve sa forme initiale à chaque réveil, garantissant le même soutien nuit après nuit.",
     imageLeft: true,
   },
   {
-    image: "https://picsum.photos/seed/oc-block-4/900/700",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783091089/A8_an5y7s.jpg",
     title: "Housse hygiénique et facile d'entretien",
     text: "La housse en bambou respirante est amovible et lavable en machine à 40 °C. Elle régule la chaleur et l'humidité pour un confort thermique optimal. Anti-acariens et hypoallergénique, elle convient aux peaux sensibles et aux personnes allergiques.",
     imageLeft: false,
@@ -78,14 +83,14 @@ const LIFESTYLE_BLOCKS = [
 ];
 
 const COMPARISON = [
-  { feature: "Soutien cervical anatomique",           ours: true,  classic: false },
-  { feature: "Mousse à mémoire de forme haute densité", ours: true, classic: false },
-  { feature: "Housse en bambou respirante",           ours: true,  classic: false },
-  { feature: "Anti-acariens & hypoallergénique",      ours: true,  classic: false },
-  { feature: "Housse lavable en machine",             ours: true,  classic: true  },
-  { feature: "Adapté dos et côté",                    ours: true,  classic: false },
-  { feature: "Garantie 12 mois",                     ours: true,  classic: false },
-  { feature: "Recommandé par des kinésithérapeutes",  ours: true,  classic: false },
+  { feature: "Soutien cervical anatomique",             ours: true,  classic: false },
+  { feature: "Mousse à mémoire de forme haute densité", ours: true,  classic: false },
+  { feature: "Housse en bambou respirante",             ours: true,  classic: false },
+  { feature: "Anti-acariens & hypoallergénique",        ours: true,  classic: false },
+  { feature: "Housse lavable en machine",               ours: true,  classic: true  },
+  { feature: "Adapté dos et côté",                      ours: true,  classic: false },
+  { feature: "Garantie 12 mois",                        ours: true,  classic: false },
+  { feature: "Recommandé par des kinésithérapeutes",    ours: true,  classic: false },
 ];
 
 const FAQ_ITEMS = [
@@ -119,20 +124,20 @@ export default function OreillercervicalPage() {
 
   const [activeImg, setActiveImg] = useState(0);
   const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
-  const [chosenModels, setChosenModels] = useState<{ label: string; price: number }[]>([MODELS[0]]);
+  const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([SIZES[0]]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   function handleOfferChange(offer: typeof OFFERS[0]) {
     setSelectedOffer(offer);
-    setChosenModels(Array.from({ length: offer.qty }, (_, i) => chosenModels[i] ?? MODELS[0]));
+    setChosenSizes(Array.from({ length: offer.qty }, (_, i) => chosenSizes[i] ?? SIZES[0]));
   }
 
-  function handleModelChange(slotIndex: number, modelLabel: string) {
-    const found = MODELS.find((m) => m.label === modelLabel) ?? MODELS[0];
-    setChosenModels((prev) => prev.map((m, i) => (i === slotIndex ? found : m)));
+  function handleSizeChange(slotIndex: number, sizeLabel: string) {
+    const found = SIZES.find((s) => s.label === sizeLabel) ?? SIZES[0];
+    setChosenSizes((prev) => prev.map((s, i) => (i === slotIndex ? found : s)));
   }
 
-  const baseTotal = chosenModels.reduce((sum, m) => sum + m.price, 0);
+  const baseTotal = chosenSizes.reduce((sum, s) => sum + s.price, 0);
   const totalPrice = Math.round(baseTotal * selectedOffer.discount);
 
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
@@ -142,10 +147,10 @@ export default function OreillercervicalPage() {
     e.preventDefault();
     setSubmitting(true);
 
-    const modelSummary = chosenModels.map((m) => m.label).join(", ");
+    const sizeSummary = chosenSizes.map((s) => s.label).join(", ");
     const orderItem = {
       slug: PRODUCT.slug,
-      name: `${PRODUCT.name} (${modelSummary})`,
+      name: `${PRODUCT.name} (${sizeSummary})`,
       price: Math.round(totalPrice / selectedOffer.qty),
       image: PRODUCT.image,
       quantity: selectedOffer.qty,
@@ -157,7 +162,7 @@ export default function OreillercervicalPage() {
     saveLastOrder({
       id: generateOrderId(),
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Offre : ${selectedOffer.label} | Modèles : ${modelSummary} | Total : ${totalPrice} MAD` },
+      customer: { ...form, notes: `Offre : ${selectedOffer.label} | Modèles : ${sizeSummary} | Total : ${totalPrice} MAD` },
       total: totalPrice,
       createdAt: new Date().toISOString(),
     });
@@ -171,7 +176,7 @@ export default function OreillercervicalPage() {
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
           {/* Gallery */}
-          <div className="flex min-w-0 flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
               <Image
                 src={GALLERY[activeImg]}
@@ -182,7 +187,7 @@ export default function OreillercervicalPage() {
                 className="object-cover"
               />
             </div>
-            <div className="grid grid-cols-5 gap-2 overflow-hidden">
+            <div className="grid grid-cols-5 gap-2">
               {GALLERY.map((src, i) => (
                 <button
                   key={i}
@@ -225,7 +230,7 @@ export default function OreillercervicalPage() {
               <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
                   const isSelected = selectedOffer.qty === offer.qty;
-                  const previewBase = isSelected ? baseTotal : MODELS[0].price * offer.qty;
+                  const previewBase = isSelected ? baseTotal : SIZES[0].price * offer.qty;
                   const previewTotal = Math.round(previewBase * offer.discount);
                   const previewOld = Math.round(previewBase);
 
@@ -271,18 +276,18 @@ export default function OreillercervicalPage() {
                       {isSelected && (
                         <div className="flex flex-col gap-2 border-t border-primary/20 px-4 pb-4 pt-3">
                           {Array.from({ length: offer.qty }).map((_, slotIndex) => (
-                            <div key={slotIndex} className="flex min-w-0 items-center gap-3">
+                            <div key={slotIndex} className="flex items-center gap-3">
                               <span className="w-16 flex-shrink-0 text-xs text-gray-500">
                                 Pièce {slotIndex + 1}
                               </span>
                               <select
-                                value={chosenModels[slotIndex]?.label ?? MODELS[0].label}
-                                onChange={(e) => handleModelChange(slotIndex, e.target.value)}
-                                className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                                value={chosenSizes[slotIndex]?.label ?? SIZES[0].label}
+                                onChange={(e) => handleSizeChange(slotIndex, e.target.value)}
+                                className="flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
                               >
-                                {MODELS.map((m) => (
-                                  <option key={m.label} value={m.label}>
-                                    {m.label} — {m.price} MAD
+                                {SIZES.map((s) => (
+                                  <option key={s.label} value={s.label}>
+                                    {s.label} — {s.price} MAD
                                   </option>
                                 ))}
                               </select>
@@ -378,13 +383,13 @@ export default function OreillercervicalPage() {
               block.imageLeft ? "" : "lg:flex-row-reverse"
             }`}
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl lg:w-1/2">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray lg:w-1/2">
               <Image
                 src={block.image}
                 alt={block.title}
                 fill
                 sizes="(max-width:1024px) 100vw, 50vw"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
             <div className="flex flex-col gap-4 lg:w-1/2">
