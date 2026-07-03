@@ -178,7 +178,7 @@ export default function OreilleMemoireFormePage() {
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
           {/* Gallery */}
-          <div className="flex flex-col gap-3">
+          <div className="flex min-w-0 flex-col gap-3">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
               <Image
                 src={GALLERY[activeImg]}
@@ -189,7 +189,7 @@ export default function OreilleMemoireFormePage() {
                 className="object-cover"
               />
             </div>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-5 gap-2 overflow-hidden">
               {GALLERY.map((src, i) => (
                 <button
                   key={i}
