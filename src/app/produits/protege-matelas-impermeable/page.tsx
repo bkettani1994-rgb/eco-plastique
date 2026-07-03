@@ -197,7 +197,7 @@ export default function ProtegeMatelasPage() {
                 className="object-cover"
               />
             </div>
-            <div className="grid grid-cols-8 gap-2">
+            <div className="grid grid-cols-5 gap-2">
               {GALLERY.map((src, i) => (
                 <button
                   key={i}
