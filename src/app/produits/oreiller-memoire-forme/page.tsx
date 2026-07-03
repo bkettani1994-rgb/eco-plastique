@@ -27,8 +27,13 @@ const PRODUCT = {
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Oreiller_Simple_cmja5s.png",
 };
 
-const HERO_IMAGE = "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Oreiller_Simple_cmja5s.png";
-const GALLERY = [HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE, HERO_IMAGE];
+const GALLERY = [
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-3_1_lydfvm.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-1_1_ln75yv.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-4_1_pspeqa.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093865/Poste-1-1-Memory-Foam-Pillow-5_1_mtysbd.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-2_1_jhkk7z.jpg",
+];
 
 const MODELS: { label: string; price: number }[] = [
   { label: "Moelleux — 50×70 cm",    price: 199 },
