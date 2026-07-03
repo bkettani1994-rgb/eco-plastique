@@ -186,7 +186,7 @@ export default function OreilleMemoireFormePage() {
                 fill
                 priority
                 sizes="(max-width:1024px) 100vw, 50vw"
-                className="object-contain"
+                className="object-cover"
               />
             </div>
             <div className="grid grid-cols-5 gap-2">
@@ -195,11 +195,11 @@ export default function OreilleMemoireFormePage() {
                   key={i}
                   type="button"
                   onClick={() => setActiveImg(i)}
-                  className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 bg-light-gray transition-all ${
+                  className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
                     i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-contain" sizes="20vw" />
+                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="20vw" />
                 </button>
               ))}
             </div>
