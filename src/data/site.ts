@@ -59,6 +59,7 @@ export const navLinks: NavLink[] = [
 export const socialLinks: SocialLink[] = [
   { label: "Facebook", href: "https://facebook.com/ecoplastique" },
   { label: "Instagram", href: "https://instagram.com/ecoplastique" },
+  { label: "TikTok", href: "https://tiktok.com/@ecoplastique" },
 ];
 
 export const testimonials: SiteTestimonial[] = [
