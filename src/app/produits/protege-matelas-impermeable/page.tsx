@@ -267,14 +267,14 @@ export default function ProtegeMatelasPage() {
                           <div>
                             <span className="font-semibold text-dark-gray">{offer.label}</span>
                             {offer.badge && (
-                              <span className="ml-2 rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">
+                              <span className="ml-2 rounded-full bg-primary px-2.5 py-1 text-xs font-extrabold text-white shadow-sm">
                                 {offer.badge}
                               </span>
                             )}
                           </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-lg font-bold text-primary">
+                          <span className="text-xl font-extrabold text-primary">
                             {isSelected ? totalPrice : previewTotal} MAD
                           </span>
                           {offer.qty > 1 && (
@@ -314,15 +314,15 @@ export default function ProtegeMatelasPage() {
             </div>
 
             {/* Order form */}
-            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border-2 border-primary bg-primary/5 p-5">
-              <p className="font-bold text-primary">Vos coordonnées de livraison</p>
+            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border border-gray-200 bg-light-gray p-5">
+              <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 <input
                   required
                   placeholder="Nom complet"
                   value={form.fullName}
                   onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
-                  className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
                 <input
                   required
@@ -330,7 +330,7 @@ export default function ProtegeMatelasPage() {
                   placeholder="Téléphone (06…)"
                   value={form.phone}
                   onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                  className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
               </div>
               <input
@@ -338,15 +338,19 @@ export default function ProtegeMatelasPage() {
                 placeholder="Ville"
                 value={form.city}
                 onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
               />
               <input
                 required
                 placeholder="Adresse de livraison"
                 value={form.address}
                 onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                className="rounded-xl border border-primary/30 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
               />
+              <div className="flex items-center justify-between rounded-xl bg-primary/10 px-4 py-3">
+                <span className="text-sm font-semibold text-dark-gray">Total à payer</span>
+                <span className="text-xl font-extrabold text-primary">{totalPrice} MAD</span>
+              </div>
               <button
                 type="submit"
                 disabled={submitting}
@@ -355,7 +359,7 @@ export default function ProtegeMatelasPage() {
                 <ShoppingCart size={18} />
                 {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
               </button>
-              <p className="text-center text-xs text-primary/70">
+              <p className="text-center text-xs text-gray-400">
                 Paiement à la livraison · Livraison sous 24–72h au Maroc
               </p>
             </form>
