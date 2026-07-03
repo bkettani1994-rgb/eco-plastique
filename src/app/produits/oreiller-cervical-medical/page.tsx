@@ -271,14 +271,14 @@ export default function OreillercervicalPage() {
                       {isSelected && (
                         <div className="flex flex-col gap-2 border-t border-primary/20 px-4 pb-4 pt-3">
                           {Array.from({ length: offer.qty }).map((_, slotIndex) => (
-                            <div key={slotIndex} className="flex items-center gap-3">
+                            <div key={slotIndex} className="flex min-w-0 items-center gap-3">
                               <span className="w-16 flex-shrink-0 text-xs text-gray-500">
                                 Pièce {slotIndex + 1}
                               </span>
                               <select
                                 value={chosenModels[slotIndex]?.label ?? MODELS[0].label}
                                 onChange={(e) => handleModelChange(slotIndex, e.target.value)}
-                                className="flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                                className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
                               >
                                 {MODELS.map((m) => (
                                   <option key={m.label} value={m.label}>
