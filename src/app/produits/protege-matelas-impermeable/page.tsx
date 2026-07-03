@@ -51,9 +51,9 @@ const SIZES: { label: string; price: number }[] = [
 ];
 
 const OFFERS = [
-  { qty: 1, label: "1 pièce",  discount: 1,    badge: null },
-  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%" },
-  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%" },
+  { qty: 1, label: "1 pièce",  discount: 1,    badge: null,   popular: false },
+  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%",  popular: true },
+  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%", popular: false },
 ];
 
 const TRUST_BADGES = [
@@ -247,9 +247,14 @@ export default function ProtegeMatelasPage() {
                   return (
                     <div
                       key={offer.qty}
-                      className="rounded-xl border-2 transition-all"
+                      className="relative rounded-xl border-2 transition-all"
                       style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
                     >
+                      {offer.popular && (
+                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-0.5 text-xs font-bold text-white whitespace-nowrap" style={{ backgroundColor: "#f97316" }}>
+                          ⭐ Le plus populaire
+                        </span>
+                      )}
                       <button
                         type="button"
                         onClick={() => handleOfferChange(offer)}
