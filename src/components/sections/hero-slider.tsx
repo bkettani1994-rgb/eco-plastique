@@ -18,6 +18,8 @@ interface Slide {
 }
 
 const PRODUCT_IMAGES: Record<string, string> = {
+  "nappe-pvc-sur-mesure":
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
   "protege-matelas-impermeable":
     "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937147/Protege-Matelas_tmrezb.png",
   "oreiller-cervical-medical":
