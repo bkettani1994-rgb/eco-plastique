@@ -172,7 +172,7 @@ export default function ProtegeMatelasPage() {
     saveLastOrder({
       id: generateOrderId(),
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Tailles : ${sizeSummary}` },
+      customer: { ...form, notes: `Offre : ${selectedOffer.label} | Tailles : ${sizeSummary} | Total : ${totalPrice} MAD` },
       total: totalPrice,
       createdAt: new Date().toISOString(),
     });
@@ -234,8 +234,8 @@ export default function ProtegeMatelasPage() {
               </div>
             </div>
 
-            {/* Quantity offers + size dropdowns */}
-            <div className="rounded-2xl border-2 p-4" style={{ borderColor: "#f97316" }}>
+            {/* Quantity offers + order form — single orange bordered section */}
+            <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#f97316" }}>
               <p className="mb-3 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
               <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
@@ -309,58 +309,60 @@ export default function ProtegeMatelasPage() {
                   );
                 })}
               </div>
-            </div>
 
-            {/* Order form */}
-            <form onSubmit={handleOrder} className="flex flex-col gap-3 rounded-2xl border-2 bg-light-gray p-5" style={{ borderColor: "#f97316" }}>
-              <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <hr className="my-2 border-orange-200" />
+
+              {/* Order form inside the same orange border */}
+              <form onSubmit={handleOrder} className="flex flex-col gap-3">
+                <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <input
+                    required
+                    placeholder="Nom complet"
+                    value={form.fullName}
+                    onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  />
+                  <input
+                    required
+                    type="tel"
+                    placeholder="Téléphone (06…)"
+                    value={form.phone}
+                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  />
+                </div>
                 <input
                   required
-                  placeholder="Nom complet"
-                  value={form.fullName}
-                  onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  placeholder="Ville"
+                  value={form.city}
+                  onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                 />
                 <input
                   required
-                  type="tel"
-                  placeholder="Téléphone (06…)"
-                  value={form.phone}
-                  onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  placeholder="Adresse de livraison"
+                  value={form.address}
+                  onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                 />
-              </div>
-              <input
-                required
-                placeholder="Ville"
-                value={form.city}
-                onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
-              />
-              <input
-                required
-                placeholder="Adresse de livraison"
-                value={form.address}
-                onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
-              />
-              <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
-                <span className="text-sm font-semibold text-dark-gray">Total à payer</span>
-                <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>{totalPrice} MAD</span>
-              </div>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
-              >
-                <ShoppingCart size={18} />
-                {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
-              </button>
-              <p className="text-center text-xs text-gray-400">
-                Paiement à la livraison · Livraison sous 24–72h au Maroc
-              </p>
-            </form>
+                <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                  <span className="text-sm font-semibold text-dark-gray">Total à payer</span>
+                  <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>{totalPrice} MAD</span>
+                </div>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
+                >
+                  <ShoppingCart size={18} />
+                  {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
+                </button>
+                <p className="text-center text-xs text-gray-400">
+                  Paiement à la livraison · Livraison sous 24–72h au Maroc
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </section>
