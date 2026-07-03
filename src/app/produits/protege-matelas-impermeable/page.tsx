@@ -139,9 +139,20 @@ export default function ProtegeMatelasPage() {
 
   const [activeImg, setActiveImg] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  const thumbsRef = useRef<HTMLDivElement>(null);
+  const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  function prevImg() { setActiveImg((i) => (i - 1 + GALLERY.length) % GALLERY.length); }
-  function nextImg() { setActiveImg((i) => (i + 1) % GALLERY.length); }
+  function goToImg(i: number) {
+    setActiveImg(i);
+    const container = thumbsRef.current;
+    const thumb = thumbRefs.current[i];
+    if (container && thumb) {
+      const offset = thumb.offsetLeft - container.clientWidth / 2 + thumb.clientWidth / 2;
+      container.scrollTo({ left: offset, behavior: "smooth" });
+    }
+  }
+  function prevImg() { goToImg((activeImg - 1 + GALLERY.length) % GALLERY.length); }
+  function nextImg() { goToImg((activeImg + 1) % GALLERY.length); }
   function onTouchStart(e: React.TouchEvent) { touchStartX.current = e.touches[0].clientX; }
   function onTouchEnd(e: React.TouchEvent) {
     if (touchStartX.current === null) return;
@@ -238,23 +249,24 @@ export default function ProtegeMatelasPage() {
                   <button
                     key={i}
                     type="button"
-                    onClick={() => setActiveImg(i)}
+                    onClick={() => goToImg(i)}
                     className={`h-1.5 rounded-full transition-all ${i === activeImg ? "w-5 bg-primary" : "w-1.5 bg-white/70"}`}
                   />
                 ))}
               </div>
             </div>
-            <div className="grid grid-cols-5 gap-2">
-              {GALLERY.slice(0, 5).map((src, i) => (
+            <div ref={thumbsRef} className="scrollbar-hide flex gap-2 overflow-x-auto">
+              {GALLERY.map((src, i) => (
                 <button
                   key={i}
+                  ref={(el) => { thumbRefs.current[i] = el; }}
                   type="button"
-                  onClick={() => setActiveImg(i)}
-                  className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
+                  onClick={() => goToImg(i)}
+                  className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-all sm:h-20 sm:w-20 ${
                     i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="20vw" />
+                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="80px" />
                 </button>
               ))}
             </div>
