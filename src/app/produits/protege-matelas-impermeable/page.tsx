@@ -346,9 +346,15 @@ export default function ProtegeMatelasPage() {
                   onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
                   className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                 />
-                <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
-                  <span className="text-sm font-semibold text-dark-gray">Total à payer</span>
-                  <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>{totalPrice} MAD</span>
+                <div className="flex flex-col gap-1.5 rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">Frais de livraison</span>
+                    <span className="text-sm font-semibold text-green-600">Gratuit</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-dark-gray">Total à payer</span>
+                    <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>{totalPrice} MAD</span>
+                  </div>
                 </div>
                 <button
                   type="submit"
