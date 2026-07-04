@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import {
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Shield,
   Droplets,
   Sparkles,
@@ -88,6 +90,9 @@ const MODELS = [
     id: "transparent",
     label: "Transparente",
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+    images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+    ],
     description:
       "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
     pricePerM2: { "1,5 mm": 150, "2 mm": 200 } as Partial<Record<Thickness, number>>,
@@ -102,6 +107,9 @@ const MODELS = [
     id: "matte",
     label: "Mate",
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
+    images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
+    ],
     description:
       "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
     pricePerM2: { "2 mm": 230 } as Partial<Record<Thickness, number>>,
@@ -116,6 +124,12 @@ const MODELS = [
     id: "dore",
     label: "Dorée",
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
+    images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20240509-WA0016_bwmo9q.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20241016-WA0031_wbgbjb.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20240524-WA0008_dygcxj.jpg",
+    ],
     description:
       "Reflets dorés raffinés pour habiller vos tables lors des grandes occasions comme au quotidien.",
     pricePerM2: { "2 mm": 230 } as Partial<Record<Thickness, number>>,
@@ -248,8 +262,11 @@ export default function NappePvcPage() {
 
   const thicknessOptions = availableThicknesses(model);
 
+  const [imgIndex, setImgIndex] = useState(0);
+
   function selectModel(m: Model) {
     setModel(m);
+    setImgIndex(0);
     const opts = availableThicknesses(m);
     if (!opts.includes(thickness)) setThickness(opts[0]);
   }
@@ -364,7 +381,7 @@ export default function NappePvcPage() {
           <div className="flex flex-col gap-3">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
               <Image
-                src={model.image}
+                src={model.images[imgIndex] ?? model.image}
                 alt={`Nappe ${model.label}`}
                 fill
                 priority
@@ -374,6 +391,36 @@ export default function NappePvcPage() {
               <span className="absolute bottom-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-dark-gray shadow">
                 Nappe {model.label}
               </span>
+              {model.images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Photo précédente"
+                    onClick={() => setImgIndex((i) => (i - 1 + model.images.length) % model.images.length)}
+                    className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-dark-gray shadow-md transition hover:bg-white"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Photo suivante"
+                    onClick={() => setImgIndex((i) => (i + 1) % model.images.length)}
+                    className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-dark-gray shadow-md transition hover:bg-white"
+                  >
+                    <ChevronRight size={22} />
+                  </button>
+                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                    {model.images.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 rounded-full transition-all ${
+                          i === imgIndex ? "w-5 bg-white" : "w-1.5 bg-white/60"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
             <div className="grid grid-cols-3 gap-2">
               {MODELS.map((m) => {
