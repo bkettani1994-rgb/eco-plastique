@@ -477,19 +477,19 @@ export default function NappePvcPage() {
             </div>
 
             {/* Configurateur + formulaire — section orange */}
-            <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#f97316" }}>
+            <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#8ec63f" }}>
               {/* Étape 1 : modèle (rappel de la sélection) */}
               <div className="mb-3 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>1</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>1</span>
                 <p className="text-sm font-semibold text-dark-gray">
-                  Type de nappe : <span style={{ color: "#f97316" }}>{model.label}</span>
+                  Type de nappe : <span style={{ color: "#8ec63f" }}>{model.label}</span>
                   <span className="ml-2 text-xs font-normal text-gray-400">(changez via les photos)</span>
                 </p>
               </div>
 
               {/* Étape 2 : forme */}
               <div className="mb-3 mt-4 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>2</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
               </div>
               <div className="grid grid-cols-6 gap-2">
@@ -505,7 +505,7 @@ export default function NappePvcPage() {
                       className="flex aspect-square items-center justify-center rounded-xl border-2 transition-all"
                       style={
                         isSelected
-                          ? { borderColor: "#f97316", backgroundColor: "#fff7ed", color: "#f97316" }
+                          ? { borderColor: "#8ec63f", backgroundColor: "#f4faea", color: "#8ec63f" }
                           : { borderColor: "#e5e7eb", color: "#6b7280" }
                       }
                     >
@@ -517,7 +517,7 @@ export default function NappePvcPage() {
 
               {/* Étape 3 : épaisseur */}
               <div className="mb-3 mt-5 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>3</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>3</span>
                 <p className="text-sm font-semibold text-dark-gray">Épaisseur :</p>
               </div>
               <div className={`grid gap-2 ${thicknessOptions.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
@@ -529,10 +529,10 @@ export default function NappePvcPage() {
                       type="button"
                       onClick={() => setThickness(t)}
                       className="flex items-center justify-between rounded-xl border-2 px-4 py-3 transition-all"
-                      style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
+                      style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#f4faea" } : { borderColor: "#e5e7eb" }}
                     >
                       <span className="text-sm font-semibold text-dark-gray">{t}</span>
-                      <span className="text-sm font-bold" style={{ color: "#f97316" }}>
+                      <span className="text-sm font-bold" style={{ color: "#8ec63f" }}>
                         {model.pricePerM2[t]} MAD/m²
                       </span>
                     </button>
@@ -542,7 +542,7 @@ export default function NappePvcPage() {
 
               {/* Étape 4 : dimensions */}
               <div className="mb-3 mt-5 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>4</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>4</span>
                 <p className="text-sm font-semibold text-dark-gray">Dimensions de votre table :</p>
               </div>
               <div className={`grid gap-3 ${shapeFields.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
@@ -560,14 +560,14 @@ export default function NappePvcPage() {
                     onChange={(e) =>
                       setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
                     }
-                    className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                    className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                   />
                 ))}
               </div>
 
               {/* Quantité */}
               <div className="mb-3 mt-5 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>5</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>5</span>
                 <p className="text-sm font-semibold text-dark-gray">Quantité :</p>
               </div>
               <div className="flex items-center gap-3">
@@ -577,7 +577,7 @@ export default function NappePvcPage() {
                   disabled={qty <= 1}
                   aria-label="Diminuer la quantité"
                   className="flex h-11 w-11 items-center justify-center rounded-xl border-2 text-lg font-bold transition-all disabled:opacity-40"
-                  style={{ borderColor: "#f97316", color: "#f97316" }}
+                  style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
                 >
                   −
                 </button>
@@ -587,7 +587,7 @@ export default function NappePvcPage() {
                   onClick={() => setQty((q) => Math.min(20, q + 1))}
                   aria-label="Augmenter la quantité"
                   className="flex h-11 w-11 items-center justify-center rounded-xl border-2 text-lg font-bold transition-all"
-                  style={{ borderColor: "#f97316", color: "#f97316" }}
+                  style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
                 >
                   +
                 </button>
@@ -595,14 +595,14 @@ export default function NappePvcPage() {
               </div>
 
               {/* Prix total de la nappe en cours */}
-              <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+              <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#f4faea" }}>
                 <div>
                   <p className="text-sm font-semibold text-dark-gray">Prix total de la nappe</p>
                   {totalPrice && qty > 1 && (
                     <p className="text-xs text-gray-500">{qty} × {totalPrice} MAD</p>
                   )}
                 </div>
-                <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
+                <span className="text-xl font-extrabold" style={{ color: "#8ec63f" }}>
                   {totalPrice ? `${totalPrice * qty} MAD` : "— MAD"}
                 </span>
               </div>
@@ -613,7 +613,7 @@ export default function NappePvcPage() {
                 onClick={addCurrentNappe}
                 disabled={!totalPrice}
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 bg-white px-6 py-3 text-sm font-semibold transition-all disabled:opacity-50"
-                style={{ borderColor: "#f97316", color: "#f97316" }}
+                style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
               >
                 <Plus size={18} />
                 Ajouter cette nappe
@@ -642,7 +642,7 @@ export default function NappePvcPage() {
                         </p>
                       </div>
                       <div className="flex flex-shrink-0 items-center gap-2">
-                        <span className="text-sm font-bold" style={{ color: "#f97316" }}>
+                        <span className="text-sm font-bold" style={{ color: "#8ec63f" }}>
                           {n.price * n.qty} MAD
                         </span>
                         <button
@@ -656,16 +656,16 @@ export default function NappePvcPage() {
                       </div>
                     </div>
                   ))}
-                  <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                  <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#f4faea" }}>
                     <p className="text-sm font-semibold text-dark-gray">Total de la commande</p>
-                    <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
+                    <span className="text-xl font-extrabold" style={{ color: "#8ec63f" }}>
                       {grandTotal} MAD
                     </span>
                   </div>
                 </div>
               )}
 
-              <hr className="my-3 border-orange-200" />
+              <hr className="my-3 border-primary/30" />
 
               {/* Formulaire de commande */}
               <form onSubmit={handleOrder} className="flex flex-col gap-3">
@@ -676,7 +676,7 @@ export default function NappePvcPage() {
                     placeholder="Nom complet"
                     value={form.fullName}
                     onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
-                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                   />
                   <input
                     required
@@ -684,7 +684,7 @@ export default function NappePvcPage() {
                     placeholder="Téléphone (06…)"
                     value={form.phone}
                     onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                   />
                 </div>
                 <input
@@ -692,16 +692,16 @@ export default function NappePvcPage() {
                   placeholder="Ville"
                   value={form.city}
                   onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
                 <input
                   required
                   placeholder="Adresse de livraison"
                   value={form.address}
                   onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
-                <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#f4faea" }}>
                   <span className="text-sm text-gray-500">Frais de livraison</span>
                   <span className="text-sm font-semibold text-green-600">Gratuit</span>
                 </div>

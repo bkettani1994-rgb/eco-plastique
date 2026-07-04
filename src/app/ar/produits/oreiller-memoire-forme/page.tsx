@@ -226,7 +226,7 @@ export default function OreilleMemoireFormePageAr() {
             </div>
 
             {/* Quantity offers + order form — single orange bordered section */}
-            <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#f97316" }}>
+            <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#8ec63f" }}>
               <p className="mb-3 text-sm font-semibold text-dark-gray">اختر عرضك :</p>
               <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
@@ -239,7 +239,7 @@ export default function OreilleMemoireFormePageAr() {
                     <div
                       key={offer.qty}
                       className="relative rounded-xl border-2 transition-all"
-                      style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
+                      style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#f4faea" } : { borderColor: "#e5e7eb" }}
                     >
                       <button
                         type="button"
@@ -249,21 +249,21 @@ export default function OreilleMemoireFormePageAr() {
                         <div className="flex items-center gap-3">
                           <div
                             className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 transition-all"
-                            style={isSelected ? { borderColor: "#f97316", backgroundColor: "#f97316" } : { borderColor: "#d1d5db" }}
+                            style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#8ec63f" } : { borderColor: "#d1d5db" }}
                           >
                             {isSelected && <Check size={11} className="text-white" />}
                           </div>
                           <div>
                             <span className="font-semibold text-dark-gray">{offer.label}</span>
                             {offer.badge && (
-                              <span className="ms-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#f97316" }}>
+                              <span className="ms-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#8ec63f" }}>
                                 {offer.badge}
                               </span>
                             )}
                           </div>
                         </div>
                         <div className="text-end">
-                          <span className="text-base font-bold" style={{ color: "#f97316" }}>
+                          <span className="text-base font-bold" style={{ color: "#8ec63f" }}>
                             {isSelected ? totalPrice : previewTotal} درهم
                           </span>
                           {offer.qty > 1 && (
@@ -301,7 +301,7 @@ export default function OreilleMemoireFormePageAr() {
                 })}
               </div>
 
-              <hr className="my-2 border-orange-200" />
+              <hr className="my-2 border-primary/30" />
 
               {/* Order form inside the same orange border */}
               <form onSubmit={handleOrder} className="flex flex-col gap-3">
@@ -312,7 +312,7 @@ export default function OreilleMemoireFormePageAr() {
                     placeholder="الاسم الكامل"
                     value={form.fullName}
                     onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
-                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                   />
                   <input
                     required
@@ -320,7 +320,7 @@ export default function OreilleMemoireFormePageAr() {
                     placeholder="الهاتف (06…)"
                     value={form.phone}
                     onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
-                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                   />
                 </div>
                 <input
@@ -328,16 +328,16 @@ export default function OreilleMemoireFormePageAr() {
                   placeholder="المدينة"
                   value={form.city}
                   onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
                 <input
                   required
                   placeholder="عنوان التوصيل"
                   value={form.address}
                   onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
                 />
-                <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#f4faea" }}>
                   <span className="text-sm text-gray-500">رسوم التوصيل</span>
                   <span className="text-sm font-semibold text-green-600">مجاني</span>
                 </div>
