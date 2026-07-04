@@ -15,9 +15,10 @@ import {
   Star,
   ShoppingCart,
   Circle,
+  Octagon,
+  Squircle,
+  RectangleVertical,
   Square,
-  RectangleHorizontal,
-  Egg,
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
@@ -83,9 +84,10 @@ type Thickness = (typeof THICKNESSES)[number];
 
 const SHAPES = [
   { id: "ronde", label: "Ronde", icon: Circle },
-  { id: "carree", label: "Carrée", icon: Square },
-  { id: "rectangulaire", label: "Rectangulaire", icon: RectangleHorizontal },
-  { id: "ovale", label: "Ovale", icon: Egg },
+  { id: "octogonale", label: "Octogonale", icon: Octagon },
+  { id: "coins-arrondis", label: "Coins arrondis", icon: Squircle },
+  { id: "coins-coupes", label: "Coins coupés", icon: RectangleVertical },
+  { id: "rectangulaire", label: "Rectangulaire", icon: Square },
 ] as const;
 
 type ShapeId = (typeof SHAPES)[number]["id"];
@@ -137,18 +139,17 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
       const r = L / 200; // diamètre cm → rayon m
       return Math.PI * r * r;
     }
-    case "carree": {
+    case "octogonale": {
       if (!L || L <= 0) return null;
-      const c = L / 100;
-      return c * c;
+      // octogone régulier, L = largeur entre faces (cm)
+      const d = L / 100;
+      return (2 * d * d) / (1 + Math.SQRT2);
     }
+    case "coins-arrondis":
+    case "coins-coupes":
     case "rectangulaire": {
       if (!L || !W || L <= 0 || W <= 0) return null;
       return (L / 100) * (W / 100);
-    }
-    case "ovale": {
-      if (!L || !W || L <= 0 || W <= 0) return null;
-      return Math.PI * (L / 200) * (W / 200);
     }
   }
 }
@@ -170,9 +171,9 @@ export default function NappePvcPage() {
   const rawPrice = area ? area * pricePerM2 : null;
   const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
 
-  const needsWidth = shape === "rectangulaire" || shape === "ovale";
+  const needsWidth = shape !== "ronde" && shape !== "octogonale";
   const lengthLabel =
-    shape === "ronde" ? "Diamètre (cm)" : shape === "carree" ? "Côté (cm)" : "Longueur (cm)";
+    shape === "ronde" ? "Diamètre (cm)" : shape === "octogonale" ? "Largeur (cm)" : "Longueur (cm)";
 
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -320,7 +321,7 @@ export default function NappePvcPage() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
               </div>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
                   const isSelected = shape === id;
                   return (
@@ -328,11 +329,11 @@ export default function NappePvcPage() {
                       key={id}
                       type="button"
                       onClick={() => { setShape(id); setDims({ length: "", width: "" }); }}
-                      className="flex flex-col items-center gap-1.5 rounded-xl border-2 px-2 py-3 transition-all"
+                      className="flex flex-col items-center gap-1.5 rounded-xl border-2 px-1 py-3 transition-all"
                       style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
                     >
                       <Icon size={22} style={isSelected ? { color: "#f97316" } : { color: "#9ca3af" }} />
-                      <span className={`text-xs font-semibold ${isSelected ? "text-dark-gray" : "text-gray-500"}`}>
+                      <span className={`text-center text-[11px] font-semibold leading-tight ${isSelected ? "text-dark-gray" : "text-gray-500"}`}>
                         {label}
                       </span>
                     </button>
