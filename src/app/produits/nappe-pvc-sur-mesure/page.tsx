@@ -18,6 +18,7 @@ import {
   Octagon,
   Squircle,
   RectangleVertical,
+  RectangleHorizontal,
   Square,
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
@@ -87,11 +88,12 @@ function availableThicknesses(model: Model): Thickness[] {
 }
 
 const SHAPES = [
-  { id: "ronde", label: "Ronde", icon: Circle },
-  { id: "octogonale", label: "Octogonale", icon: Octagon },
-  { id: "coins-arrondis", label: "Coins arrondis", icon: Squircle },
-  { id: "coins-coupes", label: "Coins coupés", icon: RectangleVertical },
-  { id: "rectangulaire", label: "Rectangulaire", icon: Square },
+  { id: "carree", label: "Carré", icon: Square },
+  { id: "rectangulaire", label: "Rectangulaire", icon: RectangleHorizontal },
+  { id: "ronde", label: "Cercle", icon: Circle },
+  { id: "coins-coupes", label: "Rectangle octogonal", icon: RectangleVertical },
+  { id: "coins-arrondis", label: "Rectangle à coins arrondis", icon: Squircle },
+  { id: "octogonale", label: "Octogone", icon: Octagon },
 ] as const;
 
 type ShapeId = (typeof SHAPES)[number]["id"];
@@ -143,6 +145,11 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
       const r = L / 200; // diamètre cm → rayon m
       return Math.PI * r * r;
     }
+    case "carree": {
+      if (!L || L <= 0) return null;
+      const c = L / 100;
+      return c * c;
+    }
     case "octogonale": {
       if (!L || L <= 0) return null;
       // octogone régulier, L = largeur entre faces (cm)
@@ -183,9 +190,15 @@ export default function NappePvcPage() {
   const rawPrice = area && pricePerM2 ? area * pricePerM2 : null;
   const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
 
-  const needsWidth = shape !== "ronde" && shape !== "octogonale";
+  const needsWidth = shape !== "ronde" && shape !== "octogonale" && shape !== "carree";
   const lengthLabel =
-    shape === "ronde" ? "Diamètre (cm)" : shape === "octogonale" ? "Largeur (cm)" : "Longueur (cm)";
+    shape === "ronde"
+      ? "Diamètre (cm)"
+      : shape === "carree"
+        ? "Côté (cm)"
+        : shape === "octogonale"
+          ? "Largeur (cm)"
+          : "Longueur (cm)";
 
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -333,7 +346,7 @@ export default function NappePvcPage() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
               </div>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+              <div className="grid grid-cols-3 gap-2">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
                   const isSelected = shape === id;
                   return (
