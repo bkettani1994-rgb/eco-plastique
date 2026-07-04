@@ -9,11 +9,25 @@ import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
 import { navLinks, siteConfig, whatsappLink } from "@/data/site";
 import { useCart } from "@/lib/cart-context";
 
+// Pages that have an Arabic version (FR base paths)
+const AR_ENABLED = new Set([
+  "/",
+  "/produits/nappe-pvc-sur-mesure",
+  "/produits/protege-matelas-impermeable",
+  "/produits/oreiller-cervical-medical",
+  "/produits/oreiller-memoire-forme",
+]);
+
 function LanguageSwitch({ className = "" }: { className?: string }) {
   const pathname = usePathname() || "/";
   const isAr = pathname === "/ar" || pathname.startsWith("/ar/");
-  const frHref = isAr ? pathname.replace(/^\/ar/, "") || "/" : pathname;
-  const arHref = isAr ? pathname : `/ar${pathname === "/" ? "" : pathname}`;
+  const frBase = isAr ? pathname.replace(/^\/ar/, "") || "/" : pathname;
+
+  // Only show the switch on pages that actually have an Arabic version
+  if (!AR_ENABLED.has(frBase)) return null;
+
+  const frHref = frBase;
+  const arHref = `/ar${frBase === "/" ? "" : frBase}`;
 
   return (
     <div className={`flex items-center rounded-xl border border-gray-200 p-0.5 text-xs font-semibold ${className}`}>

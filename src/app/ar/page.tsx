@@ -1,0 +1,21 @@
+import { HeroSlider } from "@/components/sections/hero-slider";
+import { FeaturedProducts } from "@/components/sections/featured-products";
+import { WhyChooseUs } from "@/components/sections/why-choose-us";
+import { Testimonials } from "@/components/sections/testimonials";
+import { Faq } from "@/components/sections/faq";
+import { Cta } from "@/components/sections/cta";
+
+export default function HomeAr() {
+  return (
+    <>
+      <hr className="border-t-8 border-gray-200" />
+      <HeroSlider lang="ar" />
+      <hr className="border-t-8 border-gray-200" />
+      <FeaturedProducts lang="ar" />
+      <WhyChooseUs lang="ar" />
+      <Testimonials lang="ar" />
+      <Faq lang="ar" />
+      <Cta lang="ar" />
+    </>
+  );
+}

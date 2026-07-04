@@ -2,14 +2,17 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { testimonials } from "@/data/site";
+import { testimonials as frTestimonials } from "@/data/site";
+import { translations } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 function getInitials(name: string): string {
   return name.split(" ").map((p) => p[0]).join("").slice(0, 2).toUpperCase();
 }
 
-export function Testimonials() {
+export function Testimonials({ lang = "fr" }: { lang?: "fr" | "ar" }) {
+  const isAr = lang === "ar";
+  const testimonials = isAr ? translations.testimonials.items : frTestimonials;
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -49,14 +52,14 @@ export function Testimonials() {
   }, []);
 
   return (
-    <section className="bg-light-gray py-16 sm:py-20">
+    <section dir={isAr ? "rtl" : undefined} className="bg-light-gray py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <h2 className="text-2xl font-bold text-dark-gray sm:text-3xl">
-            Avis de nos clients
+            {isAr ? translations.testimonials.heading : "Avis de nos clients"}
           </h2>
           <p className="mt-2 text-gray-600">
-            Ce que nos clients disent de nos produits
+            {isAr ? translations.testimonials.subheading : "Ce que nos clients disent de nos produits"}
           </p>
         </div>
 

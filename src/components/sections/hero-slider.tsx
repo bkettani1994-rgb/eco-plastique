@@ -39,20 +39,19 @@ const PRODUCT_MOBILE_IMAGES: Record<string, string> = {
     "https://res.cloudinary.com/diptsoc4h/image/upload/v1783008751/Oreiller_Medical__lgn38h.png",
 };
 
-const slides: Slide[] = [
-  ...products.map((product) => ({
-    title: product.name,
-    ctaLabel: "Voir le produit",
-    ctaHref: `/produits/${product.slug}`,
-    image: PRODUCT_IMAGES[product.slug] ?? product.images[0],
-    mobileImage: PRODUCT_MOBILE_IMAGES[product.slug],
-  })),
-];
-
 const SLIDE_DURATION = 5000;
 const SWIPE_THRESHOLD = 50;
 
-export function HeroSlider() {
+export function HeroSlider({ lang = "fr" }: { lang?: "fr" | "ar" }) {
+  const isAr = lang === "ar";
+  const slides: Slide[] = products.map((product) => ({
+    title: isAr ? product.nameAr ?? product.name : product.name,
+    ctaLabel: isAr ? "عرض المنتج" : "Voir le produit",
+    ctaHref: `${isAr ? "/ar/produits" : "/produits"}/${product.slug}`,
+    image: PRODUCT_IMAGES[product.slug] ?? product.images[0],
+    mobileImage: PRODUCT_MOBILE_IMAGES[product.slug],
+  }));
+
   const [index, setIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -61,7 +60,7 @@ export function HeroSlider() {
       setIndex((current) => (current + 1) % slides.length);
     }, SLIDE_DURATION);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   function handleTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
@@ -86,6 +85,7 @@ export function HeroSlider() {
     <>
       {/* Desktop: 1920×720 ratio */}
       <section
+        dir={isAr ? "rtl" : undefined}
         className="relative hidden w-full overflow-hidden sm:block"
         style={{ aspectRatio: "1920/720" }}
         onTouchStart={handleTouchStart}
@@ -112,12 +112,13 @@ export function HeroSlider() {
         </AnimatePresence>
 
         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/40 to-transparent" />
-        <SlideContent slide={slide} index={index} />
-        <SlideDots index={index} setIndex={setIndex} />
+        <SlideContent slide={slide} index={index} isAr={isAr} />
+        <SlideDots index={index} setIndex={setIndex} count={slides.length} />
       </section>
 
       {/* Mobile: 1080×1270 ratio */}
       <section
+        dir={isAr ? "rtl" : undefined}
         className="relative block w-full overflow-hidden sm:hidden"
         style={{ aspectRatio: "1080/1270" }}
         onTouchStart={handleTouchStart}
@@ -145,13 +146,13 @@ export function HeroSlider() {
 
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
         <MobileSlideContent slide={slide} />
-        <SlideDots index={index} setIndex={setIndex} />
+        <SlideDots index={index} setIndex={setIndex} count={slides.length} />
       </section>
     </>
   );
 }
 
-function SlideContent({ slide, index }: { slide: Slide; index: number }) {
+function SlideContent({ slide, index, isAr }: { slide: Slide; index: number; isAr: boolean }) {
   return (
     <div className="relative z-10 flex h-full flex-col items-start justify-end px-4 pb-10 sm:px-6 sm:pb-16 md:pb-20 lg:px-12">
       <div className="mx-auto w-full max-w-7xl">
@@ -182,7 +183,7 @@ function SlideContent({ slide, index }: { slide: Slide; index: number }) {
                 className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white px-5 py-3 text-sm font-medium text-white transition-all hover:bg-white hover:text-dark-gray"
               >
                 <MessageCircle size={16} />
-                Commander sur WhatsApp
+                {isAr ? "اطلب عبر واتساب" : "Commander sur WhatsApp"}
               </Link>
             </div>
           </motion.div>
@@ -199,7 +200,7 @@ function MobileSlideContent({ slide }: { slide: Slide }) {
         href={slide.ctaHref}
         className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg"
       >
-        Voir le produit
+        {slide.ctaLabel}
         <ArrowRight size={16} />
       </Link>
     </div>
@@ -209,13 +210,15 @@ function MobileSlideContent({ slide }: { slide: Slide }) {
 function SlideDots({
   index,
   setIndex,
+  count,
 }: {
   index: number;
   setIndex: (i: number) => void;
+  count: number;
 }) {
   return (
     <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-2">
-      {slides.map((_, dotIndex) => (
+      {Array.from({ length: count }).map((_, dotIndex) => (
         <button
           key={dotIndex}
           type="button"

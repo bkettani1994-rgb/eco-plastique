@@ -3,21 +3,29 @@
 import type { LucideIcon } from "lucide-react";
 import { Truck, Wallet, ShieldCheck, Headset } from "lucide-react";
 import { whyChooseUs } from "@/data/site";
+import { translations } from "@/lib/translations";
 
 const iconMap: Record<string, LucideIcon> = { Truck, Wallet, ShieldCheck, Headset };
 
-export function WhyChooseUs() {
+export function WhyChooseUs({ lang = "fr" }: { lang?: "fr" | "ar" }) {
+  const isAr = lang === "ar";
+  const items = whyChooseUs.map((item, i) =>
+    isAr
+      ? { ...item, title: translations.why.items[i].title, description: translations.why.items[i].description }
+      : item
+  );
+
   return (
     <section className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h2 className="text-2xl font-bold text-dark-gray sm:text-3xl">
-            Pourquoi nous choisir
+            {isAr ? translations.why.heading : "Pourquoi nous choisir"}
           </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {whyChooseUs.map((item) => {
+          {items.map((item) => {
             const Icon = iconMap[item.icon];
             return (
               <div

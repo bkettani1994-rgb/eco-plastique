@@ -3,23 +3,25 @@
 import Link from "next/link";
 import { MessageCircle, ArrowRight } from "lucide-react";
 import { whatsappLink } from "@/data/site";
+import { translations } from "@/lib/translations";
 
-export function Cta() {
+export function Cta({ lang = "fr" }: { lang?: "fr" | "ar" }) {
+  const isAr = lang === "ar";
   return (
-    <section className="bg-primary py-16 sm:py-20">
+    <section dir={isAr ? "rtl" : undefined} className="bg-primary py-16 sm:py-20">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold text-white sm:text-3xl">
-          Prêt à protéger votre maison ?
+          {isAr ? translations.cta.heading : "Prêt à protéger votre maison ?"}
         </h2>
         <p className="text-white/90">
-          Découvrez notre gamme complète et commandez en toute simplicité.
+          {isAr ? translations.cta.sub : "Découvrez notre gamme complète et commandez en toute simplicité."}
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
           <Link
-            href="/produits"
+            href={isAr ? "/ar" : "/produits"}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-medium text-primary shadow-md transition-all hover:bg-light-gray hover:shadow-lg"
           >
-            Voir les produits
+            {isAr ? translations.cta.view_products : "Voir les produits"}
             <ArrowRight size={18} />
           </Link>
           <Link
@@ -29,7 +31,7 @@ export function Cta() {
             className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white px-6 py-3.5 text-sm font-medium text-white transition-all hover:bg-white hover:text-primary"
           >
             <MessageCircle size={18} />
-            Commander sur WhatsApp
+            {isAr ? translations.cta.whatsapp : "Commander sur WhatsApp"}
           </Link>
         </div>
       </div>
