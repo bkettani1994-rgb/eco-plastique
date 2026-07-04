@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MessageCircle, Mail, MapPin, Phone } from "lucide-react";
 import { navLinks, siteConfig, socialLinks, whatsappLink } from "@/data/site";
 import { Newsletter } from "@/components/newsletter";
+import { localizeHref, useIsArabicPage } from "@/components/layout/header";
 
 function FacebookIcon() {
   return (
@@ -34,6 +35,7 @@ const socialIcons = { Facebook: FacebookIcon, Instagram: InstagramIcon, TikTok: 
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const isAr = useIsArabicPage();
 
   return (
     <footer className="bg-dark-gray text-gray-300">
@@ -73,7 +75,7 @@ export function Footer() {
           <ul className="space-y-2 text-sm">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="transition-colors hover:text-primary">
+                <Link href={localizeHref(link.href, isAr)} className="transition-colors hover:text-primary">
                   {link.label}
                 </Link>
               </li>

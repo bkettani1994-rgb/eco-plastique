@@ -18,6 +18,18 @@ const AR_ENABLED = new Set([
   "/produits/oreiller-memoire-forme",
 ]);
 
+export function useIsArabicPage(): boolean {
+  const pathname = usePathname() || "/";
+  return pathname === "/ar" || pathname.startsWith("/ar/");
+}
+
+// Keep the visitor in Arabic: map an FR href to its AR equivalent when one exists
+export function localizeHref(href: string, isAr: boolean): string {
+  if (!isAr) return href;
+  if (AR_ENABLED.has(href)) return `/ar${href === "/" ? "" : href}`;
+  return href;
+}
+
 function LanguageSwitch({ className = "" }: { className?: string }) {
   const pathname = usePathname() || "/";
   const isAr = pathname === "/ar" || pathname.startsWith("/ar/");
@@ -54,12 +66,14 @@ function LanguageSwitch({ className = "" }: { className?: string }) {
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const { itemCount } = useCart();
+  const isAr = useIsArabicPage();
+  const homeHref = isAr ? "/ar" : "/";
 
   return (
     <header className="w-full border-b border-gray-100 bg-white">
       {/* ── Desktop ─────────────────────────────────────────────── */}
       <div className="mx-auto hidden max-w-7xl items-center justify-between px-4 py-4 sm:px-6 md:flex lg:px-8">
-        <Link href="/" className="flex items-center">
+        <Link href={homeHref} className="flex items-center">
           <Image
             src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
             alt={siteConfig.businessName}
@@ -74,7 +88,7 @@ export function Header() {
           {navLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={localizeHref(link.href, isAr)}
               className="text-sm font-medium text-dark-gray transition-colors hover:text-primary"
             >
               {link.label}
@@ -110,7 +124,7 @@ export function Header() {
         </button>
 
         {/* Center: logo (absolute to stay truly centered) */}
-        <Link href="/" className="absolute left-1/2 -translate-x-1/2">
+        <Link href={homeHref} className="absolute left-1/2 -translate-x-1/2">
           <Image
             src="https://res.cloudinary.com/diptsoc4h/image/upload/v1782939698/EcoPlastique-logo_htt8s1.png"
             alt={siteConfig.businessName}
@@ -182,7 +196,7 @@ export function Header() {
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={localizeHref(link.href, isAr)}
                   onClick={() => setIsOpen(false)}
                   className="text-base font-medium text-dark-gray transition-colors hover:text-primary"
                 >
