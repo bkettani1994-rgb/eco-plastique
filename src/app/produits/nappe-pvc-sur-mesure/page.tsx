@@ -14,15 +14,61 @@ import {
   RotateCcw,
   Star,
   ShoppingCart,
-  Circle,
-  Octagon,
-  Squircle,
-  RectangleVertical,
-  RectangleHorizontal,
-  Square,
   Plus,
   X,
 } from "lucide-react";
+
+/* ─── Icônes de formes de table (SVG sur mesure) ───────────────────── */
+
+type ShapeIconProps = { size?: number };
+
+function IconCarre({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <rect x="4.5" y="4.5" width="15" height="15" rx="0.5" />
+    </svg>
+  );
+}
+
+function IconRectangulaire({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <rect x="2.5" y="6.5" width="19" height="11" rx="0.5" />
+    </svg>
+  );
+}
+
+function IconCercle({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+    </svg>
+  );
+}
+
+function IconRectOctogonal({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" aria-hidden="true">
+      <polygon points="9,3.5 15,3.5 18,6.5 18,17.5 15,20.5 9,20.5 6,17.5 6,6.5" />
+    </svg>
+  );
+}
+
+function IconCoinsArrondis({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <rect x="6" y="3.5" width="12" height="17" rx="4.5" />
+    </svg>
+  );
+}
+
+function IconOctogone({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" aria-hidden="true">
+      <polygon points="8.2,3.5 15.8,3.5 20.5,8.2 20.5,15.8 15.8,20.5 8.2,20.5 3.5,15.8 3.5,8.2" />
+    </svg>
+  );
+}
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
 
@@ -90,12 +136,12 @@ function availableThicknesses(model: Model): Thickness[] {
 }
 
 const SHAPES = [
-  { id: "carree", label: "Carré", icon: Square },
-  { id: "rectangulaire", label: "Rectangulaire", icon: RectangleHorizontal },
-  { id: "ronde", label: "Cercle", icon: Circle },
-  { id: "coins-coupes", label: "Rectangle octogonal", icon: RectangleVertical },
-  { id: "coins-arrondis", label: "Rectangle à coins arrondis", icon: Squircle },
-  { id: "octogonale", label: "Octogone", icon: Octagon },
+  { id: "carree", label: "Carré", icon: IconCarre },
+  { id: "rectangulaire", label: "Rectangulaire", icon: IconRectangulaire },
+  { id: "ronde", label: "Cercle", icon: IconCercle },
+  { id: "coins-coupes", label: "Rectangle octogonal", icon: IconRectOctogonal },
+  { id: "coins-arrondis", label: "Rectangle à coins arrondis", icon: IconCoinsArrondis },
+  { id: "octogonale", label: "Octogone", icon: IconOctogone },
 ] as const;
 
 type ShapeId = (typeof SHAPES)[number]["id"];
@@ -391,21 +437,24 @@ export default function NappePvcPage() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
               </div>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-6 gap-2">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
                   const isSelected = shape === id;
                   return (
                     <button
                       key={id}
                       type="button"
+                      aria-label={label}
+                      title={label}
                       onClick={() => { setShape(id); setDims({ length: "", width: "" }); }}
-                      className="flex flex-col items-center gap-1.5 rounded-xl border-2 px-1 py-3 transition-all"
-                      style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
+                      className="flex aspect-square items-center justify-center rounded-xl border-2 transition-all"
+                      style={
+                        isSelected
+                          ? { borderColor: "#f97316", backgroundColor: "#fff7ed", color: "#f97316" }
+                          : { borderColor: "#e5e7eb", color: "#6b7280" }
+                      }
                     >
-                      <Icon size={22} style={isSelected ? { color: "#f97316" } : { color: "#9ca3af" }} />
-                      <span className={`text-center text-[11px] font-semibold leading-tight ${isSelected ? "text-dark-gray" : "text-gray-500"}`}>
-                        {label}
-                      </span>
+                      <Icon size={30} />
                     </button>
                   );
                 })}
