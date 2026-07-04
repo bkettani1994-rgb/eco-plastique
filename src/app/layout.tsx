@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
+import { TopBanner } from "@/components/layout/top-banner";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { CartProvider } from "@/lib/cart-context";
@@ -42,10 +43,7 @@ export default function RootLayout({
         <LanguageProvider>
           <CartProvider>
             <div className="sticky top-0 z-50">
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 bg-primary py-2 text-center text-xs font-semibold text-white sm:text-sm">
-                <span>🚚 Livraison rapide partout au Maroc</span>
-                <span>💵 Paiement à la livraison</span>
-              </div>
+              <TopBanner />
               <Header />
             </div>
             <main className="flex-1">{children}</main>
