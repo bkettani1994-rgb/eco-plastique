@@ -98,7 +98,7 @@ const MODELS = [
     ],
     description:
       "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
-    pricePerM2: { "1,5 mm": 150, "2 mm": 200 } as Partial<Record<Thickness, number>>,
+    pricePerM2: { "1,5 mm": 149, "2 mm": 199 } as Partial<Record<Thickness, number>>,
     advantages: [
       "Laisse visible le bois ou le marbre de votre table",
       "Transparence cristal sans effet jauni",
@@ -118,7 +118,7 @@ const MODELS = [
     ],
     description:
       "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
-    pricePerM2: { "2 mm": 230 } as Partial<Record<Thickness, number>>,
+    pricePerM2: { "2 mm": 229 } as Partial<Record<Thickness, number>>,
     advantages: [
       "Aspect satiné moderne sans reflets",
       "Masque les traces de doigts",
@@ -138,7 +138,7 @@ const MODELS = [
     ],
     description:
       "Reflets dorés raffinés pour habiller vos tables lors des grandes occasions comme au quotidien.",
-    pricePerM2: { "2 mm": 230 } as Partial<Record<Thickness, number>>,
+    pricePerM2: { "2 mm": 229 } as Partial<Record<Thickness, number>>,
     advantages: [
       "Finition dorée luxueuse",
       "Idéale pour les grandes occasions",
