@@ -189,7 +189,9 @@ export default function NappePvcPage() {
 
   const area = computeArea(shape, dims);
   const pricePerM2 = model.pricePerM2[thickness] ?? 0;
-  const rawPrice = area && pricePerM2 ? area * pricePerM2 : null;
+  // Frais supplémentaires selon la surface (m²)
+  const surcharge = area === null ? 0 : area < 0.5 ? 30 : area <= 0.9 ? 50 : 30;
+  const rawPrice = area && pricePerM2 ? area * pricePerM2 + surcharge : null;
   const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
 
   const needsWidth = shape !== "ronde" && shape !== "octogonale" && shape !== "carree";
@@ -469,16 +471,9 @@ export default function NappePvcPage() {
                 )}
               </div>
 
-              {/* Prix de la nappe en cours */}
+              {/* Prix total de la nappe en cours */}
               <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
-                <div>
-                  <p className="text-sm font-semibold text-dark-gray">Prix de cette nappe</p>
-                  {area && (
-                    <p className="text-xs text-gray-500">
-                      {area.toFixed(2)} m² × {pricePerM2} MAD/m²
-                    </p>
-                  )}
-                </div>
+                <p className="text-sm font-semibold text-dark-gray">Prix total de la nappe</p>
                 <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
                   {totalPrice ? `${totalPrice} MAD` : "— MAD"}
                 </span>
