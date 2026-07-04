@@ -42,8 +42,9 @@ export default function RootLayout({
         <LanguageProvider>
           <CartProvider>
             <div className="sticky top-0 z-50">
-              <div className="bg-primary py-2 text-center text-xs font-semibold text-white sm:text-sm">
-                🚚 Livraison gratuite à partir de 300 DHS
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 bg-primary py-2 text-center text-xs font-semibold text-white sm:text-sm">
+                <span>🚚 Livraison rapide partout au Maroc</span>
+                <span>💵 Paiement à la livraison</span>
               </div>
               <Header />
             </div>
