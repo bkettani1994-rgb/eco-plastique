@@ -387,22 +387,26 @@ export default function NappePvcPage() {
                 <input
                   required
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   min={20}
                   max={500}
                   placeholder={lengthLabel}
                   value={dims.length}
-                  onChange={(e) => setDims((d) => ({ ...d, length: e.target.value }))}
+                  onChange={(e) => setDims((d) => ({ ...d, length: e.target.value.replace(/[^0-9.,]/g, "") }))}
                   className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                 />
                 {needsWidth && (
                   <input
                     required
                     type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     min={20}
                     max={500}
                     placeholder="Largeur (cm)"
                     value={dims.width}
-                    onChange={(e) => setDims((d) => ({ ...d, width: e.target.value }))}
+                    onChange={(e) => setDims((d) => ({ ...d, width: e.target.value.replace(/[^0-9.,]/g, "") }))}
                     className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                   />
                 )}
