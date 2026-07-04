@@ -342,7 +342,7 @@ export default function OreillercervicalPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
+                  className="animate-shake mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
                 >
                   <ShoppingCart size={18} />
                   {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
