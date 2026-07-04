@@ -31,7 +31,10 @@ const PRODUCT = {
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
 };
 
-/* Les 3 modèles de nappe — prix au m² selon l'épaisseur */
+const THICKNESSES = ["1,5 mm", "2 mm"] as const;
+type Thickness = (typeof THICKNESSES)[number];
+
+/* Les 3 modèles de nappe — prix au m² selon l'épaisseur disponible */
 const MODELS = [
   {
     id: "transparent",
@@ -39,7 +42,7 @@ const MODELS = [
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
     description:
       "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
-    pricePerM2: { "1,5 mm": 120, "2 mm": 150 },
+    pricePerM2: { "1,5 mm": 150, "2 mm": 200 } as Partial<Record<Thickness, number>>,
     advantages: [
       "Laisse visible le bois ou le marbre de votre table",
       "Transparence cristal sans effet jauni",
@@ -53,7 +56,7 @@ const MODELS = [
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
     description:
       "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
-    pricePerM2: { "1,5 mm": 140, "2 mm": 170 },
+    pricePerM2: { "2 mm": 230 } as Partial<Record<Thickness, number>>,
     advantages: [
       "Aspect satiné moderne sans reflets",
       "Masque les traces de doigts",
@@ -67,7 +70,7 @@ const MODELS = [
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
     description:
       "Reflets dorés raffinés pour habiller vos tables lors des grandes occasions comme au quotidien.",
-    pricePerM2: { "1,5 mm": 160, "2 mm": 190 },
+    pricePerM2: { "2 mm": 230 } as Partial<Record<Thickness, number>>,
     advantages: [
       "Finition dorée luxueuse",
       "Idéale pour les grandes occasions",
@@ -79,8 +82,9 @@ const MODELS = [
 
 type Model = (typeof MODELS)[number];
 
-const THICKNESSES = ["1,5 mm", "2 mm"] as const;
-type Thickness = (typeof THICKNESSES)[number];
+function availableThicknesses(model: Model): Thickness[] {
+  return THICKNESSES.filter((t) => model.pricePerM2[t] !== undefined);
+}
 
 const SHAPES = [
   { id: "ronde", label: "Ronde", icon: Circle },
@@ -166,9 +170,17 @@ export default function NappePvcPage() {
   const [dims, setDims] = useState<Dimensions>({ length: "", width: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  const thicknessOptions = availableThicknesses(model);
+
+  function selectModel(m: Model) {
+    setModel(m);
+    const opts = availableThicknesses(m);
+    if (!opts.includes(thickness)) setThickness(opts[0]);
+  }
+
   const area = computeArea(shape, dims);
-  const pricePerM2 = model.pricePerM2[thickness];
-  const rawPrice = area ? area * pricePerM2 : null;
+  const pricePerM2 = model.pricePerM2[thickness] ?? 0;
+  const rawPrice = area && pricePerM2 ? area * pricePerM2 : null;
   const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
 
   const needsWidth = shape !== "ronde" && shape !== "octogonale";
@@ -241,7 +253,7 @@ export default function NappePvcPage() {
                   <button
                     key={m.id}
                     type="button"
-                    onClick={() => setModel(m)}
+                    onClick={() => selectModel(m)}
                     className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
                       isSelected ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                     }`}
@@ -264,8 +276,8 @@ export default function NappePvcPage() {
               <h3 className="text-lg font-bold text-dark-gray">Nappe {model.label}</h3>
               <p className="mt-1 text-sm text-gray-500">{model.description}</p>
 
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                {THICKNESSES.map((t) => (
+              <div className={`mt-4 grid gap-3 ${thicknessOptions.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                {thicknessOptions.map((t) => (
                   <div key={t} className="rounded-xl bg-white p-3 text-center shadow-sm">
                     <p className="text-xs text-gray-500">Épaisseur {t}</p>
                     <p className="text-lg font-bold text-primary">{model.pricePerM2[t]} MAD/m²</p>
@@ -346,8 +358,8 @@ export default function NappePvcPage() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>3</span>
                 <p className="text-sm font-semibold text-dark-gray">Épaisseur :</p>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {THICKNESSES.map((t) => {
+              <div className={`grid gap-2 ${thicknessOptions.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                {thicknessOptions.map((t) => {
                   const isSelected = thickness === t;
                   return (
                     <button
