@@ -100,8 +100,6 @@ const SHAPES = [
 
 type ShapeId = (typeof SHAPES)[number]["id"];
 
-const MIN_PRICE = 100;
-
 const TRUST_BADGES = [
   { icon: Droplets, label: "Résistante aux liquides", desc: "PVC haute qualité" },
   { icon: Sparkles, label: "Facile à nettoyer",       desc: "Un coup d'éponge suffit" },
@@ -137,26 +135,20 @@ interface Dimensions {
   width: string;  // cm — largeur (rect & ovale)
 }
 
+/* Surface = longueur × largeur (en m²) — la nappe est découpée dans une
+   feuille rectangulaire. Formes à une seule dimension : côté × côté ou
+   diamètre × diamètre. */
 function computeArea(shape: ShapeId, dims: Dimensions): number | null {
   const L = parseFloat(dims.length.replace(",", "."));
   const W = parseFloat(dims.width.replace(",", "."));
 
   switch (shape) {
-    case "ronde": {
-      if (!L || L <= 0) return null;
-      const r = L / 200; // diamètre cm → rayon m
-      return Math.PI * r * r;
-    }
-    case "carree": {
+    case "ronde":
+    case "carree":
+    case "octogonale": {
       if (!L || L <= 0) return null;
       const c = L / 100;
       return c * c;
-    }
-    case "octogonale": {
-      if (!L || L <= 0) return null;
-      // octogone régulier, L = largeur entre faces (cm)
-      const d = L / 100;
-      return (2 * d * d) / (1 + Math.SQRT2);
     }
     case "coins-arrondis":
     case "coins-coupes":
@@ -189,10 +181,9 @@ export default function NappePvcPage() {
 
   const area = computeArea(shape, dims);
   const pricePerM2 = model.pricePerM2[thickness] ?? 0;
-  // Frais supplémentaires selon la surface (m²)
+  // Frais supplémentaires selon le résultat longueur × largeur (m²)
   const surcharge = area === null ? 0 : area < 0.5 ? 30 : area <= 0.9 ? 50 : 30;
-  const rawPrice = area && pricePerM2 ? area * pricePerM2 + surcharge : null;
-  const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
+  const totalPrice = area && pricePerM2 ? Math.round(area * pricePerM2 + surcharge) : null;
 
   const needsWidth = shape !== "ronde" && shape !== "octogonale" && shape !== "carree";
   const lengthLabel =
