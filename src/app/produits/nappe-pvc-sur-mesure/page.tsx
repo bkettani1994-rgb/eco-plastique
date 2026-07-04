@@ -20,6 +20,8 @@ import {
   RectangleVertical,
   RectangleHorizontal,
   Square,
+  Plus,
+  X,
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
@@ -200,39 +202,81 @@ export default function NappePvcPage() {
           ? "Largeur (cm)"
           : "Longueur (cm)";
 
+  /* ─── Liste des nappes ajoutées ─── */
+  interface AddedNappe {
+    modelLabel: string;
+    image: string;
+    shapeLabel: string;
+    thickness: Thickness;
+    dimSummary: string;
+    areaM2: number;
+    price: number;
+  }
+  const [addedNappes, setAddedNappes] = useState<AddedNappe[]>([]);
+
+  const shapeLabel = SHAPES.find((s) => s.id === shape)?.label ?? shape;
+  const dimSummary = needsWidth ? `${dims.length}×${dims.width} cm` : `${dims.length} cm`;
+
+  function addCurrentNappe() {
+    if (!totalPrice || !area) return;
+    setAddedNappes((prev) => [
+      ...prev,
+      {
+        modelLabel: model.label,
+        image: model.image,
+        shapeLabel,
+        thickness,
+        dimSummary,
+        areaM2: area,
+        price: totalPrice,
+      },
+    ]);
+    setDims({ length: "", width: "" });
+  }
+
+  function removeNappe(index: number) {
+    setAddedNappes((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  // Nappes à commander : celles ajoutées + la config en cours si valide
+  const pendingCurrent: AddedNappe | null =
+    totalPrice && area
+      ? { modelLabel: model.label, image: model.image, shapeLabel, thickness, dimSummary, areaM2: area, price: totalPrice }
+      : null;
+  const orderNappes: AddedNappe[] = pendingCurrent ? [...addedNappes, pendingCurrent] : addedNappes;
+  const grandTotal = orderNappes.reduce((sum, n) => sum + n.price, 0);
+
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
   function handleOrder(e: React.FormEvent) {
     e.preventDefault();
-    if (!totalPrice) return;
+    if (orderNappes.length === 0) return;
     setSubmitting(true);
 
-    const shapeLabel = SHAPES.find((s) => s.id === shape)?.label ?? shape;
-    const dimSummary = needsWidth
-      ? `${dims.length}×${dims.width} cm`
-      : `${dims.length} cm`;
-    const summary = `${model.label} | ${shapeLabel} | ${thickness} | ${dimSummary}`;
-
-    const orderItem = {
-      slug: PRODUCT.slug,
-      name: `${PRODUCT.name} (${summary})`,
-      price: totalPrice,
-      image: model.image,
+    const orderItems = orderNappes.map((n, i) => ({
+      slug: `${PRODUCT.slug}-${i + 1}`,
+      name: `${PRODUCT.name} (${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary})`,
+      price: n.price,
+      image: n.image,
       quantity: 1,
-    };
+    }));
 
     clearCart();
-    addItem(orderItem, 1);
+    orderItems.forEach((item) => addItem(item, 1));
+
+    const notes = orderNappes
+      .map(
+        (n, i) =>
+          `Nappe ${i + 1} : ${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary} | ${n.areaM2.toFixed(2)} m² | ${n.price} MAD`
+      )
+      .join(" — ");
 
     saveLastOrder({
       id: generateOrderId(),
-      items: [{ ...orderItem, quantity: 1 }],
-      customer: {
-        ...form,
-        notes: `Modèle : ${model.label} | Forme : ${shapeLabel} | Épaisseur : ${thickness} | Dimensions : ${dimSummary} | Surface : ${area?.toFixed(2)} m² | Total : ${totalPrice} MAD`,
-      },
-      total: totalPrice,
+      items: orderItems,
+      customer: { ...form, notes: `${notes} — Total : ${grandTotal} MAD` },
+      total: grandTotal,
       createdAt: new Date().toISOString(),
     });
 
@@ -425,10 +469,10 @@ export default function NappePvcPage() {
                 )}
               </div>
 
-              {/* Prix total */}
+              {/* Prix de la nappe en cours */}
               <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
                 <div>
-                  <p className="text-sm font-semibold text-dark-gray">Prix total</p>
+                  <p className="text-sm font-semibold text-dark-gray">Prix de cette nappe</p>
                   {area && (
                     <p className="text-xs text-gray-500">
                       {area.toFixed(2)} m² × {pricePerM2} MAD/m²
@@ -439,6 +483,62 @@ export default function NappePvcPage() {
                   {totalPrice ? `${totalPrice} MAD` : "— MAD"}
                 </span>
               </div>
+
+              {/* Ajouter cette nappe à la commande */}
+              <button
+                type="button"
+                onClick={addCurrentNappe}
+                disabled={!totalPrice}
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 bg-white px-6 py-3 text-sm font-semibold transition-all disabled:opacity-50"
+                style={{ borderColor: "#f97316", color: "#f97316" }}
+              >
+                <Plus size={18} />
+                Ajouter cette nappe
+              </button>
+
+              {/* Liste des nappes ajoutées */}
+              {addedNappes.length > 0 && (
+                <div className="mt-4 flex flex-col gap-2">
+                  <p className="text-sm font-semibold text-dark-gray">
+                    Vos nappes ({addedNappes.length}
+                    {pendingCurrent ? " + 1 en cours" : ""}) :
+                  </p>
+                  {addedNappes.map((n, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-2.5"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-dark-gray">
+                          Nappe {n.modelLabel} — {n.shapeLabel}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {n.thickness} · {n.dimSummary} · {n.areaM2.toFixed(2)} m²
+                        </p>
+                      </div>
+                      <div className="flex flex-shrink-0 items-center gap-2">
+                        <span className="text-sm font-bold" style={{ color: "#f97316" }}>
+                          {n.price} MAD
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeNappe(i)}
+                          aria-label="Retirer cette nappe"
+                          className="flex h-7 w-7 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                    <p className="text-sm font-semibold text-dark-gray">Total de la commande</p>
+                    <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
+                      {grandTotal} MAD
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <hr className="my-3 border-orange-200" />
 
@@ -482,14 +582,14 @@ export default function NappePvcPage() {
                 </div>
                 <button
                   type="submit"
-                  disabled={submitting || !totalPrice}
+                  disabled={submitting || orderNappes.length === 0}
                   className="animate-shake mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
                 >
                   <ShoppingCart size={18} />
                   {submitting
                     ? "Traitement…"
-                    : totalPrice
-                      ? `Commander — ${totalPrice} MAD`
+                    : orderNappes.length > 0
+                      ? `Commander${orderNappes.length > 1 ? ` ${orderNappes.length} nappes` : ""} — ${grandTotal} MAD`
                       : "Renseignez vos dimensions"}
                 </button>
                 <p className="text-center text-xs text-gray-400">
