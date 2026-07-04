@@ -41,7 +41,12 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <LanguageProvider>
           <CartProvider>
-            <Header />
+            <div className="sticky top-0 z-50">
+              <div className="bg-primary py-2 text-center text-xs font-semibold text-white sm:text-sm">
+                🚚 Livraison gratuite à partir de 300 DHS
+              </div>
+              <Header />
+            </div>
             <main className="flex-1">{children}</main>
             <Footer />
             <WhatsAppButton />
