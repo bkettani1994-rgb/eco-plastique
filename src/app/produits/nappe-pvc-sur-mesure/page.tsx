@@ -182,7 +182,8 @@ export default function NappePvcPage() {
   const area = computeArea(shape, dims);
   const pricePerM2 = model.pricePerM2[thickness] ?? 0;
   // Frais supplémentaires selon le résultat longueur × largeur (m²)
-  const surcharge = area === null ? 0 : area < 0.5 ? 30 : area <= 1 ? 50 : 30;
+  // 0 à 0,49 : +30 | 0,5 à 0,99 : +50 | 1 et plus : +30
+  const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
   const totalPrice = area && pricePerM2 ? Math.round(area * pricePerM2 + surcharge) : null;
 
   const needsWidth = shape !== "ronde" && shape !== "octogonale" && shape !== "carree";
