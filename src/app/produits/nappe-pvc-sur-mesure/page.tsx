@@ -35,7 +35,7 @@ const MODELS = [
   {
     id: "transparent",
     label: "Transparente",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
     description:
       "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
     pricePerM2: { "1,5 mm": 120, "2 mm": 150 },
@@ -49,7 +49,7 @@ const MODELS = [
   {
     id: "matte",
     label: "Mate",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
     description:
       "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
     pricePerM2: { "1,5 mm": 140, "2 mm": 170 },
@@ -63,7 +63,7 @@ const MODELS = [
   {
     id: "dore",
     label: "Dorée",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
     description:
       "Reflets dorés raffinés pour habiller vos tables lors des grandes occasions comme au quotidien.",
     pricePerM2: { "1,5 mm": 160, "2 mm": 190 },
