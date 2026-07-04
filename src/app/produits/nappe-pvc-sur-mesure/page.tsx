@@ -14,6 +14,10 @@ import {
   RotateCcw,
   Star,
   ShoppingCart,
+  Circle,
+  Square,
+  RectangleHorizontal,
+  Egg,
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
@@ -23,23 +27,70 @@ import { generateOrderId, saveLastOrder } from "@/lib/order";
 const PRODUCT = {
   slug: "nappe-pvc-sur-mesure",
   name: "Nappes en PVC sur mesure",
-  price: 150,
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
 };
 
-const GALLERY = [
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-];
+/* Les 3 modèles de nappe — prix au m² selon l'épaisseur */
+const MODELS = [
+  {
+    id: "transparent",
+    label: "Transparente",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
+    description:
+      "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
+    pricePerM2: { "1,5 mm": 120, "2 mm": 150 },
+    advantages: [
+      "Laisse visible le bois ou le marbre de votre table",
+      "Transparence cristal sans effet jauni",
+      "Protection contre taches, rayures et chaleur",
+      "Nettoyage d'un simple coup d'éponge",
+    ],
+  },
+  {
+    id: "matte",
+    label: "Mate",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
+    description:
+      "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
+    pricePerM2: { "1,5 mm": 140, "2 mm": 170 },
+    advantages: [
+      "Aspect satiné moderne sans reflets",
+      "Masque les traces de doigts",
+      "Toucher doux et agréable",
+      "Protection complète du plateau",
+    ],
+  },
+  {
+    id: "dore",
+    label: "Dorée",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
+    description:
+      "Reflets dorés raffinés pour habiller vos tables lors des grandes occasions comme au quotidien.",
+    pricePerM2: { "1,5 mm": 160, "2 mm": 190 },
+    advantages: [
+      "Finition dorée luxueuse",
+      "Idéale pour les grandes occasions",
+      "Résistante aux taches et à l'eau",
+      "Apporte de l'éclat à votre salle à manger",
+    ],
+  },
+] as const;
 
-const SIZES: { label: string; price: number }[] = [
-  { label: "Sur mesure", price: 150 },
-];
+type Model = (typeof MODELS)[number];
 
-const OFFERS = [
-  { qty: 1, label: "1 pièce",  discount: 1,    badge: null,   popular: false },
-  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%",  popular: true },
-  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%", popular: false },
-];
+const THICKNESSES = ["1,5 mm", "2 mm"] as const;
+type Thickness = (typeof THICKNESSES)[number];
+
+const SHAPES = [
+  { id: "ronde", label: "Ronde", icon: Circle },
+  { id: "carree", label: "Carrée", icon: Square },
+  { id: "rectangulaire", label: "Rectangulaire", icon: RectangleHorizontal },
+  { id: "ovale", label: "Ovale", icon: Egg },
+] as const;
+
+type ShapeId = (typeof SHAPES)[number]["id"];
+
+const MIN_PRICE = 100;
 
 const TRUST_BADGES = [
   { icon: Droplets, label: "Résistante aux liquides", desc: "PVC haute qualité" },
@@ -50,56 +101,18 @@ const TRUST_BADGES = [
   { icon: Star,     label: "4.8 / 5",                 desc: "Basé sur les avis clients" },
 ];
 
-const LIFESTYLE_BLOCKS = [
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "Découpée aux dimensions exactes de votre table",
-    text: "Nos nappes en PVC sont découpées selon les dimensions précises de votre table, qu'elle soit ronde, carrée, ovale ou rectangulaire. Une protection qui épouse parfaitement votre table, sans excès ni manque.",
-    imageLeft: true,
-  },
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "Une protection quotidienne contre les taches et l'eau",
-    text: "Fabriquée à partir d'un PVC épais et de haute qualité, elle protège durablement votre table contre les taches, l'eau, l'huile et la chaleur des plats, tout en restant agréable au toucher.",
-    imageLeft: false,
-  },
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "Un large choix de motifs et de couleurs",
-    text: "Disponible dans une large gamme de motifs et de couleurs pour s'harmoniser avec votre décoration intérieure. Élégance et praticité à la fois.",
-    imageLeft: true,
-  },
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "Un nettoyage en quelques secondes",
-    text: "Sa surface lisse s'essuie en quelques secondes, d'un simple coup d'éponge. Pas besoin de lavage, une hygiène quotidienne avec le minimum d'effort.",
-    imageLeft: false,
-  },
-];
-
-const COMPARISON = [
-  { feature: "Découpe sur mesure (toutes formes)",      ours: true,  classic: false },
-  { feature: "PVC épais résistant aux taches",          ours: true,  classic: false },
-  { feature: "Surface qui s'essuie en secondes",         ours: true,  classic: true  },
-  { feature: "Bords renforcés anti-effilochage",         ours: true,  classic: false },
-  { feature: "Large choix de motifs et couleurs",        ours: true,  classic: false },
-  { feature: "Résiste aux contacts avec la chaleur",     ours: true,  classic: false },
-  { feature: "Garantie 12 mois",                        ours: true,  classic: false },
-  { feature: "Fabrication marocaine",                   ours: true,  classic: false },
-];
-
 const FAQ_ITEMS = [
   {
     q: "Comment prendre les mesures de ma table ?",
-    a: "Mesurez la longueur et la largeur de votre table avec un mètre ruban, en ajoutant si besoin quelques centimètres de débord sur chaque côté pour un effet drapé.",
+    a: "Mesurez la longueur et la largeur (ou le diamètre) de votre table avec un mètre ruban, en ajoutant si besoin quelques centimètres de débord sur chaque côté pour un effet drapé.",
   },
   {
     q: "La nappe résiste-t-elle à la chaleur ?",
     a: "Oui, notre PVC supporte les contacts ponctuels avec des plats tièdes, mais nous recommandons un dessous de plat pour les plats très chauds afin de préserver la nappe sur le long terme.",
   },
   {
-    q: "Puis-je choisir un motif personnalisé ?",
-    a: "Oui, contactez-nous sur WhatsApp pour découvrir notre catalogue complet de motifs et de couleurs disponibles, et recevoir des conseils personnalisés.",
+    q: "Quelle épaisseur choisir : 1,5 mm ou 2 mm ?",
+    a: "L'épaisseur 1,5 mm convient à un usage quotidien classique. L'épaisseur 2 mm offre une rigidité et une durabilité supérieures, recommandée pour les tables très utilisées ou les grandes tables.",
   },
   {
     q: "Combien de temps faut-il pour recevoir ma nappe sur mesure ?",
@@ -107,53 +120,100 @@ const FAQ_ITEMS = [
   },
 ];
 
+/* ─── HELPERS ──────────────────────────────────────────────────────── */
+
+interface Dimensions {
+  length: string; // cm — longueur / diamètre / côté
+  width: string;  // cm — largeur (rect & ovale)
+}
+
+function computeArea(shape: ShapeId, dims: Dimensions): number | null {
+  const L = parseFloat(dims.length.replace(",", "."));
+  const W = parseFloat(dims.width.replace(",", "."));
+
+  switch (shape) {
+    case "ronde": {
+      if (!L || L <= 0) return null;
+      const r = L / 200; // diamètre cm → rayon m
+      return Math.PI * r * r;
+    }
+    case "carree": {
+      if (!L || L <= 0) return null;
+      const c = L / 100;
+      return c * c;
+    }
+    case "rectangulaire": {
+      if (!L || !W || L <= 0 || W <= 0) return null;
+      return (L / 100) * (W / 100);
+    }
+    case "ovale": {
+      if (!L || !W || L <= 0 || W <= 0) return null;
+      return Math.PI * (L / 200) * (W / 200);
+    }
+  }
+}
+
 /* ─── PAGE ──────────────────────────────────────────────────────────── */
 
 export default function NappePvcPage() {
   const router = useRouter();
   const { addItem, clearCart } = useCart();
 
-  const [activeImg, setActiveImg] = useState(0);
-  const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
-  const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([SIZES[0]]);
+  const [model, setModel] = useState<Model | null>(null);
+  const [thickness, setThickness] = useState<Thickness>("1,5 mm");
+  const [shape, setShape] = useState<ShapeId>("rectangulaire");
+  const [dims, setDims] = useState<Dimensions>({ length: "", width: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  function handleOfferChange(offer: typeof OFFERS[0]) {
-    setSelectedOffer(offer);
-    setChosenSizes(Array.from({ length: offer.qty }, (_, i) => chosenSizes[i] ?? SIZES[0]));
-  }
+  const area = computeArea(shape, dims);
+  const pricePerM2 = model ? model.pricePerM2[thickness] : 0;
+  const rawPrice = area && model ? area * pricePerM2 : null;
+  const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
 
-  function handleSizeChange(slotIndex: number, sizeLabel: string) {
-    const found = SIZES.find((s) => s.label === sizeLabel) ?? SIZES[0];
-    setChosenSizes((prev) => prev.map((s, i) => (i === slotIndex ? found : s)));
-  }
-
-  const baseTotal = chosenSizes.reduce((sum, s) => sum + s.price, 0);
-  const totalPrice = Math.round(baseTotal * selectedOffer.discount);
+  const needsWidth = shape === "rectangulaire" || shape === "ovale";
+  const lengthLabel =
+    shape === "ronde" ? "Diamètre (cm)" : shape === "carree" ? "Côté (cm)" : "Longueur (cm)";
 
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
+  function selectModel(m: Model) {
+    setModel(m);
+    // scroll doucement vers la section de commande
+    setTimeout(() => {
+      document.getElementById("commande")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }
+
   function handleOrder(e: React.FormEvent) {
     e.preventDefault();
+    if (!model || !totalPrice) return;
     setSubmitting(true);
 
-    const sizeSummary = chosenSizes.map((s) => s.label).join(", ");
+    const shapeLabel = SHAPES.find((s) => s.id === shape)?.label ?? shape;
+    const dimSummary = needsWidth
+      ? `${dims.length}×${dims.width} cm`
+      : `${dims.length} cm`;
+    const summary = `${model.label} | ${shapeLabel} | ${thickness} | ${dimSummary}`;
+
     const orderItem = {
       slug: PRODUCT.slug,
-      name: `${PRODUCT.name} (${sizeSummary})`,
-      price: Math.round(totalPrice / selectedOffer.qty),
-      image: PRODUCT.image,
-      quantity: selectedOffer.qty,
+      name: `${PRODUCT.name} (${summary})`,
+      price: totalPrice,
+      image: model.image,
+      quantity: 1,
     };
 
     clearCart();
-    addItem(orderItem, selectedOffer.qty);
+    addItem(orderItem, 1);
 
     saveLastOrder({
       id: generateOrderId(),
-      items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Offre : ${selectedOffer.label} | Format : ${sizeSummary} | Total : ${totalPrice} MAD` },
+      items: [{ ...orderItem, quantity: 1 }],
+      customer: {
+        ...form,
+        notes: `Modèle : ${model.label} | Forme : ${shapeLabel} | Épaisseur : ${thickness} | Dimensions : ${dimSummary} | Surface : ${area?.toFixed(2)} m² | Total : ${totalPrice} MAD`,
+      },
       total: totalPrice,
       createdAt: new Date().toISOString(),
     });
@@ -163,139 +223,205 @@ export default function NappePvcPage() {
 
   return (
     <main className="bg-white">
-      {/* ── 1. HERO ─────────────────────────────────────────────────── */}
+      {/* ── 1. INTRO + CHOIX DU MODÈLE ──────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
-          {/* Gallery */}
-          <div className="flex flex-col gap-3">
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
-              <Image
-                src={GALLERY[activeImg]}
-                alt={PRODUCT.name}
-                fill
-                priority
-                sizes="(max-width:1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-            {GALLERY.length > 1 && (
-              <div className="grid grid-cols-5 gap-2">
-                {GALLERY.map((src, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setActiveImg(i)}
-                    className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
-                      i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
-                    }`}
-                  >
-                    <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="20vw" />
-                  </button>
-                ))}
-              </div>
-            )}
+        <div className="mb-8 text-center">
+          <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+            Nappes
+          </span>
+          <h1 className="mt-2 text-3xl font-bold text-dark-gray">
+            Nappes en PVC sur mesure
+          </h1>
+          <p className="mx-auto mt-3 max-w-2xl text-gray-500 leading-relaxed">
+            Choisissez votre modèle, votre forme, votre épaisseur et vos dimensions — nous
+            découpons votre nappe aux mesures exactes de votre table.
+          </p>
+          <div className="mt-3 flex items-center justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star key={s} size={16} className="fill-yellow-400 text-yellow-400" />
+            ))}
+            <span className="text-sm text-gray-500">4.8 / 5</span>
           </div>
+        </div>
 
-          {/* Info + form */}
-          <div className="flex flex-col gap-6">
-            <div>
-              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                Nappes
-              </span>
-              <h1 className="mt-2 text-3xl font-bold text-dark-gray">
-                Nappes en PVC sur mesure
-              </h1>
-              <p className="mt-3 text-gray-500 leading-relaxed">
-                Protégez votre table avec élégance grâce à notre nappe en PVC sur mesure, facile à
-                nettoyer et résistante au quotidien.
-              </p>
-              <div className="mt-3 flex items-center gap-2">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star key={s} size={16} className="fill-yellow-400 text-yellow-400" />
-                ))}
-                <span className="text-sm text-gray-500">4.8 / 5</span>
+        {/* Étape 1 : choix du modèle */}
+        <div className="mb-4 flex items-center gap-3">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">1</span>
+          <h2 className="text-lg font-bold text-dark-gray">Choisissez votre type de nappe</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {MODELS.map((m) => {
+            const isSelected = model?.id === m.id;
+            return (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => selectModel(m)}
+                className="flex flex-col overflow-hidden rounded-2xl border-2 text-left transition-all hover:shadow-lg"
+                style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#f6fbee" } : { borderColor: "#e5e7eb" }}
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-light-gray">
+                  <Image src={m.image} alt={`Nappe ${m.label}`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover" />
+                  {isSelected && (
+                    <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white shadow">
+                      <Check size={16} />
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col gap-1 p-4">
+                  <span className="text-base font-bold text-dark-gray">Nappe {m.label}</span>
+                  <span className="text-xs text-gray-500">{m.description}</span>
+                  <span className="mt-2 text-sm font-bold text-primary">
+                    À partir de {m.pricePerM2["1,5 mm"]} MAD/m²
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── 2. SECTION COMMANDE (visible après choix du modèle) ─────── */}
+      {model && (
+        <section id="commande" className="mx-auto max-w-7xl scroll-mt-28 px-4 pb-14 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
+            {/* Infos modèle : prix m² + avantages */}
+            <div className="flex flex-col gap-5">
+              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
+                <Image
+                  src={model.image}
+                  alt={`Nappe ${model.label}`}
+                  fill
+                  sizes="(max-width:1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="rounded-2xl bg-light-gray p-5">
+                <h3 className="text-lg font-bold text-dark-gray">Nappe {model.label}</h3>
+                <p className="mt-1 text-sm text-gray-500">{model.description}</p>
+
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  {THICKNESSES.map((t) => (
+                    <div key={t} className="rounded-xl bg-white p-3 text-center shadow-sm">
+                      <p className="text-xs text-gray-500">Épaisseur {t}</p>
+                      <p className="text-lg font-bold text-primary">{model.pricePerM2[t]} MAD/m²</p>
+                    </div>
+                  ))}
+                </div>
+
+                <ul className="mt-4 flex flex-col gap-2">
+                  {model.advantages.map((adv) => (
+                    <li key={adv} className="flex items-start gap-2 text-sm text-gray-600">
+                      <Check size={16} className="mt-0.5 flex-shrink-0 text-primary" />
+                      {adv}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
-            {/* Quantity offers + order form — single orange bordered section */}
+            {/* Configurateur + formulaire — section orange */}
             <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#f97316" }}>
-              <p className="mb-3 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
-              <div className="flex flex-col gap-3">
-                {OFFERS.map((offer) => {
-                  const isSelected = selectedOffer.qty === offer.qty;
-                  const previewBase = isSelected ? baseTotal : SIZES[0].price * offer.qty;
-                  const previewTotal = Math.round(previewBase * offer.discount);
-                  const previewOld = Math.round(previewBase);
-
+              {/* Étape 2 : forme */}
+              <div className="mb-3 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>2</span>
+                <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {SHAPES.map(({ id, label, icon: Icon }) => {
+                  const isSelected = shape === id;
                   return (
-                    <div
-                      key={offer.qty}
-                      className="relative rounded-xl border-2 transition-all"
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => { setShape(id); setDims({ length: "", width: "" }); }}
+                      className="flex flex-col items-center gap-1.5 rounded-xl border-2 px-2 py-3 transition-all"
                       style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
                     >
-                      <button
-                        type="button"
-                        onClick={() => handleOfferChange(offer)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-left"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 transition-all"
-                            style={isSelected ? { borderColor: "#f97316", backgroundColor: "#f97316" } : { borderColor: "#d1d5db" }}
-                          >
-                            {isSelected && <Check size={11} className="text-white" />}
-                          </div>
-                          <div>
-                            <span className="font-semibold text-dark-gray">{offer.label}</span>
-                            {offer.badge && (
-                              <span className="ml-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#f97316" }}>
-                                {offer.badge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-base font-bold" style={{ color: "#f97316" }}>
-                            {isSelected ? totalPrice : previewTotal} MAD
-                          </span>
-                          {offer.qty > 1 && (
-                            <span className="ml-2 text-sm text-gray-400 line-through">
-                              {isSelected ? baseTotal : previewOld} MAD
-                            </span>
-                          )}
-                        </div>
-                      </button>
-
-                      {isSelected && SIZES.length > 1 && (
-                        <div className="flex flex-col gap-2 border-t border-primary/20 px-4 pb-4 pt-3">
-                          {Array.from({ length: offer.qty }).map((_, slotIndex) => (
-                            <div key={slotIndex} className="flex items-center gap-3">
-                              <span className="w-16 flex-shrink-0 text-xs text-gray-500">
-                                Pièce {slotIndex + 1}
-                              </span>
-                              <select
-                                value={chosenSizes[slotIndex]?.label ?? SIZES[0].label}
-                                onChange={(e) => handleSizeChange(slotIndex, e.target.value)}
-                                className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
-                              >
-                                {SIZES.map((s) => (
-                                  <option key={s.label} value={s.label}>
-                                    {s.label} — {s.price} MAD
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                      <Icon size={22} style={isSelected ? { color: "#f97316" } : { color: "#9ca3af" }} />
+                      <span className={`text-xs font-semibold ${isSelected ? "text-dark-gray" : "text-gray-500"}`}>
+                        {label}
+                      </span>
+                    </button>
                   );
                 })}
               </div>
 
-              <hr className="my-2 border-orange-200" />
+              {/* Étape 3 : épaisseur */}
+              <div className="mb-3 mt-5 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>3</span>
+                <p className="text-sm font-semibold text-dark-gray">Épaisseur :</p>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {THICKNESSES.map((t) => {
+                  const isSelected = thickness === t;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setThickness(t)}
+                      className="flex items-center justify-between rounded-xl border-2 px-4 py-3 transition-all"
+                      style={isSelected ? { borderColor: "#f97316", backgroundColor: "#fff7ed" } : { borderColor: "#e5e7eb" }}
+                    >
+                      <span className="text-sm font-semibold text-dark-gray">{t}</span>
+                      <span className="text-sm font-bold" style={{ color: "#f97316" }}>
+                        {model.pricePerM2[t]} MAD/m²
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-              {/* Order form inside the same orange border */}
+              {/* Étape 4 : dimensions */}
+              <div className="mb-3 mt-5 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>4</span>
+                <p className="text-sm font-semibold text-dark-gray">Dimensions de votre table :</p>
+              </div>
+              <div className={`grid gap-3 ${needsWidth ? "grid-cols-2" : "grid-cols-1"}`}>
+                <input
+                  required
+                  type="number"
+                  min={20}
+                  max={500}
+                  placeholder={lengthLabel}
+                  value={dims.length}
+                  onChange={(e) => setDims((d) => ({ ...d, length: e.target.value }))}
+                  className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                />
+                {needsWidth && (
+                  <input
+                    required
+                    type="number"
+                    min={20}
+                    max={500}
+                    placeholder="Largeur (cm)"
+                    value={dims.width}
+                    onChange={(e) => setDims((d) => ({ ...d, width: e.target.value }))}
+                    className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
+                  />
+                )}
+              </div>
+
+              {/* Prix total */}
+              <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
+                <div>
+                  <p className="text-sm font-semibold text-dark-gray">Prix total</p>
+                  {area && (
+                    <p className="text-xs text-gray-500">
+                      {area.toFixed(2)} m² × {pricePerM2} MAD/m²
+                    </p>
+                  )}
+                </div>
+                <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
+                  {totalPrice ? `${totalPrice} MAD` : "— MAD"}
+                </span>
+              </div>
+
+              <hr className="my-3 border-orange-200" />
+
+              {/* Formulaire de commande */}
               <form onSubmit={handleOrder} className="flex flex-col gap-3">
                 <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -335,11 +461,15 @@ export default function NappePvcPage() {
                 </div>
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || !totalPrice}
                   className="animate-shake mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
                 >
                   <ShoppingCart size={18} />
-                  {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
+                  {submitting
+                    ? "Traitement…"
+                    : totalPrice
+                      ? `Commander — ${totalPrice} MAD`
+                      : "Renseignez vos dimensions"}
                 </button>
                 <p className="text-center text-xs text-gray-400">
                   Paiement à la livraison · Livraison sous 24–72h au Maroc
@@ -347,10 +477,10 @@ export default function NappePvcPage() {
               </form>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* ── 2. TRUST BADGES ─────────────────────────────────────────── */}
+      {/* ── 3. TRUST BADGES ─────────────────────────────────────────── */}
       <section className="border-y border-gray-100 bg-light-gray py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -367,74 +497,7 @@ export default function NappePvcPage() {
         </div>
       </section>
 
-      {/* ── 3. LIFESTYLE BLOCKS ─────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl space-y-20 px-4 py-20 sm:px-6 lg:px-8">
-        {LIFESTYLE_BLOCKS.map((block, i) => (
-          <div
-            key={i}
-            className={`flex flex-col items-center gap-10 lg:flex-row ${
-              block.imageLeft ? "" : "lg:flex-row-reverse"
-            }`}
-          >
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray lg:w-1/2">
-              <Image
-                src={block.image}
-                alt={block.title}
-                fill
-                sizes="(max-width:1024px) 100vw, 50vw"
-                className="object-contain"
-              />
-            </div>
-            <div className="flex flex-col gap-4 lg:w-1/2">
-              <h2 className="text-2xl font-bold text-dark-gray">{block.title}</h2>
-              <p className="text-gray-500 leading-relaxed">{block.text}</p>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      {/* ── 4. COMPARISON TABLE ─────────────────────────────────────── */}
-      <section className="bg-light-gray py-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
-            Pourquoi choisir la nôtre ?
-          </h2>
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-4 text-left font-semibold text-dark-gray">Caractéristique</th>
-                  <th className="px-5 py-4 text-center font-semibold text-primary">Eco Plastique</th>
-                  <th className="px-5 py-4 text-center font-semibold text-gray-400">Standard</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON.map(({ feature, ours, classic }, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                    <td className="px-5 py-3.5 text-gray-600">{feature}</td>
-                    <td className="px-5 py-3.5 text-center">
-                      {ours ? (
-                        <Check size={18} className="mx-auto text-primary" />
-                      ) : (
-                        <span className="text-gray-300">—</span>
-                      )}
-                    </td>
-                    <td className="px-5 py-3.5 text-center">
-                      {classic ? (
-                        <Check size={18} className="mx-auto text-gray-400" />
-                      ) : (
-                        <span className="text-gray-300">—</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. FAQ ──────────────────────────────────────────────────── */}
+      {/* ── 4. FAQ ──────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
           Questions fréquentes
