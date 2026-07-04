@@ -159,15 +159,15 @@ export default function NappePvcPage() {
   const router = useRouter();
   const { addItem, clearCart } = useCart();
 
-  const [model, setModel] = useState<Model | null>(null);
+  const [model, setModel] = useState<Model>(MODELS[0]);
   const [thickness, setThickness] = useState<Thickness>("1,5 mm");
   const [shape, setShape] = useState<ShapeId>("rectangulaire");
   const [dims, setDims] = useState<Dimensions>({ length: "", width: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const area = computeArea(shape, dims);
-  const pricePerM2 = model ? model.pricePerM2[thickness] : 0;
-  const rawPrice = area && model ? area * pricePerM2 : null;
+  const pricePerM2 = model.pricePerM2[thickness];
+  const rawPrice = area ? area * pricePerM2 : null;
   const totalPrice = rawPrice ? Math.max(MIN_PRICE, Math.round(rawPrice)) : null;
 
   const needsWidth = shape === "rectangulaire" || shape === "ovale";
@@ -177,17 +177,9 @@ export default function NappePvcPage() {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  function selectModel(m: Model) {
-    setModel(m);
-    // scroll doucement vers la section de commande
-    setTimeout(() => {
-      document.getElementById("commande")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
-  }
-
   function handleOrder(e: React.FormEvent) {
     e.preventDefault();
-    if (!model || !totalPrice) return;
+    if (!totalPrice) return;
     setSubmitting(true);
 
     const shapeLabel = SHAPES.find((s) => s.id === shape)?.label ?? shape;
@@ -223,109 +215,108 @@ export default function NappePvcPage() {
 
   return (
     <main className="bg-white">
-      {/* ── 1. INTRO + CHOIX DU MODÈLE ──────────────────────────────── */}
+      {/* ── 1. HERO : galerie modèles + configurateur ───────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-            Nappes
-          </span>
-          <h1 className="mt-2 text-3xl font-bold text-dark-gray">
-            Nappes en PVC sur mesure
-          </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-gray-500 leading-relaxed">
-            Choisissez votre modèle, votre forme, votre épaisseur et vos dimensions — nous
-            découpons votre nappe aux mesures exactes de votre table.
-          </p>
-          <div className="mt-3 flex items-center justify-center gap-2">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} size={16} className="fill-yellow-400 text-yellow-400" />
-            ))}
-            <span className="text-sm text-gray-500">4.8 / 5</span>
-          </div>
-        </div>
-
-        {/* Étape 1 : choix du modèle */}
-        <div className="mb-4 flex items-center gap-3">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">1</span>
-          <h2 className="text-lg font-bold text-dark-gray">Choisissez votre type de nappe</h2>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {MODELS.map((m) => {
-            const isSelected = model?.id === m.id;
-            return (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => selectModel(m)}
-                className="flex flex-col overflow-hidden rounded-2xl border-2 text-left transition-all hover:shadow-lg"
-                style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#f6fbee" } : { borderColor: "#e5e7eb" }}
-              >
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-light-gray">
-                  <Image src={m.image} alt={`Nappe ${m.label}`} fill sizes="(max-width:640px) 100vw, 33vw" className="object-cover" />
-                  {isSelected && (
-                    <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white shadow">
-                      <Check size={16} />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
+          {/* Gallery : image principale + vignettes de type de nappe */}
+          <div className="flex flex-col gap-3">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
+              <Image
+                src={model.image}
+                alt={`Nappe ${model.label}`}
+                fill
+                priority
+                sizes="(max-width:1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <span className="absolute bottom-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-dark-gray shadow">
+                Nappe {model.label}
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {MODELS.map((m) => {
+                const isSelected = model.id === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setModel(m)}
+                    className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
+                      isSelected ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <Image src={m.image} alt={`Nappe ${m.label}`} fill className="object-cover" sizes="33vw" />
+                    <span
+                      className={`absolute bottom-0 left-0 right-0 py-1 text-center text-[11px] font-semibold ${
+                        isSelected ? "bg-primary text-white" : "bg-white/85 text-dark-gray"
+                      }`}
+                    >
+                      {m.label}
                     </span>
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col gap-1 p-4">
-                  <span className="text-base font-bold text-dark-gray">Nappe {m.label}</span>
-                  <span className="text-xs text-gray-500">{m.description}</span>
-                  <span className="mt-2 text-sm font-bold text-primary">
-                    À partir de {m.pricePerM2["1,5 mm"]} MAD/m²
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </section>
+                  </button>
+                );
+              })}
+            </div>
 
-      {/* ── 2. SECTION COMMANDE (visible après choix du modèle) ─────── */}
-      {model && (
-        <section id="commande" className="mx-auto max-w-7xl scroll-mt-28 px-4 pb-14 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
             {/* Infos modèle : prix m² + avantages */}
-            <div className="flex flex-col gap-5">
-              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
-                <Image
-                  src={model.image}
-                  alt={`Nappe ${model.label}`}
-                  fill
-                  sizes="(max-width:1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
+            <div className="rounded-2xl bg-light-gray p-5">
+              <h3 className="text-lg font-bold text-dark-gray">Nappe {model.label}</h3>
+              <p className="mt-1 text-sm text-gray-500">{model.description}</p>
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                {THICKNESSES.map((t) => (
+                  <div key={t} className="rounded-xl bg-white p-3 text-center shadow-sm">
+                    <p className="text-xs text-gray-500">Épaisseur {t}</p>
+                    <p className="text-lg font-bold text-primary">{model.pricePerM2[t]} MAD/m²</p>
+                  </div>
+                ))}
               </div>
 
-              <div className="rounded-2xl bg-light-gray p-5">
-                <h3 className="text-lg font-bold text-dark-gray">Nappe {model.label}</h3>
-                <p className="mt-1 text-sm text-gray-500">{model.description}</p>
+              <ul className="mt-4 flex flex-col gap-2">
+                {model.advantages.map((adv) => (
+                  <li key={adv} className="flex items-start gap-2 text-sm text-gray-600">
+                    <Check size={16} className="mt-0.5 flex-shrink-0 text-primary" />
+                    {adv}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-                <div className="mt-4 grid grid-cols-2 gap-3">
-                  {THICKNESSES.map((t) => (
-                    <div key={t} className="rounded-xl bg-white p-3 text-center shadow-sm">
-                      <p className="text-xs text-gray-500">Épaisseur {t}</p>
-                      <p className="text-lg font-bold text-primary">{model.pricePerM2[t]} MAD/m²</p>
-                    </div>
-                  ))}
-                </div>
-
-                <ul className="mt-4 flex flex-col gap-2">
-                  {model.advantages.map((adv) => (
-                    <li key={adv} className="flex items-start gap-2 text-sm text-gray-600">
-                      <Check size={16} className="mt-0.5 flex-shrink-0 text-primary" />
-                      {adv}
-                    </li>
-                  ))}
-                </ul>
+          {/* Info + configurateur */}
+          <div className="flex flex-col gap-6">
+            <div>
+              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                Nappes
+              </span>
+              <h1 className="mt-2 text-3xl font-bold text-dark-gray">
+                Nappes en PVC sur mesure
+              </h1>
+              <p className="mt-3 text-gray-500 leading-relaxed">
+                Choisissez votre modèle, votre forme, votre épaisseur et vos dimensions — nous
+                découpons votre nappe aux mesures exactes de votre table.
+              </p>
+              <div className="mt-3 flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} size={16} className="fill-yellow-400 text-yellow-400" />
+                ))}
+                <span className="text-sm text-gray-500">4.8 / 5</span>
               </div>
             </div>
 
             {/* Configurateur + formulaire — section orange */}
             <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#f97316" }}>
-              {/* Étape 2 : forme */}
+              {/* Étape 1 : modèle (rappel de la sélection) */}
               <div className="mb-3 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>1</span>
+                <p className="text-sm font-semibold text-dark-gray">
+                  Type de nappe : <span style={{ color: "#f97316" }}>{model.label}</span>
+                  <span className="ml-2 text-xs font-normal text-gray-400">(changez via les photos)</span>
+                </p>
+              </div>
+
+              {/* Étape 2 : forme */}
+              <div className="mb-3 mt-4 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
               </div>
@@ -477,10 +468,10 @@ export default function NappePvcPage() {
               </form>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* ── 3. TRUST BADGES ─────────────────────────────────────────── */}
+      {/* ── 2. TRUST BADGES ─────────────────────────────────────────── */}
       <section className="border-y border-gray-100 bg-light-gray py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -497,7 +488,7 @@ export default function NappePvcPage() {
         </div>
       </section>
 
-      {/* ── 4. FAQ ──────────────────────────────────────────────────── */}
+      {/* ── 3. FAQ ──────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
           Questions fréquentes
