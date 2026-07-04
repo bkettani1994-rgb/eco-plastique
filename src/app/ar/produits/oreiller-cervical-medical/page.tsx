@@ -24,8 +24,8 @@ import { generateOrderId, saveLastOrder } from "@/lib/order";
 
 const PRODUCT = {
   slug: "oreiller-cervical-medical",
-  name: "Oreiller ergonomique cervical médical",
-  price: 250,
+  name: "وسادة طبية مريحة لدعم الرقبة",
+  price: 249,
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937215/Oreiller_cervicale_jpyife.png",
 };
 
@@ -38,88 +38,88 @@ const GALLERY = [
 ];
 
 const SIZES: { label: string; price: number }[] = [
-  { label: "Oreiller cervical", price: 249 },
+  { label: "وسادة طبية للرقبة", price: 249 },
 ];
 
 const OFFERS = [
-  { qty: 1, label: "1 pièce",  discount: 1,    badge: null,   popular: false },
-  { qty: 2, label: "2 pièces", discount: 0.95, badge: "−5%",  popular: true },
-  { qty: 3, label: "3 pièces", discount: 0.90, badge: "−10%", popular: false },
+  { qty: 1, label: "قطعة واحدة", discount: 1,    badge: null,   popular: false },
+  { qty: 2, label: "قطعتان",     discount: 0.95, badge: "−5%",  popular: true },
+  { qty: 3, label: "3 قطع",      discount: 0.90, badge: "−10%", popular: false },
 ];
 
 const TRUST_BADGES = [
-  { icon: Brain,     label: "Ergonomique",      desc: "Conçu avec des spécialistes" },
-  { icon: Wind,      label: "Respirant",         desc: "Housse en bambou ventilée" },
-  { icon: Shield,    label: "Anti-acariens",     desc: "Hypoallergénique certifié" },
-  { icon: Truck,     label: "Livraison rapide",  desc: "Partout au Maroc" },
-  { icon: RotateCcw, label: "Retour 30 jours",  desc: "Satisfait ou remboursé" },
-  { icon: Star,      label: "4.8 / 5",           desc: "Basé sur 180+ avis" },
+  { icon: Brain,     label: "تصميم مريح",       desc: "مصممة مع مختصين" },
+  { icon: Wind,      label: "قابلة للتنفس",      desc: "غطاء من الخيزران المهوّى" },
+  { icon: Shield,    label: "مضادة للعث",        desc: "مضادة للحساسية ومعتمدة" },
+  { icon: Truck,     label: "توصيل سريع",        desc: "في جميع أنحاء المغرب" },
+  { icon: RotateCcw, label: "إرجاع خلال 30 يوم", desc: "مضمون أو استرداد المبلغ" },
+  { icon: Star,      label: "4.8 / 5",           desc: "بناءً على أكثر من 180 تقييم" },
 ];
 
 const LIFESTYLE_BLOCKS = [
   {
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-4_1_ja02lu.jpg",
-    title: "Un soutien cervical conçu par des experts",
-    text: "Notre oreiller ergonomique a été développé en collaboration avec des kinésithérapeutes pour offrir un maintien optimal de la nuque. Sa forme anatomique s'adapte naturellement à la courbure de votre colonne vertébrale, que vous dormiez sur le dos ou sur le côté.",
+    title: "دعم للرقبة مصمم من طرف خبراء",
+    text: "طُوّرت وسادتنا المريحة بالتعاون مع أخصائيي العلاج الطبيعي لتوفير دعم مثالي للرقبة. يتكيّف شكلها التشريحي بشكل طبيعي مع انحناء عمودك الفقري، سواء كنت تنام على ظهرك أو على جانبك.",
     imageLeft: true,
   },
   {
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-7_1_cj0y6i.jpg",
-    title: "Fini les douleurs au réveil",
-    text: "Cervicalgies, raideurs matinales, maux de tête — ces problèmes sont souvent liés à un mauvais positionnement de la tête pendant le sommeil. Notre oreiller cervical maintient votre cou dans l'alignement parfait toute la nuit, pour un réveil reposé et sans douleur.",
+    title: "وداعاً لآلام الاستيقاظ",
+    text: "آلام الرقبة، والتيبّس الصباحي، والصداع — غالباً ما ترتبط هذه المشاكل بوضعية خاطئة للرأس أثناء النوم. تحافظ وسادتنا على عنقك في محاذاة مثالية طوال الليل، لاستيقاظ مريح وخالٍ من الألم.",
     imageLeft: false,
   },
   {
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-6_1_fhebyb.jpg",
-    title: "Mousse à mémoire de forme haute densité",
-    text: "Fabriqué en mousse viscoélastique certifiée, il épouse précisément la forme de votre tête et de votre nuque, sans s'affaisser ni créer de points de pression. Il retrouve sa forme initiale à chaque réveil, garantissant le même soutien nuit après nuit.",
+    title: "إسفنج ذاكرة الشكل عالي الكثافة",
+    text: "مصنوعة من إسفنج لزج معتمد، تحتضن بدقة شكل رأسك ورقبتك دون أن تهبط أو تسبب نقاط ضغط. تستعيد شكلها الأصلي عند كل استيقاظ، لتضمن نفس الدعم ليلة بعد ليلة.",
     imageLeft: true,
   },
   {
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-5_1_siqxfa.jpg",
-    title: "Housse hygiénique et facile d'entretien",
-    text: "La housse en bambou respirante est amovible et lavable en machine à 40 °C. Elle régule la chaleur et l'humidité pour un confort thermique optimal. Anti-acariens et hypoallergénique, elle convient aux peaux sensibles et aux personnes allergiques.",
+    title: "غطاء صحي وسهل العناية",
+    text: "الغطاء من الخيزران القابل للتنفس قابل للفك والغسل في الغسالة على 40 درجة. ينظّم الحرارة والرطوبة لراحة حرارية مثالية. مضاد للعث والحساسية، يناسب البشرة الحساسة والأشخاص المصابين بالحساسية.",
     imageLeft: false,
   },
 ];
 
 const COMPARISON = [
-  { feature: "Soutien cervical anatomique",             ours: true,  classic: false },
-  { feature: "Mousse à mémoire de forme haute densité", ours: true,  classic: false },
-  { feature: "Housse en bambou respirante",             ours: true,  classic: false },
-  { feature: "Anti-acariens & hypoallergénique",        ours: true,  classic: false },
-  { feature: "Housse lavable en machine",               ours: true,  classic: true  },
-  { feature: "Adapté dos et côté",                      ours: true,  classic: false },
-  { feature: "Garantie 12 mois",                        ours: true,  classic: false },
-  { feature: "Recommandé par des kinésithérapeutes",    ours: true,  classic: false },
+  { feature: "دعم تشريحي للرقبة",            ours: true,  classic: false },
+  { feature: "إسفنج ذاكرة الشكل عالي الكثافة", ours: true, classic: false },
+  { feature: "غطاء من الخيزران قابل للتنفس",  ours: true,  classic: false },
+  { feature: "مضاد للعث والحساسية",           ours: true,  classic: false },
+  { feature: "غطاء قابل للغسل في الغسالة",     ours: true,  classic: true  },
+  { feature: "مناسبة للنوم على الظهر والجانب", ours: true,  classic: false },
+  { feature: "ضمان 12 شهراً",                ours: true,  classic: false },
+  { feature: "موصى بها من أخصائيي العلاج الطبيعي", ours: true, classic: false },
 ];
 
 const FAQ_ITEMS = [
   {
-    q: "Cet oreiller convient-il si je dors sur le côté ?",
-    a: "Oui. La forme ergonomique avec double creux central et rebords relevés s'adapte aussi bien aux dormeurs sur le dos qu'aux dormeurs sur le côté. Il maintient la tête et la nuque dans l'axe naturel de la colonne quelle que soit votre position.",
+    q: "هل تناسب هذه الوسادة النوم على الجانب؟",
+    a: "نعم. الشكل المريح مع التجويف المزدوج المركزي والحواف المرتفعة يناسب النائمين على الظهر وعلى الجانب على حد سواء. تحافظ على الرأس والرقبة في المحور الطبيعي للعمود الفقري مهما كانت وضعيتك.",
   },
   {
-    q: "Combien de temps faut-il pour s'adapter à cet oreiller ?",
-    a: "La plupart de nos clients ressentent une amélioration dès la première nuit. Une période d'adaptation de 7 à 14 jours est normale pour que votre corps s'habitue au soutien cervical optimal. Passé ce délai, le confort devient naturel.",
+    q: "كم من الوقت يلزم للتأقلم مع هذه الوسادة؟",
+    a: "يشعر معظم عملائنا بتحسّن منذ الليلة الأولى. فترة تأقلم من 7 إلى 14 يوماً أمر طبيعي حتى يعتاد جسمك على الدعم المثالي للرقبة. بعد هذه المدة تصبح الراحة طبيعية.",
   },
   {
-    q: "La mousse garde-t-elle sa forme dans le temps ?",
-    a: "Notre mousse viscoélastique haute densité (50 kg/m³) conserve ses propriétés sur le long terme. Elle ne s'affaisse pas comme un oreiller classique et retrouve sa forme initiale après chaque utilisation.",
+    q: "هل يحافظ الإسفنج على شكله مع مرور الوقت؟",
+    a: "إسفنجنا اللزج عالي الكثافة (50 كغ/م³) يحافظ على خصائصه على المدى الطويل. لا يهبط مثل الوسادة العادية ويستعيد شكله الأصلي بعد كل استعمال.",
   },
   {
-    q: "Dans combien de temps est-il livré ?",
-    a: "La livraison est effectuée sous 24 à 72 h selon votre ville. Nos livreurs vous contactent avant le passage. Le paiement se fait à la réception (paiement à la livraison).",
+    q: "في كم من الوقت يتم التوصيل؟",
+    a: "يتم التوصيل خلال 24 إلى 72 ساعة حسب مدينتك. يتصل بك موصّلونا قبل المرور. يتم الدفع عند الاستلام.",
   },
   {
-    q: "Puis-je commander pour offrir en cadeau ?",
-    a: "Absolument. L'oreiller est livré dans un emballage soigné. Contactez-nous sur WhatsApp pour ajouter un mot personnalisé ou pour toute demande spéciale.",
+    q: "هل يمكنني الطلب كهدية؟",
+    a: "بالتأكيد. تُسلَّم الوسادة في تغليف أنيق. تواصل معنا عبر واتساب لإضافة كلمة شخصية أو لأي طلب خاص.",
   },
 ];
 
 /* ─── PAGE ──────────────────────────────────────────────────────────── */
 
-export default function OreillercervicalPage() {
+export default function OreillercervicalPageAr() {
   const router = useRouter();
   const { addItem, clearCart } = useCart();
 
@@ -148,7 +148,7 @@ export default function OreillercervicalPage() {
     e.preventDefault();
     setSubmitting(true);
 
-    const sizeSummary = chosenSizes.map((s) => s.label).join(", ");
+    const sizeSummary = chosenSizes.map((s) => s.label).join("، ");
     const orderItem = {
       slug: PRODUCT.slug,
       name: `${PRODUCT.name} (${sizeSummary})`,
@@ -163,7 +163,7 @@ export default function OreillercervicalPage() {
     saveLastOrder({
       id: generateOrderId(),
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Offre : ${selectedOffer.label} | Modèles : ${sizeSummary} | Total : ${totalPrice} MAD` },
+      customer: { ...form, notes: `العرض: ${selectedOffer.label} | المنتج: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
       total: totalPrice,
       createdAt: new Date().toISOString(),
     });
@@ -172,17 +172,17 @@ export default function OreillercervicalPage() {
   }
 
   return (
-    <main className="bg-white">
+    <main dir="rtl" className="bg-white">
       {/* ── 1. HERO ─────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {/* Language switch */}
-        <div className="mb-6 flex justify-end">
+        <div className="mb-6 flex justify-start">
           <Link
-            href="/ar/produits/oreiller-cervical-medical"
+            href="/produits/oreiller-cervical-medical"
             className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-dark-gray transition-colors hover:border-primary hover:text-primary"
           >
             <Globe size={16} />
-            العربية
+            Français
           </Link>
         </div>
 
@@ -209,7 +209,7 @@ export default function OreillercervicalPage() {
                     i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Image src={src} alt={`Vue ${i + 1}`} fill className="object-cover" sizes="20vw" />
+                  <Image src={src} alt={`صورة ${i + 1}`} fill className="object-cover" sizes="20vw" />
                 </button>
               ))}
             </div>
@@ -219,26 +219,26 @@ export default function OreillercervicalPage() {
           <div className="flex flex-col gap-6">
             <div>
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                Oreiller médical
+                وسادة طبية
               </span>
               <h1 className="mt-2 text-3xl font-bold text-dark-gray">
-                Oreiller ergonomique cervical médical
+                وسادة طبية مريحة لدعم الرقبة
               </h1>
-              <p className="mt-3 text-gray-500 leading-relaxed">
-                Mousse à mémoire de forme haute densité, housse en bambou respirante et anti-acariens.
-                Dormez sans douleurs cervicales, réveillez-vous reposé.
+              <p className="mt-3 leading-relaxed text-gray-500">
+                إسفنج ذاكرة الشكل عالي الكثافة، غطاء من الخيزران القابل للتنفس ومضاد للعث.
+                نم دون آلام في الرقبة، واستيقظ مرتاحاً.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <Star key={s} size={16} className="fill-yellow-400 text-yellow-400" />
                 ))}
-                <span className="text-sm text-gray-500">4.8 / 5 — 180+ avis</span>
+                <span className="text-sm text-gray-500">4.8 / 5 — أكثر من 180 تقييم</span>
               </div>
             </div>
 
             {/* Quantity offers + order form — single orange bordered section */}
             <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#f97316" }}>
-              <p className="mb-3 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
+              <p className="mb-3 text-sm font-semibold text-dark-gray">اختر عرضك :</p>
               <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
                   const isSelected = selectedOffer.qty === offer.qty;
@@ -255,7 +255,7 @@ export default function OreillercervicalPage() {
                       <button
                         type="button"
                         onClick={() => handleOfferChange(offer)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-left"
+                        className="flex w-full items-center justify-between px-4 py-3 text-start"
                       >
                         <div className="flex items-center gap-3">
                           <div
@@ -267,19 +267,19 @@ export default function OreillercervicalPage() {
                           <div>
                             <span className="font-semibold text-dark-gray">{offer.label}</span>
                             {offer.badge && (
-                              <span className="ml-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#f97316" }}>
+                              <span className="ms-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#f97316" }}>
                                 {offer.badge}
                               </span>
                             )}
                           </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-end">
                           <span className="text-base font-bold" style={{ color: "#f97316" }}>
-                            {isSelected ? totalPrice : previewTotal} MAD
+                            {isSelected ? totalPrice : previewTotal} درهم
                           </span>
                           {offer.qty > 1 && (
-                            <span className="ml-2 text-sm text-gray-400 line-through">
-                              {isSelected ? baseTotal : previewOld} MAD
+                            <span className="ms-2 text-sm text-gray-400 line-through">
+                              {isSelected ? baseTotal : previewOld} درهم
                             </span>
                           )}
                         </div>
@@ -290,7 +290,7 @@ export default function OreillercervicalPage() {
                           {Array.from({ length: offer.qty }).map((_, slotIndex) => (
                             <div key={slotIndex} className="flex items-center gap-3">
                               <span className="w-16 flex-shrink-0 text-xs text-gray-500">
-                                Pièce {slotIndex + 1}
+                                قطعة {slotIndex + 1}
                               </span>
                               <select
                                 value={chosenSizes[slotIndex]?.label ?? SIZES[0].label}
@@ -299,7 +299,7 @@ export default function OreillercervicalPage() {
                               >
                                 {SIZES.map((s) => (
                                   <option key={s.label} value={s.label}>
-                                    {s.label} — {s.price} MAD
+                                    {s.label} — {s.price} درهم
                                   </option>
                                 ))}
                               </select>
@@ -316,11 +316,11 @@ export default function OreillercervicalPage() {
 
               {/* Order form inside the same orange border */}
               <form onSubmit={handleOrder} className="flex flex-col gap-3">
-                <p className="font-semibold text-dark-gray">Vos coordonnées de livraison</p>
+                <p className="font-semibold text-dark-gray">معلومات التوصيل</p>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
                     required
-                    placeholder="Nom complet"
+                    placeholder="الاسم الكامل"
                     value={form.fullName}
                     onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
                     className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
@@ -328,7 +328,7 @@ export default function OreillercervicalPage() {
                   <input
                     required
                     type="tel"
-                    placeholder="Téléphone (06…)"
+                    placeholder="الهاتف (06…)"
                     value={form.phone}
                     onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
                     className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
@@ -336,21 +336,21 @@ export default function OreillercervicalPage() {
                 </div>
                 <input
                   required
-                  placeholder="Ville"
+                  placeholder="المدينة"
                   value={form.city}
                   onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
                   className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                 />
                 <input
                   required
-                  placeholder="Adresse de livraison"
+                  placeholder="عنوان التوصيل"
                   value={form.address}
                   onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
                   className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                 />
                 <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
-                  <span className="text-sm text-gray-500">Frais de livraison</span>
-                  <span className="text-sm font-semibold text-green-600">Gratuit</span>
+                  <span className="text-sm text-gray-500">رسوم التوصيل</span>
+                  <span className="text-sm font-semibold text-green-600">مجاني</span>
                 </div>
                 <button
                   type="submit"
@@ -358,10 +358,10 @@ export default function OreillercervicalPage() {
                   className="animate-shake mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
                 >
                   <ShoppingCart size={18} />
-                  {submitting ? "Traitement…" : `Commander — ${totalPrice} MAD`}
+                  {submitting ? "جارٍ المعالجة…" : `اطلب الآن — ${totalPrice} درهم`}
                 </button>
                 <p className="text-center text-xs text-gray-400">
-                  Paiement à la livraison · Livraison sous 24–72h au Maroc
+                  الدفع عند الاستلام · التوصيل خلال 24–72 ساعة في المغرب
                 </p>
               </form>
             </div>
@@ -406,7 +406,7 @@ export default function OreillercervicalPage() {
             </div>
             <div className="flex flex-col gap-4 lg:w-1/2">
               <h2 className="text-2xl font-bold text-dark-gray">{block.title}</h2>
-              <p className="text-gray-500 leading-relaxed">{block.text}</p>
+              <p className="leading-relaxed text-gray-500">{block.text}</p>
             </div>
           </div>
         ))}
@@ -416,15 +416,15 @@ export default function OreillercervicalPage() {
       <section className="bg-light-gray py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
-            Pourquoi choisir le nôtre ?
+            لماذا تختار وسادتنا ؟
           </h2>
           <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
-                  <th className="px-5 py-4 text-left font-semibold text-dark-gray">Caractéristique</th>
+                  <th className="px-5 py-4 text-start font-semibold text-dark-gray">الميزة</th>
                   <th className="px-5 py-4 text-center font-semibold text-primary">Eco Plastique</th>
-                  <th className="px-5 py-4 text-center font-semibold text-gray-400">Standard</th>
+                  <th className="px-5 py-4 text-center font-semibold text-gray-400">عادية</th>
                 </tr>
               </thead>
               <tbody>
@@ -456,7 +456,7 @@ export default function OreillercervicalPage() {
       {/* ── 5. FAQ ──────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
-          Questions fréquentes
+          الأسئلة الشائعة
         </h2>
         <div className="flex flex-col divide-y divide-gray-100 rounded-2xl border border-gray-100 bg-white shadow-sm">
           {FAQ_ITEMS.map((item, i) => (
@@ -464,7 +464,7 @@ export default function OreillercervicalPage() {
               <button
                 type="button"
                 onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="flex w-full items-center justify-between px-5 py-4 text-left"
+                className="flex w-full items-center justify-between px-5 py-4 text-start"
               >
                 <span className="font-medium text-dark-gray">{item.q}</span>
                 {openFaq === i ? (
@@ -485,10 +485,10 @@ export default function OreillercervicalPage() {
       <section className="bg-primary py-14 text-center">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-2xl font-bold text-white">
-            Dormez sans douleurs dès cette nuit
+            نم دون آلام منذ هذه الليلة
           </h2>
           <p className="mt-2 text-white/80">
-            Livraison sous 24–72 h partout au Maroc · Paiement à la livraison
+            التوصيل خلال 24–72 ساعة في جميع أنحاء المغرب · الدفع عند الاستلام
           </p>
           <button
             type="button"
@@ -496,7 +496,7 @@ export default function OreillercervicalPage() {
             className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-primary shadow-md transition-all hover:bg-gray-50 hover:shadow-lg"
           >
             <ShoppingCart size={18} />
-            Commander maintenant
+            اطلب الآن
           </button>
         </div>
       </section>
