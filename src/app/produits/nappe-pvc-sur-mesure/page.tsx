@@ -502,10 +502,10 @@ export default function NappePvcPage() {
                 <button
                   type="button"
                   onClick={() => setShowMeasureGuide(true)}
-                  className="ml-auto inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold transition-colors hover:bg-primary/10"
+                  className="ml-auto inline-flex flex-shrink-0 items-center gap-0.5 whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold transition-colors hover:bg-primary/10"
                   style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
                 >
-                  📏 Comment mesurer ?
+                  📏 <span className="hidden min-[400px]:inline">Comment&nbsp;</span>mesurer ?
                 </button>
               </div>
               <div className="grid grid-cols-6 gap-2">
