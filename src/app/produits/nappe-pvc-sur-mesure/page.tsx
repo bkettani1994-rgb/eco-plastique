@@ -92,6 +92,9 @@ const MODELS = [
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
     images: [
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197536/IMG_20240416_161250_646_dak6xm.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197525/IMG_1108_b7af6d.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197525/Business_Suite_creation_1548532146060051_b6u6vx.jpg",
     ],
     description:
       "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
