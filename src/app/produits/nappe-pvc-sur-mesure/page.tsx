@@ -165,6 +165,16 @@ const SHAPES = [
 
 type ShapeId = (typeof SHAPES)[number]["id"];
 
+/* Guide de mesure affiché dans le popup « Comment mesurer ? » */
+const MEASURE_GUIDE: { id: ShapeId; how: string }[] = [
+  { id: "carree", how: "Mesurez un côté du plateau, d'un bord à l'autre." },
+  { id: "rectangulaire", how: "Mesurez la longueur puis la largeur du plateau." },
+  { id: "ronde", how: "Mesurez le diamètre : d'un bord à l'autre en passant par le centre." },
+  { id: "coins-coupes", how: "Mesurez la longueur et la largeur totales, puis la longueur de chaque pan coupé (Arc A et Arc B)." },
+  { id: "coins-arrondis", how: "Mesurez la longueur et la largeur totales, puis le rayon de l'arrondi d'un coin." },
+  { id: "octogonale", how: "Mesurez la longueur totale (d'une face à la face opposée), puis la longueur d'un pan coupé (Arc)." },
+];
+
 const TRUST_BADGES = [
   { icon: Droplets, label: "Résistante aux liquides", desc: "PVC haute qualité" },
   { icon: Sparkles, label: "Facile à nettoyer",       desc: "Un coup d'éponge suffit" },
@@ -265,6 +275,7 @@ export default function NappePvcPage() {
   const [shape, setShape] = useState<ShapeId>("rectangulaire");
   const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showMeasureGuide, setShowMeasureGuide] = useState(false);
 
   const thicknessOptions = availableThicknesses(model);
 
@@ -488,9 +499,17 @@ export default function NappePvcPage() {
               </div>
 
               {/* Étape 2 : forme */}
-              <div className="mb-3 mt-4 flex items-center gap-2">
+              <div className="mb-3 mt-4 flex flex-wrap items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">Forme de votre table :</p>
+                <button
+                  type="button"
+                  onClick={() => setShowMeasureGuide(true)}
+                  className="ml-auto inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold transition-colors hover:bg-primary/10"
+                  style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
+                >
+                  📏 Comment mesurer ?
+                </button>
               </div>
               <div className="grid grid-cols-6 gap-2">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
@@ -790,6 +809,61 @@ export default function NappePvcPage() {
           </button>
         </div>
       </section>
+      {/* ── POPUP « Comment mesurer ? » ─────────────────────────────── */}
+      {showMeasureGuide && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setShowMeasureGuide(false)}
+        >
+          <div
+            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-dark-gray">📏 Comment mesurer votre table ?</h3>
+              <button
+                type="button"
+                aria-label="Fermer"
+                onClick={() => setShowMeasureGuide(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-dark-gray"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <p className="mb-4 rounded-xl px-4 py-3 text-sm text-gray-600" style={{ backgroundColor: "#f4faea" }}>
+              Utilisez un mètre ruban et mesurez toujours le <strong>plateau de la table</strong> (pas les pieds).
+              Ajoutez quelques centimètres si vous souhaitez que la nappe déborde légèrement.
+            </p>
+
+            <div className="flex flex-col divide-y divide-gray-100">
+              {MEASURE_GUIDE.map(({ id, how }) => {
+                const shapeDef = SHAPES.find((s) => s.id === id)!;
+                const Icon = shapeDef.icon;
+                return (
+                  <div key={id} className="flex items-start gap-3 py-3">
+                    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border" style={{ borderColor: "#8ec63f", color: "#8ec63f" }}>
+                      <Icon size={28} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-dark-gray">{shapeDef.label}</p>
+                      <p className="text-sm text-gray-500">{how}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowMeasureGuide(false)}
+              className="mt-4 w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+            >
+              J&apos;ai compris
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

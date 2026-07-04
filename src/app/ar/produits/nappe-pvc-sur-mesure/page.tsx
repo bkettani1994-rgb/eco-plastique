@@ -141,6 +141,16 @@ const SHAPES = [
 
 type ShapeId = (typeof SHAPES)[number]["id"];
 
+/* دليل القياس المعروض في نافذة « كيف أقيس؟ » */
+const MEASURE_GUIDE: { id: ShapeId; how: string }[] = [
+  { id: "carree", how: "قس ضلعاً واحداً من سطح الطاولة، من حافة إلى أخرى." },
+  { id: "rectangulaire", how: "قس الطول ثم العرض لسطح الطاولة." },
+  { id: "ronde", how: "قس القطر : من حافة إلى الحافة المقابلة مروراً بالمركز." },
+  { id: "coins-coupes", how: "قس الطول والعرض الكليين، ثم طول كل زاوية مقصوصة (القوس أ والقوس ب)." },
+  { id: "coins-arrondis", how: "قس الطول والعرض الكليين، ثم نصف قطر استدارة الزاوية." },
+  { id: "octogonale", how: "قس الطول الكلي (من وجه إلى الوجه المقابل)، ثم طول الضلع المائل (القوس)." },
+];
+
 const TRUST_BADGES = [
   { icon: Droplets, label: "مقاومة للسوائل",  desc: "PVC عالي الجودة" },
   { icon: Sparkles, label: "سهلة التنظيف",     desc: "مسحة بالإسفنجة تكفي" },
@@ -238,6 +248,7 @@ export default function NappePvcPageAr() {
   const [shape, setShape] = useState<ShapeId>("rectangulaire");
   const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showMeasureGuide, setShowMeasureGuide] = useState(false);
 
   const thicknessOptions = availableThicknesses(model);
 
@@ -456,9 +467,17 @@ export default function NappePvcPageAr() {
               </div>
 
               {/* الخطوة 2 : الشكل */}
-              <div className="mb-3 mt-4 flex items-center gap-2">
+              <div className="mb-3 mt-4 flex flex-wrap items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>2</span>
                 <p className="text-sm font-semibold text-dark-gray">شكل طاولتك :</p>
+                <button
+                  type="button"
+                  onClick={() => setShowMeasureGuide(true)}
+                  className="ms-auto inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold transition-colors hover:bg-primary/10"
+                  style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
+                >
+                  📏 كيف أقيس؟
+                </button>
               </div>
               <div className="grid grid-cols-6 gap-2">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
@@ -758,6 +777,62 @@ export default function NappePvcPageAr() {
           </button>
         </div>
       </section>
+      {/* ── نافذة « كيف أقيس؟ » ─────────────────────────────────────── */}
+      {showMeasureGuide && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setShowMeasureGuide(false)}
+        >
+          <div
+            dir="rtl"
+            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-dark-gray">📏 كيف تقيس طاولتك؟</h3>
+              <button
+                type="button"
+                aria-label="إغلاق"
+                onClick={() => setShowMeasureGuide(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-dark-gray"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <p className="mb-4 rounded-xl px-4 py-3 text-sm text-gray-600" style={{ backgroundColor: "#f4faea" }}>
+              استعمل شريط قياس وقس دائماً <strong>سطح الطاولة</strong> (وليس الأرجل).
+              أضف بضعة سنتيمترات إذا أردت أن يتدلى الغطاء قليلاً.
+            </p>
+
+            <div className="flex flex-col divide-y divide-gray-100">
+              {MEASURE_GUIDE.map(({ id, how }) => {
+                const shapeDef = SHAPES.find((s) => s.id === id)!;
+                const Icon = shapeDef.icon;
+                return (
+                  <div key={id} className="flex items-start gap-3 py-3">
+                    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border" style={{ borderColor: "#8ec63f", color: "#8ec63f" }}>
+                      <Icon size={28} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-dark-gray">{shapeDef.label}</p>
+                      <p className="text-sm text-gray-500">{how}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowMeasureGuide(false)}
+              className="mt-4 w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+            >
+              فهمت
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
