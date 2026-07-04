@@ -89,12 +89,11 @@ const MODELS = [
   {
     id: "transparent",
     label: "Transparente",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/8_p5gcls.jpg",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197536/IMG_20240416_161250_646_dak6xm.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197525/IMG_1108_b7af6d.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197525/Business_Suite_creation_1548532146060051_b6u6vx.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/8_p5gcls.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205186/9_ip7mi9.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205253/7_1_y53ss8.jpg",
     ],
     description:
       "Cristal transparente, elle laisse admirer votre table tout en la protégeant des taches, rayures et de la chaleur.",
@@ -109,12 +108,11 @@ const MODELS = [
   {
     id: "matte",
     label: "Mate",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/4_54_kde86n.png",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197392/nappe-mat-4_mwoleb.png",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197385/IMG-20250127-WA0017_kfdoij.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197394/nappe-mat-1_nvztrq.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/4_54_kde86n.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/6_33_ub21es.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/5_41_of5vzg.png",
     ],
     description:
       "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
@@ -129,12 +127,11 @@ const MODELS = [
   {
     id: "dore",
     label: "Dorée",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/3_71_nyvpla.png",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20240509-WA0016_bwmo9q.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20241016-WA0031_wbgbjb.jpg",
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20240524-WA0008_dygcxj.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/3_71_nyvpla.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/2_85_tfzvfs.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/1_81_vyaqks.png",
     ],
     description:
       "Reflets dorés raffinés pour habiller vos tables lors des grandes occasions comme au quotidien.",
