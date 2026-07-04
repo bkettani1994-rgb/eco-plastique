@@ -109,6 +109,9 @@ const MODELS = [
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
     images: [
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197392/nappe-mat-4_mwoleb.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197385/IMG-20250127-WA0017_kfdoij.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197394/nappe-mat-1_nvztrq.png",
     ],
     description:
       "Finition mate anti-reflets, élégante et discrète. Masque les traces de doigts et apporte une touche moderne.",
