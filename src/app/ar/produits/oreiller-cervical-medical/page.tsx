@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Check,
@@ -15,7 +14,6 @@ import {
   RotateCcw,
   Star,
   ShoppingCart,
-  Globe,
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
@@ -175,17 +173,6 @@ export default function OreillercervicalPageAr() {
     <main dir="rtl" className="bg-white">
       {/* ── 1. HERO ─────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* Language switch */}
-        <div className="mb-6 flex justify-start">
-          <Link
-            href="/produits/oreiller-cervical-medical"
-            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-medium text-dark-gray transition-colors hover:border-primary hover:text-primary"
-          >
-            <Globe size={16} />
-            Français
-          </Link>
-        </div>
-
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
           {/* Gallery */}
           <div className="flex flex-col gap-3">

@@ -92,6 +92,7 @@ export function Header() {
             <MessageCircle size={18} />
             WhatsApp
           </Link>
+          <LanguageSwitch />
           <Link
             href="/panier"
             aria-label="Panier"
@@ -102,7 +103,6 @@ export function Header() {
               {itemCount}
             </span>
           </Link>
-          <LanguageSwitch />
         </div>
       </div>
 
@@ -130,8 +130,9 @@ export function Header() {
           />
         </Link>
 
-        {/* Right: cart + language */}
+        {/* Right: language + cart */}
         <div className="flex items-center gap-2">
+          <LanguageSwitch />
           <Link
             href="/panier"
             aria-label="Panier"
@@ -144,7 +145,6 @@ export function Header() {
               </span>
             )}
           </Link>
-          <LanguageSwitch />
         </div>
       </div>
 
