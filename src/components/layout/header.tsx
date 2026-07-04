@@ -3,10 +3,39 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 // framer-motion removed from mobile drawer to avoid stacking context issues
 import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
 import { navLinks, siteConfig, whatsappLink } from "@/data/site";
 import { useCart } from "@/lib/cart-context";
+
+function LanguageSwitch({ className = "" }: { className?: string }) {
+  const pathname = usePathname() || "/";
+  const isAr = pathname === "/ar" || pathname.startsWith("/ar/");
+  const frHref = isAr ? pathname.replace(/^\/ar/, "") || "/" : pathname;
+  const arHref = isAr ? pathname : `/ar${pathname === "/" ? "" : pathname}`;
+
+  return (
+    <div className={`flex items-center rounded-xl border border-gray-200 p-0.5 text-xs font-semibold ${className}`}>
+      <Link
+        href={frHref}
+        className={`rounded-lg px-2.5 py-1.5 transition-colors ${
+          !isAr ? "bg-primary text-white" : "text-dark-gray hover:text-primary"
+        }`}
+      >
+        FR
+      </Link>
+      <Link
+        href={arHref}
+        className={`rounded-lg px-2.5 py-1.5 transition-colors ${
+          isAr ? "bg-primary text-white" : "text-dark-gray hover:text-primary"
+        }`}
+      >
+        AR
+      </Link>
+    </div>
+  );
+}
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +88,7 @@ export function Header() {
               {itemCount}
             </span>
           </Link>
+          <LanguageSwitch />
         </div>
       </div>
 
@@ -86,7 +116,7 @@ export function Header() {
           />
         </Link>
 
-        {/* Right: cart */}
+        {/* Right: cart + language */}
         <div className="flex items-center gap-2">
           <Link
             href="/panier"
@@ -100,6 +130,7 @@ export function Header() {
               </span>
             )}
           </Link>
+          <LanguageSwitch />
         </div>
       </div>
 
