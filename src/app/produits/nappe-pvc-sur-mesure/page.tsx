@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
-  Check,
   ChevronDown,
   ChevronUp,
   Shield,
@@ -401,29 +400,6 @@ export default function NappePvcPage() {
               })}
             </div>
 
-            {/* Infos modèle : prix m² + avantages */}
-            <div className="rounded-2xl bg-light-gray p-5">
-              <h3 className="text-lg font-bold text-dark-gray">Nappe {model.label}</h3>
-              <p className="mt-1 text-sm text-gray-500">{model.description}</p>
-
-              <div className={`mt-4 grid gap-3 ${thicknessOptions.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
-                {thicknessOptions.map((t) => (
-                  <div key={t} className="rounded-xl bg-white p-3 text-center shadow-sm">
-                    <p className="text-xs text-gray-500">Épaisseur {t}</p>
-                    <p className="text-lg font-bold text-primary">{model.pricePerM2[t]} MAD/m²</p>
-                  </div>
-                ))}
-              </div>
-
-              <ul className="mt-4 flex flex-col gap-2">
-                {model.advantages.map((adv) => (
-                  <li key={adv} className="flex items-start gap-2 text-sm text-gray-600">
-                    <Check size={16} className="mt-0.5 flex-shrink-0 text-primary" />
-                    {adv}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
 
           {/* Info + configurateur */}
