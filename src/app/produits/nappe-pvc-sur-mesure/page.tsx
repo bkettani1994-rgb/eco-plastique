@@ -176,17 +176,47 @@ const FAQ_ITEMS = [
 
 /* ─── HELPERS ──────────────────────────────────────────────────────── */
 
-interface Dimensions {
-  length: string; // cm — longueur / diamètre / côté
-  width: string;  // cm — largeur (rect & ovale)
+type DimKey = "length" | "width" | "arcA" | "arcB" | "radius";
+type Dimensions = Record<DimKey, string>;
+
+const EMPTY_DIMS: Dimensions = { length: "", width: "", arcA: "", arcB: "", radius: "" };
+
+/* Champs de dimensions demandés pour chaque forme */
+const SHAPE_FIELDS: Record<ShapeId, { key: DimKey; label: string }[]> = {
+  carree: [{ key: "length", label: "Côté (cm)" }],
+  rectangulaire: [
+    { key: "length", label: "Longueur (cm)" },
+    { key: "width", label: "Largeur (cm)" },
+  ],
+  ronde: [{ key: "length", label: "Diamètre (cm)" }],
+  "coins-coupes": [
+    { key: "length", label: "Longueur (cm)" },
+    { key: "width", label: "Largeur (cm)" },
+    { key: "arcA", label: "Arc A (cm)" },
+    { key: "arcB", label: "Arc B (cm)" },
+  ],
+  "coins-arrondis": [
+    { key: "length", label: "Longueur (cm)" },
+    { key: "width", label: "Largeur (cm)" },
+    { key: "radius", label: "Rayon (cm)" },
+  ],
+  octogonale: [
+    { key: "length", label: "Longueur (cm)" },
+    { key: "arcA", label: "Arc (cm)" },
+  ],
+};
+
+function parseDim(value: string): number {
+  return parseFloat(value.replace(",", "."));
 }
 
 /* Surface = longueur × largeur (en m²) — la nappe est découpée dans une
-   feuille rectangulaire. Formes à une seule dimension : côté × côté ou
-   diamètre × diamètre. */
+   feuille rectangulaire. Formes à une seule dimension de base : côté ×
+   côté, diamètre × diamètre ou longueur × longueur. Les arcs / rayon
+   sont des détails de découpe qui n'entrent pas dans la surface. */
 function computeArea(shape: ShapeId, dims: Dimensions): number | null {
-  const L = parseFloat(dims.length.replace(",", "."));
-  const W = parseFloat(dims.width.replace(",", "."));
+  const L = parseDim(dims.length);
+  const W = parseDim(dims.width);
 
   switch (shape) {
     case "ronde":
@@ -214,7 +244,7 @@ export default function NappePvcPage() {
   const [model, setModel] = useState<Model>(MODELS[0]);
   const [thickness, setThickness] = useState<Thickness>("1,5 mm");
   const [shape, setShape] = useState<ShapeId>("rectangulaire");
-  const [dims, setDims] = useState<Dimensions>({ length: "", width: "" });
+  const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const thicknessOptions = availableThicknesses(model);
@@ -225,22 +255,16 @@ export default function NappePvcPage() {
     if (!opts.includes(thickness)) setThickness(opts[0]);
   }
 
-  const area = computeArea(shape, dims);
+  const shapeFields = SHAPE_FIELDS[shape];
+  // Tous les champs de la forme doivent être remplis (> 0)
+  const dimsComplete = shapeFields.every((f) => parseDim(dims[f.key]) > 0);
+
+  const area = dimsComplete ? computeArea(shape, dims) : null;
   const pricePerM2 = model.pricePerM2[thickness] ?? 0;
   // Frais supplémentaires selon le résultat longueur × largeur (m²)
   // 0 à 0,49 : +30 | 0,5 à 0,99 : +50 | 1 et plus : +30
   const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
   const totalPrice = area && pricePerM2 ? Math.round(area * pricePerM2 + surcharge) : null;
-
-  const needsWidth = shape !== "ronde" && shape !== "octogonale" && shape !== "carree";
-  const lengthLabel =
-    shape === "ronde"
-      ? "Diamètre (cm)"
-      : shape === "carree"
-        ? "Côté (cm)"
-        : shape === "octogonale"
-          ? "Largeur (cm)"
-          : "Longueur (cm)";
 
   /* ─── Quantité de la nappe en cours ─── */
   const [qty, setQty] = useState(1);
@@ -259,7 +283,9 @@ export default function NappePvcPage() {
   const [addedNappes, setAddedNappes] = useState<AddedNappe[]>([]);
 
   const shapeLabel = SHAPES.find((s) => s.id === shape)?.label ?? shape;
-  const dimSummary = needsWidth ? `${dims.length}×${dims.width} cm` : `${dims.length} cm`;
+  const dimSummary = shapeFields
+    .map((f) => `${f.label.replace(" (cm)", "")} ${dims[f.key]} cm`)
+    .join(" · ");
 
   function addCurrentNappe() {
     if (!totalPrice || !area) return;
@@ -276,7 +302,7 @@ export default function NappePvcPage() {
         qty,
       },
     ]);
-    setDims({ length: "", width: "" });
+    setDims(EMPTY_DIMS);
     setQty(1);
   }
 
@@ -446,7 +472,7 @@ export default function NappePvcPage() {
                       type="button"
                       aria-label={label}
                       title={label}
-                      onClick={() => { setShape(id); setDims({ length: "", width: "" }); }}
+                      onClick={() => { setShape(id); setDims(EMPTY_DIMS); }}
                       className="flex aspect-square items-center justify-center rounded-xl border-2 transition-all"
                       style={
                         isSelected
@@ -490,33 +516,24 @@ export default function NappePvcPage() {
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>4</span>
                 <p className="text-sm font-semibold text-dark-gray">Dimensions de votre table :</p>
               </div>
-              <div className={`grid gap-3 ${needsWidth ? "grid-cols-2" : "grid-cols-1"}`}>
-                <input
-                  required
-                  type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  min={20}
-                  max={500}
-                  placeholder={lengthLabel}
-                  value={dims.length}
-                  onChange={(e) => setDims((d) => ({ ...d, length: e.target.value.replace(/[^0-9.,]/g, "") }))}
-                  className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
-                />
-                {needsWidth && (
+              <div className={`grid gap-3 ${shapeFields.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                {shapeFields.map((field) => (
                   <input
+                    key={`${shape}-${field.key}`}
                     required
                     type="number"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    min={20}
+                    min={1}
                     max={500}
-                    placeholder="Largeur (cm)"
-                    value={dims.width}
-                    onChange={(e) => setDims((d) => ({ ...d, width: e.target.value.replace(/[^0-9.,]/g, "") }))}
+                    placeholder={field.label}
+                    value={dims[field.key]}
+                    onChange={(e) =>
+                      setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
+                    }
                     className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-orange-400 focus:outline-none"
                   />
-                )}
+                ))}
               </div>
 
               {/* Quantité */}
