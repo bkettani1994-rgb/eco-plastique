@@ -4,9 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
-  Check,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Shield,
   Droplets,
   Sparkles,
@@ -14,32 +15,131 @@ import {
   RotateCcw,
   Star,
   ShoppingCart,
+  Plus,
+  X,
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
+
+/* ─── Icônes de formes de table (SVG sur mesure) ───────────────────── */
+
+type ShapeIconProps = { size?: number };
+
+function IconCarre({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <rect x="4.5" y="4.5" width="15" height="15" rx="0.5" />
+    </svg>
+  );
+}
+
+function IconRectangulaire({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <rect x="2.5" y="6.5" width="19" height="11" rx="0.5" />
+    </svg>
+  );
+}
+
+function IconCercle({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" />
+    </svg>
+  );
+}
+
+function IconRectOctogonal({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" aria-hidden="true">
+      <polygon points="9,3.5 15,3.5 18,6.5 18,17.5 15,20.5 9,20.5 6,17.5 6,6.5" />
+    </svg>
+  );
+}
+
+function IconCoinsArrondis({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
+      <rect x="6" y="3.5" width="12" height="17" rx="4.5" />
+    </svg>
+  );
+}
+
+function IconOctogone({ size = 32 }: ShapeIconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round" aria-hidden="true">
+      <polygon points="8.2,3.5 15.8,3.5 20.5,8.2 20.5,15.8 15.8,20.5 8.2,20.5 3.5,15.8 3.5,8.2" />
+    </svg>
+  );
+}
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
 const PRODUCT = {
   slug: "nappe-pvc-sur-mesure",
   name: "أغطية طاولة PVC حسب المقاس",
-  price: 150,
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
 };
 
-const GALLERY = [
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-];
+const THICKNESSES = ["1,5 ملم", "2 ملم"] as const;
+type Thickness = (typeof THICKNESSES)[number];
 
-const SIZES: { label: string; price: number }[] = [
-  { label: "مقاس مخصص", price: 150 },
-];
+/* الأنواع الثلاثة — السعر بالمتر المربع حسب السماكة المتوفرة */
+const MODELS = [
+  {
+    id: "transparent",
+    label: "شفافة",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+    images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197536/IMG_20240416_161250_646_dak6xm.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197525/IMG_1108_b7af6d.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197525/Business_Suite_creation_1548532146060051_b6u6vx.jpg",
+    ],
+    pricePerM2: { "1,5 ملم": 149, "2 ملم": 199 } as Partial<Record<Thickness, number>>,
+  },
+  {
+    id: "matte",
+    label: "مطفية",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
+    images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181084/nappe-mat-2_hk8006.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197392/nappe-mat-4_mwoleb.png",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197385/IMG-20250127-WA0017_kfdoij.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783197394/nappe-mat-1_nvztrq.png",
+    ],
+    pricePerM2: { "2 ملم": 229 } as Partial<Record<Thickness, number>>,
+  },
+  {
+    id: "dore",
+    label: "ذهبية",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
+    images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG-20241016-WA0030_uj1r2b.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20240509-WA0016_bwmo9q.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20241016-WA0031_wbgbjb.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783196201/IMG-20240524-WA0008_dygcxj.jpg",
+    ],
+    pricePerM2: { "2 ملم": 229 } as Partial<Record<Thickness, number>>,
+  },
+] as const;
 
-const OFFERS = [
-  { qty: 1, label: "قطعة واحدة", discount: 1,    badge: null,   popular: false },
-  { qty: 2, label: "قطعتان",     discount: 0.95, badge: "−5%",  popular: true },
-  { qty: 3, label: "3 قطع",      discount: 0.90, badge: "−10%", popular: false },
-];
+type Model = (typeof MODELS)[number];
+
+function availableThicknesses(model: Model): Thickness[] {
+  return THICKNESSES.filter((t) => model.pricePerM2[t] !== undefined);
+}
+
+const SHAPES = [
+  { id: "carree", label: "مربع", icon: IconCarre },
+  { id: "rectangulaire", label: "مستطيل", icon: IconRectangulaire },
+  { id: "ronde", label: "دائرة", icon: IconCercle },
+  { id: "coins-coupes", label: "مستطيل ثماني", icon: IconRectOctogonal },
+  { id: "coins-arrondis", label: "مستطيل بزوايا دائرية", icon: IconCoinsArrondis },
+  { id: "octogonale", label: "ثماني الأضلاع", icon: IconOctogone },
+] as const;
+
+type ShapeId = (typeof SHAPES)[number]["id"];
 
 const TRUST_BADGES = [
   { icon: Droplets, label: "مقاومة للسوائل",  desc: "PVC عالي الجودة" },
@@ -50,56 +150,18 @@ const TRUST_BADGES = [
   { icon: Star,     label: "4.8 / 5",          desc: "بناءً على تقييمات عملائنا" },
 ];
 
-const LIFESTYLE_BLOCKS = [
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "قص حسب أبعاد طاولتك بالضبط",
-    text: "تُقصّ أغطيتنا من PVC حسب الأبعاد الدقيقة لطاولتك، سواء كانت مستديرة أو مربعة أو بيضاوية أو مستطيلة. حماية تناسب طاولتك تماماً دون فائض ولا نقص.",
-    imageLeft: true,
-  },
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "حماية يومية ضد البقع والماء",
-    text: "مصنوعة من PVC سميك وعالي الجودة، تحمي طاولتك بشكل دائم من البقع والماء والزيت وحرارة الأطباق، مع بقائها ناعمة الملمس.",
-    imageLeft: false,
-  },
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "تشكيلة واسعة من النقوش والألوان",
-    text: "متوفرة بمجموعة كبيرة من النقوش والألوان لتنسجم مع ديكور منزلك الداخلي. أناقة وعملية في آنٍ واحد.",
-    imageLeft: true,
-  },
-  {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783071866/Nappe_ym7cqj.png",
-    title: "تنظيف في ثوانٍ",
-    text: "سطح أملس يُمسح في ثوانٍ بمجرد مسحة بالإسفنجة. لا حاجة للغسيل، نظافة يومية بأقل جهد.",
-    imageLeft: false,
-  },
-];
-
-const COMPARISON = [
-  { feature: "قص حسب المقاس (كل الأشكال)",  ours: true,  classic: false },
-  { feature: "PVC سميك مقاوم للبقع",        ours: true,  classic: false },
-  { feature: "سطح يُمسح في ثوانٍ",           ours: true,  classic: true  },
-  { feature: "حواف معززة ضد التفتت",         ours: true,  classic: false },
-  { feature: "تشكيلة نقوش وألوان",           ours: true,  classic: false },
-  { feature: "مقاوم للتلامس العرضي مع الحرارة", ours: true, classic: false },
-  { feature: "ضمان 12 شهراً",              ours: true,  classic: false },
-  { feature: "صناعة مغربية",               ours: true,  classic: false },
-];
-
 const FAQ_ITEMS = [
   {
     q: "كيف أقيس أبعاد طاولتي؟",
-    a: "قس الطول والعرض بشريط القياس، مع إضافة بضعة سنتيمترات على كل جانب إذا رغبت في تدلٍّ جانبي.",
+    a: "قس الطول والعرض (أو القطر) بشريط القياس، مع إضافة بضعة سنتيمترات على كل جانب إذا رغبت في تدلٍّ جانبي.",
   },
   {
     q: "هل الغطاء مقاوم للحرارة؟",
     a: "نعم، يتحمّل PVC التلامس العرضي مع الأطباق الدافئة، لكن ننصح باستخدام حامل طبق للأطباق الساخنة جداً للحفاظ على الغطاء على المدى الطويل.",
   },
   {
-    q: "هل يمكنني اختيار نقش مخصّص؟",
-    a: "نعم، تواصل معنا عبر واتساب لاستعراض كتالوج النقوش والألوان الكامل والحصول على نصائح مخصّصة.",
+    q: "أي سماكة أختار: 1,5 ملم أم 2 ملم؟",
+    a: "سماكة 1,5 ملم مناسبة للاستخدام اليومي العادي. سماكة 2 ملم توفر صلابة ومتانة أعلى، ويُنصح بها للطاولات كثيرة الاستعمال أو الكبيرة.",
   },
   {
     q: "كم تستغرق مدة استلام غطائي حسب المقاس؟",
@@ -107,54 +169,179 @@ const FAQ_ITEMS = [
   },
 ];
 
+/* ─── HELPERS ──────────────────────────────────────────────────────── */
+
+type DimKey = "length" | "width" | "arcA" | "arcB" | "radius";
+type Dimensions = Record<DimKey, string>;
+
+const EMPTY_DIMS: Dimensions = { length: "", width: "", arcA: "", arcB: "", radius: "" };
+
+/* حقول الأبعاد المطلوبة لكل شكل */
+const SHAPE_FIELDS: Record<ShapeId, { key: DimKey; label: string }[]> = {
+  carree: [{ key: "length", label: "الضلع (سم)" }],
+  rectangulaire: [
+    { key: "length", label: "الطول (سم)" },
+    { key: "width", label: "العرض (سم)" },
+  ],
+  ronde: [{ key: "length", label: "القطر (سم)" }],
+  "coins-coupes": [
+    { key: "length", label: "الطول (سم)" },
+    { key: "width", label: "العرض (سم)" },
+    { key: "arcA", label: "القوس أ (سم)" },
+    { key: "arcB", label: "القوس ب (سم)" },
+  ],
+  "coins-arrondis": [
+    { key: "length", label: "الطول (سم)" },
+    { key: "width", label: "العرض (سم)" },
+    { key: "radius", label: "نصف القطر (سم)" },
+  ],
+  octogonale: [
+    { key: "length", label: "الطول (سم)" },
+    { key: "arcA", label: "القوس (سم)" },
+  ],
+};
+
+function parseDim(value: string): number {
+  return parseFloat(value.replace(",", "."));
+}
+
+/* المساحة = الطول × العرض (م²) — يُقص الغطاء من صفيحة مستطيلة */
+function computeArea(shape: ShapeId, dims: Dimensions): number | null {
+  const L = parseDim(dims.length);
+  const W = parseDim(dims.width);
+
+  switch (shape) {
+    case "ronde":
+    case "carree":
+    case "octogonale": {
+      if (!L || L <= 0) return null;
+      const c = L / 100;
+      return c * c;
+    }
+    case "coins-arrondis":
+    case "coins-coupes":
+    case "rectangulaire": {
+      if (!L || !W || L <= 0 || W <= 0) return null;
+      return (L / 100) * (W / 100);
+    }
+  }
+}
+
 /* ─── PAGE ──────────────────────────────────────────────────────────── */
 
 export default function NappePvcPageAr() {
   const router = useRouter();
   const { addItem, clearCart } = useCart();
 
-  const [activeImg, setActiveImg] = useState(0);
-  const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
-  const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([SIZES[0]]);
+  const [model, setModel] = useState<Model>(MODELS[0]);
+  const [thickness, setThickness] = useState<Thickness>("1,5 ملم");
+  const [shape, setShape] = useState<ShapeId>("rectangulaire");
+  const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  function handleOfferChange(offer: typeof OFFERS[0]) {
-    setSelectedOffer(offer);
-    setChosenSizes(Array.from({ length: offer.qty }, (_, i) => chosenSizes[i] ?? SIZES[0]));
+  const thicknessOptions = availableThicknesses(model);
+
+  const [imgIndex, setImgIndex] = useState(0);
+
+  function selectModel(m: Model) {
+    setModel(m);
+    setImgIndex(0);
+    const opts = availableThicknesses(m);
+    if (!opts.includes(thickness)) setThickness(opts[0]);
   }
 
-  function handleSizeChange(slotIndex: number, sizeLabel: string) {
-    const found = SIZES.find((s) => s.label === sizeLabel) ?? SIZES[0];
-    setChosenSizes((prev) => prev.map((s, i) => (i === slotIndex ? found : s)));
+  const shapeFields = SHAPE_FIELDS[shape];
+  const dimsComplete = shapeFields.every((f) => parseDim(dims[f.key]) > 0);
+
+  const area = dimsComplete ? computeArea(shape, dims) : null;
+  const pricePerM2 = model.pricePerM2[thickness] ?? 0;
+  // رسوم إضافية حسب النتيجة (م²) : أقل من 0,5 : +30 | من 0,5 إلى 0,99 : +50 | 1 وأكثر : +30
+  const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
+  const totalPrice = area && pricePerM2 ? Math.round(area * pricePerM2 + surcharge) : null;
+
+  /* ─── الكمية ─── */
+  const [qty, setQty] = useState(1);
+
+  /* ─── قائمة الأغطية المضافة ─── */
+  interface AddedNappe {
+    modelLabel: string;
+    image: string;
+    shapeLabel: string;
+    thickness: Thickness;
+    dimSummary: string;
+    areaM2: number;
+    price: number; // سعر الوحدة
+    qty: number;
+  }
+  const [addedNappes, setAddedNappes] = useState<AddedNappe[]>([]);
+
+  const shapeLabel = SHAPES.find((s) => s.id === shape)?.label ?? shape;
+  const dimSummary = shapeFields
+    .map((f) => `${f.label.replace(" (سم)", "")} ${dims[f.key]} سم`)
+    .join(" · ");
+
+  function addCurrentNappe() {
+    if (!totalPrice || !area) return;
+    setAddedNappes((prev) => [
+      ...prev,
+      {
+        modelLabel: model.label,
+        image: model.image,
+        shapeLabel,
+        thickness,
+        dimSummary,
+        areaM2: area,
+        price: totalPrice,
+        qty,
+      },
+    ]);
+    setDims(EMPTY_DIMS);
+    setQty(1);
   }
 
-  const baseTotal = chosenSizes.reduce((sum, s) => sum + s.price, 0);
-  const totalPrice = Math.round(baseTotal * selectedOffer.discount);
+  function removeNappe(index: number) {
+    setAddedNappes((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  const pendingCurrent: AddedNappe | null =
+    totalPrice && area
+      ? { modelLabel: model.label, image: model.image, shapeLabel, thickness, dimSummary, areaM2: area, price: totalPrice, qty }
+      : null;
+  const orderNappes: AddedNappe[] = pendingCurrent ? [...addedNappes, pendingCurrent] : addedNappes;
+  const grandTotal = orderNappes.reduce((sum, n) => sum + n.price * n.qty, 0);
+  const totalPieces = orderNappes.reduce((sum, n) => sum + n.qty, 0);
 
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
   function handleOrder(e: React.FormEvent) {
     e.preventDefault();
+    if (orderNappes.length === 0) return;
     setSubmitting(true);
 
-    const sizeSummary = chosenSizes.map((s) => s.label).join("، ");
-    const orderItem = {
-      slug: PRODUCT.slug,
-      name: `${PRODUCT.name} (${sizeSummary})`,
-      price: Math.round(totalPrice / selectedOffer.qty),
-      image: PRODUCT.image,
-      quantity: selectedOffer.qty,
-    };
+    const orderItems = orderNappes.map((n, i) => ({
+      slug: `${PRODUCT.slug}-${i + 1}`,
+      name: `${PRODUCT.name} (${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary})`,
+      price: n.price,
+      image: n.image,
+      quantity: n.qty,
+    }));
 
     clearCart();
-    addItem(orderItem, selectedOffer.qty);
+    orderItems.forEach((item) => addItem(item, item.quantity));
+
+    const notes = orderNappes
+      .map(
+        (n, i) =>
+          `غطاء ${i + 1} : ${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary} | ${n.areaM2.toFixed(2)} م² | ${n.qty} × ${n.price} درهم`
+      )
+      .join(" — ");
 
     saveLastOrder({
       id: generateOrderId(),
-      items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `العرض: ${selectedOffer.label} | المقاس: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
-      total: totalPrice,
+      items: orderItems,
+      customer: { ...form, notes: `${notes} — المجموع : ${grandTotal} درهم` },
+      total: grandTotal,
       createdAt: new Date().toISOString(),
     });
 
@@ -163,40 +350,81 @@ export default function NappePvcPageAr() {
 
   return (
     <main dir="rtl" className="bg-white">
-      {/* ── 1. HERO ─────────────────────────────────────────────────── */}
+      {/* ── 1. HERO : معرض الأنواع + أداة الطلب ─────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
-          {/* Gallery */}
+          {/* المعرض : الصورة الرئيسية + مصغرات الأنواع */}
           <div className="flex flex-col gap-3">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray">
               <Image
-                src={GALLERY[activeImg]}
-                alt={PRODUCT.name}
+                src={model.images[imgIndex] ?? model.image}
+                alt={`غطاء ${model.label}`}
                 fill
                 priority
                 sizes="(max-width:1024px) 100vw, 50vw"
                 className="object-cover"
               />
-            </div>
-            {GALLERY.length > 1 && (
-              <div className="grid grid-cols-5 gap-2">
-                {GALLERY.map((src, i) => (
+              <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-dark-gray shadow">
+                غطاء {model.label}
+              </span>
+              {model.images.length > 1 && (
+                <>
                   <button
-                    key={i}
                     type="button"
-                    onClick={() => setActiveImg(i)}
+                    aria-label="الصورة السابقة"
+                    onClick={() => setImgIndex((i) => (i - 1 + model.images.length) % model.images.length)}
+                    className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-dark-gray shadow-md transition hover:bg-white"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="الصورة التالية"
+                    onClick={() => setImgIndex((i) => (i + 1) % model.images.length)}
+                    className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-dark-gray shadow-md transition hover:bg-white"
+                  >
+                    <ChevronRight size={22} />
+                  </button>
+                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                    {model.images.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-1.5 rounded-full transition-all ${
+                          i === imgIndex ? "w-5 bg-white" : "w-1.5 bg-white/60"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {MODELS.map((m) => {
+                const isSelected = model.id === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => selectModel(m)}
                     className={`relative aspect-square w-full overflow-hidden rounded-xl border-2 transition-all ${
-                      i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
+                      isSelected ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                     }`}
                   >
-                    <Image src={src} alt={`صورة ${i + 1}`} fill className="object-cover" sizes="20vw" />
+                    <Image src={m.image} alt={`غطاء ${m.label}`} fill className="object-cover" sizes="33vw" />
+                    <span
+                      className={`absolute bottom-0 left-0 right-0 py-1 text-center text-[11px] font-semibold ${
+                        isSelected ? "bg-primary text-white" : "bg-white/85 text-dark-gray"
+                      }`}
+                    >
+                      {m.label}
+                    </span>
                   </button>
-                ))}
-              </div>
-            )}
+                );
+              })}
+            </div>
           </div>
 
-          {/* Info + form */}
+          {/* معلومات + أداة الطلب */}
           <div className="flex flex-col gap-6">
             <div>
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
@@ -206,7 +434,7 @@ export default function NappePvcPageAr() {
                 أغطية طاولة PVC حسب المقاس
               </h1>
               <p className="mt-3 leading-relaxed text-gray-500">
-                احمِ طاولتك بأناقة مع غطاء PVC حسب المقاس، سهل التنظيف ومتين للاستخدام اليومي.
+                اختر النوع والشكل والسماكة والأبعاد — نقصّ غطاءك حسب المقاسات الدقيقة لطاولتك.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 {[1, 2, 3, 4, 5].map((s) => (
@@ -216,85 +444,198 @@ export default function NappePvcPageAr() {
               </div>
             </div>
 
-            {/* Quantity offers + order form — single orange bordered section */}
+            {/* أداة الطلب + الاستمارة — إطار أخضر واحد */}
             <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#8ec63f" }}>
-              <p className="mb-3 text-sm font-semibold text-dark-gray">اختر عرضك :</p>
-              <div className="flex flex-col gap-3">
-                {OFFERS.map((offer) => {
-                  const isSelected = selectedOffer.qty === offer.qty;
-                  const previewBase = isSelected ? baseTotal : SIZES[0].price * offer.qty;
-                  const previewTotal = Math.round(previewBase * offer.discount);
-                  const previewOld = Math.round(previewBase);
+              {/* الخطوة 1 : النوع */}
+              <div className="mb-3 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>1</span>
+                <p className="text-sm font-semibold text-dark-gray">
+                  نوع الغطاء : <span style={{ color: "#8ec63f" }}>{model.label}</span>
+                  <span className="ms-2 text-xs font-normal text-gray-400">(غيّره عبر الصور)</span>
+                </p>
+              </div>
 
+              {/* الخطوة 2 : الشكل */}
+              <div className="mb-3 mt-4 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>2</span>
+                <p className="text-sm font-semibold text-dark-gray">شكل طاولتك :</p>
+              </div>
+              <div className="grid grid-cols-6 gap-2">
+                {SHAPES.map(({ id, label, icon: Icon }) => {
+                  const isSelected = shape === id;
                   return (
-                    <div
-                      key={offer.qty}
-                      className="relative rounded-xl border-2 transition-all"
-                      style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#f4faea" } : { borderColor: "#e5e7eb" }}
+                    <button
+                      key={id}
+                      type="button"
+                      aria-label={label}
+                      title={label}
+                      onClick={() => { setShape(id); setDims(EMPTY_DIMS); }}
+                      className="flex aspect-square items-center justify-center rounded-xl border-2 transition-all"
+                      style={
+                        isSelected
+                          ? { borderColor: "#8ec63f", backgroundColor: "#f4faea", color: "#8ec63f" }
+                          : { borderColor: "#e5e7eb", color: "#6b7280" }
+                      }
                     >
-                      <button
-                        type="button"
-                        onClick={() => handleOfferChange(offer)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-start"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 transition-all"
-                            style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#8ec63f" } : { borderColor: "#d1d5db" }}
-                          >
-                            {isSelected && <Check size={11} className="text-white" />}
-                          </div>
-                          <div>
-                            <span className="font-semibold text-dark-gray">{offer.label}</span>
-                            {offer.badge && (
-                              <span className="ms-2 rounded-full px-2.5 py-1 text-xs font-extrabold text-white shadow-sm" style={{ backgroundColor: "#8ec63f" }}>
-                                {offer.badge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-end">
-                          <span className="text-base font-bold" style={{ color: "#8ec63f" }}>
-                            {isSelected ? totalPrice : previewTotal} درهم
-                          </span>
-                          {offer.qty > 1 && (
-                            <span className="ms-2 text-sm text-gray-400 line-through">
-                              {isSelected ? baseTotal : previewOld} درهم
-                            </span>
-                          )}
-                        </div>
-                      </button>
-
-                      {isSelected && SIZES.length > 1 && (
-                        <div className="flex flex-col gap-2 border-t border-primary/20 px-4 pb-4 pt-3">
-                          {Array.from({ length: offer.qty }).map((_, slotIndex) => (
-                            <div key={slotIndex} className="flex items-center gap-3">
-                              <span className="w-16 flex-shrink-0 text-xs text-gray-500">
-                                قطعة {slotIndex + 1}
-                              </span>
-                              <select
-                                value={chosenSizes[slotIndex]?.label ?? SIZES[0].label}
-                                onChange={(e) => handleSizeChange(slotIndex, e.target.value)}
-                                className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
-                              >
-                                {SIZES.map((s) => (
-                                  <option key={s.label} value={s.label}>
-                                    {s.label} — {s.price} درهم
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                      <Icon size={30} />
+                    </button>
                   );
                 })}
               </div>
 
-              <hr className="my-2 border-primary/30" />
+              {/* الخطوة 3 : السماكة */}
+              <div className="mb-3 mt-5 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>3</span>
+                <p className="text-sm font-semibold text-dark-gray">السماكة :</p>
+              </div>
+              <div className={`grid gap-2 ${thicknessOptions.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                {thicknessOptions.map((t) => {
+                  const isSelected = thickness === t;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setThickness(t)}
+                      className="flex items-center justify-between rounded-xl border-2 px-4 py-3 transition-all"
+                      style={isSelected ? { borderColor: "#8ec63f", backgroundColor: "#f4faea" } : { borderColor: "#e5e7eb" }}
+                    >
+                      <span className="text-sm font-semibold text-dark-gray">{t}</span>
+                      <span className="text-sm font-bold" style={{ color: "#8ec63f" }}>
+                        {model.pricePerM2[t]} درهم/م²
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-              {/* Order form inside the same orange border */}
+              {/* الخطوة 4 : الأبعاد */}
+              <div className="mb-3 mt-5 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>4</span>
+                <p className="text-sm font-semibold text-dark-gray">أبعاد طاولتك :</p>
+              </div>
+              <div className={`grid gap-3 ${shapeFields.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                {shapeFields.map((field) => (
+                  <input
+                    key={`${shape}-${field.key}`}
+                    required
+                    type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    min={1}
+                    max={500}
+                    placeholder={field.label}
+                    value={dims[field.key]}
+                    onChange={(e) =>
+                      setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
+                    }
+                    className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                  />
+                ))}
+              </div>
+
+              {/* الخطوة 5 : الكمية */}
+              <div className="mb-3 mt-5 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>5</span>
+                <p className="text-sm font-semibold text-dark-gray">الكمية :</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  disabled={qty <= 1}
+                  aria-label="إنقاص الكمية"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border-2 text-lg font-bold transition-all disabled:opacity-40"
+                  style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
+                >
+                  −
+                </button>
+                <span className="w-12 text-center text-lg font-bold text-dark-gray">{qty}</span>
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.min(20, q + 1))}
+                  aria-label="زيادة الكمية"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border-2 text-lg font-bold transition-all"
+                  style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
+                >
+                  +
+                </button>
+                <span className="text-xs text-gray-500">بنفس المقاس</span>
+              </div>
+
+              {/* السعر الإجمالي للغطاء الحالي */}
+              <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#f4faea" }}>
+                <div>
+                  <p className="text-sm font-semibold text-dark-gray">السعر الإجمالي للغطاء</p>
+                  {totalPrice && qty > 1 && (
+                    <p className="text-xs text-gray-500">{qty} × {totalPrice} درهم</p>
+                  )}
+                </div>
+                <span className="text-xl font-extrabold" style={{ color: "#8ec63f" }}>
+                  {totalPrice ? `${totalPrice * qty} درهم` : "— درهم"}
+                </span>
+              </div>
+
+              {/* إضافة هذا الغطاء */}
+              <button
+                type="button"
+                onClick={addCurrentNappe}
+                disabled={!totalPrice}
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 bg-white px-6 py-3 text-sm font-semibold transition-all disabled:opacity-50"
+                style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
+              >
+                <Plus size={18} />
+                أضف هذا الغطاء
+              </button>
+
+              {/* قائمة الأغطية المضافة */}
+              {addedNappes.length > 0 && (
+                <div className="mt-4 flex flex-col gap-2">
+                  <p className="text-sm font-semibold text-dark-gray">
+                    أغطيتك ({addedNappes.length}
+                    {pendingCurrent ? " + 1 قيد الإعداد" : ""}) :
+                  </p>
+                  {addedNappes.map((n, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-2.5"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-dark-gray">
+                          غطاء {n.modelLabel} — {n.shapeLabel}
+                          {n.qty > 1 ? ` × ${n.qty}` : ""}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {n.thickness} · {n.dimSummary}
+                          {n.qty > 1 ? ` · ${n.qty} × ${n.price} درهم` : ""}
+                        </p>
+                      </div>
+                      <div className="flex flex-shrink-0 items-center gap-2">
+                        <span className="text-sm font-bold" style={{ color: "#8ec63f" }}>
+                          {n.price * n.qty} درهم
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeNappe(i)}
+                          aria-label="إزالة هذا الغطاء"
+                          className="flex h-7 w-7 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#f4faea" }}>
+                    <p className="text-sm font-semibold text-dark-gray">مجموع الطلب</p>
+                    <span className="text-xl font-extrabold" style={{ color: "#8ec63f" }}>
+                      {grandTotal} درهم
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <hr className="my-3 border-primary/30" />
+
+              {/* استمارة الطلب */}
               <form onSubmit={handleOrder} className="flex flex-col gap-3">
                 <p className="font-semibold text-dark-gray">معلومات التوصيل</p>
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -334,11 +675,15 @@ export default function NappePvcPageAr() {
                 </div>
                 <button
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || orderNappes.length === 0}
                   className="animate-shake mt-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
                 >
                   <ShoppingCart size={18} />
-                  {submitting ? "جارٍ المعالجة…" : `اطلب الآن — ${totalPrice} درهم`}
+                  {submitting
+                    ? "جارٍ المعالجة…"
+                    : orderNappes.length > 0
+                      ? `اطلب الآن${totalPieces > 1 ? ` (${totalPieces} أغطية)` : ""} — ${grandTotal} درهم`
+                      : "أدخل الأبعاد"}
                 </button>
                 <p className="text-center text-xs text-gray-400">
                   الدفع عند الاستلام · التوصيل خلال 24–72 ساعة في المغرب
@@ -366,74 +711,7 @@ export default function NappePvcPageAr() {
         </div>
       </section>
 
-      {/* ── 3. LIFESTYLE BLOCKS ─────────────────────────────────────── */}
-      <section className="mx-auto max-w-7xl space-y-20 px-4 py-20 sm:px-6 lg:px-8">
-        {LIFESTYLE_BLOCKS.map((block, i) => (
-          <div
-            key={i}
-            className={`flex flex-col items-center gap-10 lg:flex-row ${
-              block.imageLeft ? "" : "lg:flex-row-reverse"
-            }`}
-          >
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-light-gray lg:w-1/2">
-              <Image
-                src={block.image}
-                alt={block.title}
-                fill
-                sizes="(max-width:1024px) 100vw, 50vw"
-                className="object-contain"
-              />
-            </div>
-            <div className="flex flex-col gap-4 lg:w-1/2">
-              <h2 className="text-2xl font-bold text-dark-gray">{block.title}</h2>
-              <p className="leading-relaxed text-gray-500">{block.text}</p>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      {/* ── 4. COMPARISON TABLE ─────────────────────────────────────── */}
-      <section className="bg-light-gray py-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
-            لماذا تختار منتجنا ؟
-          </h2>
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="px-5 py-4 text-start font-semibold text-dark-gray">الميزة</th>
-                  <th className="px-5 py-4 text-center font-semibold text-primary">Eco Plastique</th>
-                  <th className="px-5 py-4 text-center font-semibold text-gray-400">عادي</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON.map(({ feature, ours, classic }, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                    <td className="px-5 py-3.5 text-gray-600">{feature}</td>
-                    <td className="px-5 py-3.5 text-center">
-                      {ours ? (
-                        <Check size={18} className="mx-auto text-primary" />
-                      ) : (
-                        <span className="text-gray-300">—</span>
-                      )}
-                    </td>
-                    <td className="px-5 py-3.5 text-center">
-                      {classic ? (
-                        <Check size={18} className="mx-auto text-gray-400" />
-                      ) : (
-                        <span className="text-gray-300">—</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. FAQ ──────────────────────────────────────────────────── */}
+      {/* ── 3. FAQ ──────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="mb-8 text-center text-2xl font-bold text-dark-gray">
           الأسئلة الشائعة
@@ -465,7 +743,7 @@ export default function NappePvcPageAr() {
       <section className="bg-primary py-14 text-center">
         <div className="mx-auto max-w-2xl px-4">
           <h2 className="text-2xl font-bold text-white">
-            احمِ طاولتك بأناقة
+            زيّن طاولتك بأناقة
           </h2>
           <p className="mt-2 text-white/80">
             التوصيل خلال 24–72 ساعة في جميع أنحاء المغرب · الدفع عند الاستلام
