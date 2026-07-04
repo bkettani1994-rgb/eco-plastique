@@ -196,6 +196,9 @@ export default function NappePvcPage() {
           ? "Largeur (cm)"
           : "Longueur (cm)";
 
+  /* ─── Quantité de la nappe en cours ─── */
+  const [qty, setQty] = useState(1);
+
   /* ─── Liste des nappes ajoutées ─── */
   interface AddedNappe {
     modelLabel: string;
@@ -204,7 +207,8 @@ export default function NappePvcPage() {
     thickness: Thickness;
     dimSummary: string;
     areaM2: number;
-    price: number;
+    price: number; // prix unitaire
+    qty: number;
   }
   const [addedNappes, setAddedNappes] = useState<AddedNappe[]>([]);
 
@@ -223,9 +227,11 @@ export default function NappePvcPage() {
         dimSummary,
         areaM2: area,
         price: totalPrice,
+        qty,
       },
     ]);
     setDims({ length: "", width: "" });
+    setQty(1);
   }
 
   function removeNappe(index: number) {
@@ -235,10 +241,11 @@ export default function NappePvcPage() {
   // Nappes à commander : celles ajoutées + la config en cours si valide
   const pendingCurrent: AddedNappe | null =
     totalPrice && area
-      ? { modelLabel: model.label, image: model.image, shapeLabel, thickness, dimSummary, areaM2: area, price: totalPrice }
+      ? { modelLabel: model.label, image: model.image, shapeLabel, thickness, dimSummary, areaM2: area, price: totalPrice, qty }
       : null;
   const orderNappes: AddedNappe[] = pendingCurrent ? [...addedNappes, pendingCurrent] : addedNappes;
-  const grandTotal = orderNappes.reduce((sum, n) => sum + n.price, 0);
+  const grandTotal = orderNappes.reduce((sum, n) => sum + n.price * n.qty, 0);
+  const totalPieces = orderNappes.reduce((sum, n) => sum + n.qty, 0);
 
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -253,16 +260,16 @@ export default function NappePvcPage() {
       name: `${PRODUCT.name} (${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary})`,
       price: n.price,
       image: n.image,
-      quantity: 1,
+      quantity: n.qty,
     }));
 
     clearCart();
-    orderItems.forEach((item) => addItem(item, 1));
+    orderItems.forEach((item) => addItem(item, item.quantity));
 
     const notes = orderNappes
       .map(
         (n, i) =>
-          `Nappe ${i + 1} : ${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary} | ${n.areaM2.toFixed(2)} m² | ${n.price} MAD`
+          `Nappe ${i + 1} : ${n.modelLabel} | ${n.shapeLabel} | ${n.thickness} | ${n.dimSummary} | ${n.areaM2.toFixed(2)} m² | ${n.qty} × ${n.price} MAD`
       )
       .join(" — ");
 
@@ -463,11 +470,45 @@ export default function NappePvcPage() {
                 )}
               </div>
 
+              {/* Quantité */}
+              <div className="mb-3 mt-5 flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#f97316" }}>5</span>
+                <p className="text-sm font-semibold text-dark-gray">Quantité :</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  disabled={qty <= 1}
+                  aria-label="Diminuer la quantité"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border-2 text-lg font-bold transition-all disabled:opacity-40"
+                  style={{ borderColor: "#f97316", color: "#f97316" }}
+                >
+                  −
+                </button>
+                <span className="w-12 text-center text-lg font-bold text-dark-gray">{qty}</span>
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.min(20, q + 1))}
+                  aria-label="Augmenter la quantité"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border-2 text-lg font-bold transition-all"
+                  style={{ borderColor: "#f97316", color: "#f97316" }}
+                >
+                  +
+                </button>
+                <span className="text-xs text-gray-500">pièce{qty > 1 ? "s" : ""} de la même taille</span>
+              </div>
+
               {/* Prix total de la nappe en cours */}
               <div className="mt-4 flex items-center justify-between rounded-xl px-4 py-3" style={{ backgroundColor: "#fff7ed" }}>
-                <p className="text-sm font-semibold text-dark-gray">Prix total de la nappe</p>
+                <div>
+                  <p className="text-sm font-semibold text-dark-gray">Prix total de la nappe</p>
+                  {totalPrice && qty > 1 && (
+                    <p className="text-xs text-gray-500">{qty} × {totalPrice} MAD</p>
+                  )}
+                </div>
                 <span className="text-xl font-extrabold" style={{ color: "#f97316" }}>
-                  {totalPrice ? `${totalPrice} MAD` : "— MAD"}
+                  {totalPrice ? `${totalPrice * qty} MAD` : "— MAD"}
                 </span>
               </div>
 
@@ -498,14 +539,16 @@ export default function NappePvcPage() {
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-dark-gray">
                           Nappe {n.modelLabel} — {n.shapeLabel}
+                          {n.qty > 1 ? ` × ${n.qty}` : ""}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {n.thickness} · {n.dimSummary} · {n.areaM2.toFixed(2)} m²
+                          {n.thickness} · {n.dimSummary}
+                          {n.qty > 1 ? ` · ${n.qty} × ${n.price} MAD` : ""}
                         </p>
                       </div>
                       <div className="flex flex-shrink-0 items-center gap-2">
                         <span className="text-sm font-bold" style={{ color: "#f97316" }}>
-                          {n.price} MAD
+                          {n.price * n.qty} MAD
                         </span>
                         <button
                           type="button"
@@ -576,7 +619,7 @@ export default function NappePvcPage() {
                   {submitting
                     ? "Traitement…"
                     : orderNappes.length > 0
-                      ? `Commander${orderNappes.length > 1 ? ` ${orderNappes.length} nappes` : ""} — ${grandTotal} MAD`
+                      ? `Commander${totalPieces > 1 ? ` ${totalPieces} nappes` : ""} — ${grandTotal} MAD`
                       : "Renseignez vos dimensions"}
                 </button>
                 <p className="text-center text-xs text-gray-400">
