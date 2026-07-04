@@ -85,7 +85,7 @@ export const products: Product[] = [
     longDescription:
       "Notre nappe en PVC sur mesure est découpée selon les dimensions exactes de votre table, qu'elle soit ronde, carrée, ovale ou rectangulaire. Fabriquée à partir d'un PVC épais et de haute qualité, elle protège durablement votre table contre les taches, l'eau, l'huile et la chaleur des plats, tout en restant agréable au toucher. Disponible dans une large gamme de motifs et de couleurs pour s'harmoniser avec votre décoration intérieure, elle est devenue un incontournable des foyers marocains qui veulent allier praticité, hygiène et style sans sacrifier l'esthétique de leur salle à manger.",
     images: [
-      "https://picsum.photos/seed/nappe-pvc-sur-mesure-1/800/800",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-2/800/800",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-3/800/800",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-4/800/800",
