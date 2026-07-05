@@ -1,3 +1,26 @@
+# Configuration des commandes (Google Sheets + Meta)
+
+## Variables d'environnement Vercel
+
+| Variable | Rôle |
+|----------|------|
+| `GOOGLE_SHEETS_WEBHOOK_URL` | URL `/exec` du script Apps Script (réception des commandes dans Sheets) |
+| `META_CAPI_ACCESS_TOKEN` | Jeton de la Conversions API Meta (envoi serveur de l'événement Purchase) |
+
+Après toute modification d'une variable, **redéployer** le site (les variables
+ne sont prises en compte qu'au build suivant).
+
+### Conversions API Meta (CAPI)
+- Jeton : Gestionnaire d'événements → pixel → Paramètres → API de conversions
+  → « Générer un jeton d'accès ».
+- Le serveur envoie `Purchase` (valeur + MAD) avec le téléphone/prénom/ville
+  hachés (SHA-256) et l'`event_id` = numéro de commande, qui **déduplique**
+  avec l'événement du pixel navigateur (même `eventID`). Meta ne compte donc
+  jamais la vente deux fois.
+- Si la variable n'est pas définie, le serveur n'envoie rien (aucune erreur).
+
+---
+
 # Réception des commandes dans Google Sheets
 
 Chaque commande passée sur le site est envoyée vers un fichier Google Sheets,

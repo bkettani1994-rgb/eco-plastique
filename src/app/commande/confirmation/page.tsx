@@ -46,15 +46,19 @@ export default function CommandeConfirmationPage() {
   useEffect(() => {
     if (order && !tracked.current) {
       tracked.current = true;
-      trackPixel("Purchase", {
-        value: order.total,
-        currency: "MAD",
-        contents: order.items.map((item) => ({
-          id: item.slug,
-          quantity: item.quantity,
-        })),
-        num_items: order.items.reduce((sum, item) => sum + item.quantity, 0),
-      });
+      trackPixel(
+        "Purchase",
+        {
+          value: order.total,
+          currency: "MAD",
+          contents: order.items.map((item) => ({
+            id: item.slug,
+            quantity: item.quantity,
+          })),
+          num_items: order.items.reduce((sum, item) => sum + item.quantity, 0),
+        },
+        order.id, // eventID = déduplication avec la Conversions API serveur
+      );
     }
   }, [order]);
 
