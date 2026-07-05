@@ -36,11 +36,11 @@ export const siteConfig = {
   businessName: "Eco Plastique",
   description:
     "Eco Plastique propose des solutions sur mesure pour protéger et améliorer votre quotidien : nappes PVC, protège-matelas et oreillers médicaux.",
-  whatsappNumber: "212600000000",
-  phoneDisplay: "+212 6XX XXX XXX",
+  whatsappNumber: "212663310060",
+  phoneDisplay: "+212 6 63 31 00 60",
   email: "contact@ecoplastique.ma",
   address: "Casablanca, Maroc",
-  phone: "+212 6XX XXX XXX",
+  phone: "+212 6 63 31 00 60",
 };
 
 export function whatsappLink(message?: string): string {
@@ -57,9 +57,9 @@ export const navLinks: NavLink[] = [
 ];
 
 export const socialLinks: SocialLink[] = [
-  { label: "Facebook", href: "https://facebook.com/ecoplastique" },
-  { label: "Instagram", href: "https://instagram.com/ecoplastique" },
-  { label: "TikTok", href: "https://tiktok.com/@ecoplastique" },
+  { label: "Facebook", href: "https://web.facebook.com/ecoplastique.ma" },
+  { label: "Instagram", href: "https://www.instagram.com/ecoplastique.ma/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@ecoplastique.ma" },
 ];
 
 export const testimonials: SiteTestimonial[] = [
