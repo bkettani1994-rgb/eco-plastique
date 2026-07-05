@@ -5,6 +5,8 @@ import { Header } from "@/components/layout/header";
 import { TopBanner } from "@/components/layout/top-banner";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/whatsapp-button";
+import { MetaPixel } from "@/components/meta-pixel";
+import { META_PIXEL_ID } from "@/lib/meta-pixel";
 import { CartProvider } from "@/lib/cart-context";
 import { LanguageProvider } from "@/lib/language-context";
 
@@ -47,6 +49,17 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col overflow-x-hidden">
+        <MetaPixel />
+        <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            alt=""
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+          />
+        </noscript>
         <LanguageProvider>
           <CartProvider>
             <div className="sticky top-0 z-50">

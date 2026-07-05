@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -16,6 +16,7 @@ import {
 import { getLastOrder, type Order } from "@/lib/order";
 import { whatsappLink } from "@/data/site";
 import { formatPrice } from "@/lib/utils";
+import { trackPixel } from "@/lib/meta-pixel";
 
 const NEXT_STEPS = [
   {
@@ -39,6 +40,23 @@ export default function CommandeConfirmationPage() {
   const [order] = useState<Order | null>(() =>
     typeof window === "undefined" ? null : getLastOrder(),
   );
+
+  // Événement Meta Purchase (une seule fois, avec la valeur de la commande)
+  const tracked = useRef(false);
+  useEffect(() => {
+    if (order && !tracked.current) {
+      tracked.current = true;
+      trackPixel("Purchase", {
+        value: order.total,
+        currency: "MAD",
+        contents: order.items.map((item) => ({
+          id: item.slug,
+          quantity: item.quantity,
+        })),
+        num_items: order.items.reduce((sum, item) => sum + item.quantity, 0),
+      });
+    }
+  }, [order]);
 
   if (!order) {
     return (
