@@ -3,9 +3,21 @@
 import { useState } from "react";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { siteConfig, whatsappLink } from "@/data/site";
+import { submitContact } from "@/lib/submit-lead";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setSending(true);
+    await submitContact(form);
+    setSending(false);
+    setSubmitted(true);
+    setForm({ name: "", email: "", phone: "", message: "" });
+  }
 
   return (
     <section className="bg-white py-16 sm:py-20">
@@ -83,13 +95,7 @@ export default function ContactPage() {
                 </button>
               </div>
             ) : (
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  setSubmitted(true);
-                }}
-                className="space-y-4"
-              >
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="name" className="mb-1 block text-sm font-medium text-dark-gray">
                     Nom
@@ -98,6 +104,8 @@ export default function ContactPage() {
                     id="name"
                     type="text"
                     required
+                    value={form.name}
+                    onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                     className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray outline-none focus:border-primary"
                   />
                 </div>
@@ -109,6 +117,8 @@ export default function ContactPage() {
                     id="email"
                     type="email"
                     required
+                    value={form.email}
+                    onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                     className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray outline-none focus:border-primary"
                   />
                 </div>
@@ -119,6 +129,8 @@ export default function ContactPage() {
                   <input
                     id="phone"
                     type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
                     className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray outline-none focus:border-primary"
                   />
                 </div>
@@ -133,14 +145,17 @@ export default function ContactPage() {
                     id="message"
                     required
                     rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                     className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray outline-none focus:border-primary"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded-xl bg-primary px-6 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg"
+                  disabled={sending}
+                  className="w-full rounded-xl bg-primary px-6 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg disabled:opacity-70"
                 >
-                  Envoyer le message
+                  {sending ? "Envoi…" : "Envoyer le message"}
                 </button>
               </form>
             )}

@@ -40,6 +40,12 @@ avec **une feuille par produit** et des **colonnes structurées**.
 **Nappes PVC** *(une ligne par nappe ; le N° commande regroupe les nappes d'une même commande)*
 `Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Type de nappe · Forme · Épaisseur · Dimensions · Quantité · Prix ligne (MAD) · Total commande (MAD) · Langue`
 
+**Messages contact** *(formulaire de la page Contact)*
+`Date · Nom · Email · Téléphone · Message`
+
+**Newsletter** *(case d'inscription du footer)*
+`Date · Email`
+
 ## Le script (Extensions → Apps Script)
 
 Remplacez tout le contenu de `Code.gs` par ceci, puis **Déployer → Gérer les
@@ -74,11 +80,37 @@ function getSheet(name, headers) {
   return sheet;
 }
 
+const CONTACT_SHEET = "Messages contact";
+const CONTACT_HEADERS = ["Date", "Nom", "Email", "Téléphone", "Message"];
+
+const NEWSLETTER_SHEET = "Newsletter";
+const NEWSLETTER_HEADERS = ["Date", "Email"];
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
     const lang = data.lang === "ar" ? "Arabe" : "Français";
     const phone = "'" + (data.phone || ""); // garde le 0 initial
+
+    // ── Messages de contact ──
+    if (data.type === "contact") {
+      const sheet = getSheet(CONTACT_SHEET, CONTACT_HEADERS);
+      sheet.appendRow([
+        new Date(), data.name || "", data.email || "", phone, data.message || "",
+      ]);
+      return ContentService.createTextOutput(
+        JSON.stringify({ ok: true })
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ── Inscriptions newsletter ──
+    if (data.type === "newsletter") {
+      const sheet = getSheet(NEWSLETTER_SHEET, NEWSLETTER_HEADERS);
+      sheet.appendRow([new Date(), data.email || ""]);
+      return ContentService.createTextOutput(
+        JSON.stringify({ ok: true })
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
 
     if (data.product === "nappe-pvc") {
       const sheet = getSheet(NAPPE_SHEET, NAPPE_HEADERS);
