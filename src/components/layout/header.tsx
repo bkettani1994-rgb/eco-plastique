@@ -5,9 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 // framer-motion removed from mobile drawer to avoid stacking context issues
-import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
+import { Menu, X, MessageCircle } from "lucide-react";
 import { navLinks, siteConfig, whatsappLink } from "@/data/site";
-import { useCart } from "@/lib/cart-context";
 
 // Pages that have an Arabic version (FR base paths)
 const AR_ENABLED = new Set([
@@ -66,7 +65,6 @@ function LanguageSwitch({ className = "" }: { className?: string }) {
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const { itemCount } = useCart();
   const isAr = useIsArabicPage();
   const homeHref = isAr ? "/ar" : "/";
 
@@ -99,16 +97,6 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <LanguageSwitch />
-          <Link
-            href="/panier"
-            aria-label="Panier"
-            className="relative flex h-10 w-10 items-center justify-center rounded-xl text-dark-gray transition-colors hover:bg-light-gray"
-          >
-            <ShoppingCart size={20} />
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
-              {itemCount}
-            </span>
-          </Link>
         </div>
       </div>
 
@@ -136,21 +124,9 @@ export function Header() {
           />
         </Link>
 
-        {/* Right: language + cart */}
+        {/* Right: language */}
         <div className="flex items-center gap-2">
           <LanguageSwitch />
-          <Link
-            href="/panier"
-            aria-label="Panier"
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl text-dark-gray"
-          >
-            <ShoppingCart size={20} />
-            {itemCount > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
-                {itemCount}
-              </span>
-            )}
-          </Link>
         </div>
       </div>
 
@@ -204,14 +180,6 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/panier"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 text-base font-medium text-dark-gray transition-colors hover:text-primary"
-              >
-                <ShoppingCart size={18} />
-                Panier ({itemCount})
-              </Link>
             </nav>
 
             <Link

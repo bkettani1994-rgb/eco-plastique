@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, PackageX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { AddToCartButton } from "@/components/add-to-cart-button";
 import { products } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -109,7 +108,6 @@ export default function ProduitsPage() {
                     >
                       Voir le produit
                     </Link>
-                    <AddToCartButton product={product} className="w-full px-4 py-2.5" />
                   </div>
                 </CardContent>
               </Card>

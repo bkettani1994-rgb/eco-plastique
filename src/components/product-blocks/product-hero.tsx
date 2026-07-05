@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Product } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
 import { WhatsappOrder } from "@/components/product-blocks/whatsapp-order";
-import { AddToCartButton } from "@/components/add-to-cart-button";
 
 interface ProductHeroProps {
   product: Product;
@@ -39,7 +38,6 @@ export function ProductHero({ product }: ProductHeroProps) {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <AddToCartButton product={product} variant="primary" />
             <WhatsappOrder product={product} />
           </div>
         </div>
