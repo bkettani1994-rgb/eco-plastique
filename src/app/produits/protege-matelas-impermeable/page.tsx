@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
+import { submitOrder } from "@/lib/submit-order";
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -153,11 +154,12 @@ export default function ProtegeMatelasPage() {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  function handleOrder(e: React.FormEvent) {
+  async function handleOrder(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
 
     const sizeSummary = chosenSizes.map((s) => s.label).join(", ");
+    const orderNotes = `Offre : ${selectedOffer.label} | Tailles : ${sizeSummary} | Total : ${totalPrice} MAD`;
     const orderItem = {
       slug: PRODUCT.slug,
       name: `${PRODUCT.name} (${sizeSummary})`,
@@ -172,9 +174,17 @@ export default function ProtegeMatelasPage() {
     saveLastOrder({
       id: generateOrderId(),
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
-      customer: { ...form, notes: `Offre : ${selectedOffer.label} | Tailles : ${sizeSummary} | Total : ${totalPrice} MAD` },
+      customer: { ...form, notes: orderNotes },
       total: totalPrice,
       createdAt: new Date().toISOString(),
+    });
+
+    await submitOrder({
+      product: "protege-matelas",
+      customer: form,
+      details: orderNotes,
+      total: totalPrice,
+      lang: "fr",
     });
 
     router.push("/commande/confirmation");

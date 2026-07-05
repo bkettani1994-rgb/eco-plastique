@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
+import { submitOrder } from "@/lib/submit-order";
 
 /* ─── Icônes de formes de table (SVG sur mesure) ───────────────────── */
 
@@ -322,7 +323,7 @@ export default function NappePvcPageAr() {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  function handleOrder(e: React.FormEvent) {
+  async function handleOrder(e: React.FormEvent) {
     e.preventDefault();
     if (orderNappes.length === 0) return;
     setSubmitting(true);
@@ -351,6 +352,14 @@ export default function NappePvcPageAr() {
       customer: { ...form, notes: `${notes} — المجموع : ${grandTotal} درهم` },
       total: grandTotal,
       createdAt: new Date().toISOString(),
+    });
+
+    await submitOrder({
+      product: "nappe-pvc",
+      customer: form,
+      details: `${notes} — المجموع : ${grandTotal} درهم`,
+      total: grandTotal,
+      lang: "ar",
     });
 
     router.push("/commande/confirmation");

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
+import { submitOrder } from "@/lib/submit-order";
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -144,7 +145,7 @@ export default function OreilleMemoireFormePageAr() {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  function handleOrder(e: React.FormEvent) {
+  async function handleOrder(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
 
@@ -166,6 +167,14 @@ export default function OreilleMemoireFormePageAr() {
       customer: { ...form, notes: `العرض: ${selectedOffer.label} | السماكات: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
       total: totalPrice,
       createdAt: new Date().toISOString(),
+    });
+
+    await submitOrder({
+      product: "oreiller-memoire",
+      customer: form,
+      details: `العرض: ${selectedOffer.label} | السماكات: ${sizeSummary} | المجموع: ${totalPrice} درهم`,
+      total: totalPrice,
+      lang: "ar",
     });
 
     router.push("/commande/confirmation");

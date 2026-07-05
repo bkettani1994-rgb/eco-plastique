@@ -72,6 +72,7 @@ function IconOctogone({ size = 32 }: ShapeIconProps) {
 }
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
+import { submitOrder } from "@/lib/submit-order";
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -352,7 +353,7 @@ export default function NappePvcPage() {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  function handleOrder(e: React.FormEvent) {
+  async function handleOrder(e: React.FormEvent) {
     e.preventDefault();
     if (orderNappes.length === 0) return;
     setSubmitting(true);
@@ -381,6 +382,14 @@ export default function NappePvcPage() {
       customer: { ...form, notes: `${notes} — Total : ${grandTotal} MAD` },
       total: grandTotal,
       createdAt: new Date().toISOString(),
+    });
+
+    await submitOrder({
+      product: "nappe-pvc",
+      customer: form,
+      details: `${notes} — Total : ${grandTotal} MAD`,
+      total: grandTotal,
+      lang: "fr",
     });
 
     router.push("/commande/confirmation");

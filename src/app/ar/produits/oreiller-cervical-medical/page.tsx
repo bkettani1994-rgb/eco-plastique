@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
+import { submitOrder } from "@/lib/submit-order";
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -142,7 +143,7 @@ export default function OreillercervicalPageAr() {
   const [form, setForm] = useState({ fullName: "", phone: "", city: "", address: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  function handleOrder(e: React.FormEvent) {
+  async function handleOrder(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
 
@@ -164,6 +165,14 @@ export default function OreillercervicalPageAr() {
       customer: { ...form, notes: `العرض: ${selectedOffer.label} | المنتج: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
       total: totalPrice,
       createdAt: new Date().toISOString(),
+    });
+
+    await submitOrder({
+      product: "oreiller-cervical",
+      customer: form,
+      details: `العرض: ${selectedOffer.label} | المنتج: ${sizeSummary} | المجموع: ${totalPrice} درهم`,
+      total: totalPrice,
+      lang: "ar",
     });
 
     router.push("/commande/confirmation");
