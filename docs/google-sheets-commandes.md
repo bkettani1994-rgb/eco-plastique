@@ -1,81 +1,91 @@
 # Réception des commandes dans Google Sheets
 
 Chaque commande passée sur le site est envoyée vers un fichier Google Sheets,
-avec **une feuille par produit** :
+avec **une feuille par produit** et des **colonnes structurées**.
 
-| Produit | Feuille |
-|---------|---------|
-| Nappes en PVC | `Nappes PVC` |
-| Protège-matelas | `Protège-matelas` |
-| Oreiller cervical | `Oreiller cervical` |
-| Oreiller mousse | `Oreiller mousse` |
+## Colonnes par feuille
 
-Colonnes de chaque feuille : Date · Nom complet · Téléphone · Ville · Adresse ·
-Détails de la commande · Total (MAD) · Langue.
+**Protège-matelas**
+`Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Offre · Tailles · Total (MAD) · Langue`
 
-## Installation (une seule fois, ~10 minutes)
+**Oreiller cervical**
+`Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Offre · Modèle · Total (MAD) · Langue`
 
-### 1. Créer le fichier Google Sheets
-1. Allez sur [sheets.new](https://sheets.new) et créez un fichier, par exemple
-   nommé **« Commandes Eco Plastique »**.
-2. Pas besoin de créer les feuilles à la main : le script les crée
-   automatiquement avec leurs en-têtes à la première commande.
+**Oreiller mousse**
+`Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Offre · Épaisseurs · Total (MAD) · Langue`
 
-### 2. Ajouter le script
-1. Dans le fichier : menu **Extensions → Apps Script**.
-2. Effacez le contenu de `Code.gs` et collez le script ci-dessous.
-3. Enregistrez (icône disquette).
+**Nappes PVC** *(une ligne par nappe ; le N° commande regroupe les nappes d'une même commande)*
+`Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Type de nappe · Forme · Épaisseur · Dimensions · Quantité · Prix ligne (MAD) · Total commande (MAD) · Langue`
+
+## Le script (Extensions → Apps Script)
+
+Remplacez tout le contenu de `Code.gs` par ceci, puis **Déployer → Gérer les
+déploiements → ✏️ → Nouvelle version** (l'URL `/exec` ne change pas) :
 
 ```javascript
-/** Réception des commandes Eco Plastique — une feuille par produit. */
+/** Réception des commandes Eco Plastique — colonnes par produit. */
 
-const SHEET_BY_PRODUCT = {
-  "nappe-pvc": "Nappes PVC",
-  "protege-matelas": "Protège-matelas",
-  "oreiller-cervical": "Oreiller cervical",
-  "oreiller-memoire": "Oreiller mousse",
+const CONFIG = {
+  "protege-matelas": { sheet: "Protège-matelas", variantLabel: "Tailles" },
+  "oreiller-cervical": { sheet: "Oreiller cervical", variantLabel: "Modèle" },
+  "oreiller-memoire": { sheet: "Oreiller mousse", variantLabel: "Épaisseurs" },
 };
 
-const HEADERS = [
-  "Date",
-  "Nom complet",
-  "Téléphone",
-  "Ville",
-  "Adresse",
-  "Détails de la commande",
-  "Total (MAD)",
-  "Langue",
+const NAPPE_SHEET = "Nappes PVC";
+
+const NAPPE_HEADERS = [
+  "Date", "N° commande", "Nom complet", "Téléphone", "Ville", "Adresse",
+  "Type de nappe", "Forme", "Épaisseur", "Dimensions", "Quantité",
+  "Prix ligne (MAD)", "Total commande (MAD)", "Langue",
 ];
+
+function getSheet(name, headers) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = spreadsheet.getSheetByName(name);
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(name);
+    sheet.appendRow(headers);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
 
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const sheetName = SHEET_BY_PRODUCT[data.product];
-    if (!sheetName) {
-      return ContentService.createTextOutput(
-        JSON.stringify({ ok: false, error: "unknown product" })
-      ).setMimeType(ContentService.MimeType.JSON);
-    }
+    const lang = data.lang === "ar" ? "Arabe" : "Français";
+    const phone = "'" + (data.phone || ""); // garde le 0 initial
 
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    let sheet = spreadsheet.getSheetByName(sheetName);
-    if (!sheet) {
-      sheet = spreadsheet.insertSheet(sheetName);
-      sheet.appendRow(HEADERS);
-      sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight("bold");
-      sheet.setFrozenRows(1);
+    if (data.product === "nappe-pvc") {
+      const sheet = getSheet(NAPPE_SHEET, NAPPE_HEADERS);
+      const rows = data.rows && data.rows.length ? data.rows : [{}];
+      rows.forEach(function (r) {
+        sheet.appendRow([
+          new Date(), data.orderId || "", data.fullName || "", phone,
+          data.city || "", data.address || "",
+          r.type || "", r.shape || "", r.thickness || "", r.dimensions || "",
+          r.qty || "", r.price || "", data.total || 0, lang,
+        ]);
+      });
+    } else {
+      const cfg = CONFIG[data.product];
+      if (!cfg) {
+        return ContentService.createTextOutput(
+          JSON.stringify({ ok: false, error: "unknown product" })
+        ).setMimeType(ContentService.MimeType.JSON);
+      }
+      const headers = [
+        "Date", "N° commande", "Nom complet", "Téléphone", "Ville", "Adresse",
+        "Offre", cfg.variantLabel, "Total (MAD)", "Langue",
+      ];
+      const sheet = getSheet(cfg.sheet, headers);
+      sheet.appendRow([
+        new Date(), data.orderId || "", data.fullName || "", phone,
+        data.city || "", data.address || "",
+        data.offer || "", data.variant || "", data.total || 0, lang,
+      ]);
     }
-
-    sheet.appendRow([
-      new Date(),
-      data.fullName || "",
-      "'" + (data.phone || ""), // apostrophe pour garder le 0 initial
-      data.city || "",
-      data.address || "",
-      data.details || "",
-      data.total || 0,
-      data.lang === "ar" ? "Arabe" : "Français",
-    ]);
 
     return ContentService.createTextOutput(
       JSON.stringify({ ok: true })
@@ -88,33 +98,19 @@ function doPost(e) {
 }
 ```
 
-### 3. Déployer le script en Web App
-1. En haut à droite : **Déployer → Nouveau déploiement**.
-2. Cliquez sur l'engrenage ⚙️ → **Application Web**.
-3. Réglages :
-   - **Exécuter en tant que** : *Moi* (votre compte)
-   - **Qui a accès** : ***Tout le monde*** (obligatoire pour que le site
-     puisse envoyer les commandes — l'URL est secrète et non devinable)
-4. Cliquez **Déployer**, autorisez l'accès quand Google le demande.
-5. **Copiez l'URL du déploiement** (elle se termine par `/exec`).
+## Mise à jour depuis l'ancienne version
 
-### 4. Configurer le site
-Ajoutez la variable d'environnement sur l'hébergeur (Vercel →
-Settings → Environment Variables) :
+Les feuilles existantes gardent leurs anciens en-têtes (« Détails de la
+commande »). Pour repartir proprement :
+1. **Supprimez** (ou renommez en `Archive …`) les 4 feuilles existantes.
+2. Le script recrée automatiquement chaque feuille avec les **nouvelles
+   colonnes** à la première commande du produit.
 
-```
-GOOGLE_SHEETS_WEBHOOK_URL = https://script.google.com/macros/s/XXXXX/exec
-```
+## Installation initiale (rappel)
 
-Puis redéployez le site. C'est tout : chaque commande arrive dans la bonne
-feuille en temps réel.
-
-### Tester
-Passez une commande test sur n'importe quelle page produit — la ligne doit
-apparaître dans la feuille correspondante en quelques secondes.
-
-## Notes
-- Si la variable n'est pas configurée, le site fonctionne normalement (les
-  commandes suivent le parcours habituel) mais rien n'est envoyé au Sheet.
-- Pour modifier le script plus tard : refaites **Déployer → Gérer les
-  déploiements → ✏️ → Nouvelle version**, l'URL ne change pas.
+1. [sheets.new](https://sheets.new) → Extensions → Apps Script → coller le script.
+2. Déployer → Nouveau déploiement → **Application Web** → Exécuter en tant
+   que : *Moi* · Qui a accès : *Tout le monde* → copier l'URL `/exec`.
+3. Vercel → Settings → Environment Variables :
+   `GOOGLE_SHEETS_WEBHOOK_URL = https://script.google.com/macros/s/XXXXX/exec`
+4. Redéployer le site, puis passer une commande test.

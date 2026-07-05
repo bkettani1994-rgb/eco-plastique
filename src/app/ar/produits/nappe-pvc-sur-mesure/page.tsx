@@ -346,8 +346,9 @@ export default function NappePvcPageAr() {
       )
       .join(" — ");
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: orderItems,
       customer: { ...form, notes: `${notes} — المجموع : ${grandTotal} درهم` },
       total: grandTotal,
@@ -356,10 +357,19 @@ export default function NappePvcPageAr() {
 
     await submitOrder({
       product: "nappe-pvc",
+      orderId,
       customer: form,
       details: `${notes} — المجموع : ${grandTotal} درهم`,
       total: grandTotal,
       lang: "ar",
+      rows: orderNappes.map((n) => ({
+        type: n.modelLabel,
+        shape: n.shapeLabel,
+        thickness: n.thickness,
+        dimensions: n.dimSummary,
+        qty: n.qty,
+        price: n.price * n.qty,
+      })),
     });
 
     router.push("/commande/confirmation");

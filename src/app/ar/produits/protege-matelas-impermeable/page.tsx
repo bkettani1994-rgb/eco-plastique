@@ -168,8 +168,9 @@ export default function ProtegeMatelasPageAr() {
     clearCart();
     addItem(orderItem, selectedOffer.qty);
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
       customer: { ...form, notes: `العرض: ${selectedOffer.label} | المقاسات: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
       total: totalPrice,
@@ -178,10 +179,12 @@ export default function ProtegeMatelasPageAr() {
 
     await submitOrder({
       product: "protege-matelas",
+      orderId,
       customer: form,
       details: `العرض: ${selectedOffer.label} | المقاسات: ${sizeSummary} | المجموع: ${totalPrice} درهم`,
       total: totalPrice,
       lang: "ar",
+      fields: { offer: selectedOffer.label, variant: sizeSummary },
     });
 
     router.push("/commande/confirmation");

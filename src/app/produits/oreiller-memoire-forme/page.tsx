@@ -162,8 +162,9 @@ export default function OreilleMemoireFormePage() {
     clearCart();
     addItem(orderItem, selectedOffer.qty);
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
       customer: { ...form, notes: orderNotes },
       total: totalPrice,
@@ -172,10 +173,12 @@ export default function OreilleMemoireFormePage() {
 
     await submitOrder({
       product: "oreiller-memoire",
+      orderId,
       customer: form,
       details: orderNotes,
       total: totalPrice,
       lang: "fr",
+      fields: { offer: selectedOffer.label, variant: sizeSummary },
     });
 
     router.push("/commande/confirmation");

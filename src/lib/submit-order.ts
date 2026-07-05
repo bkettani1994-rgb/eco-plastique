@@ -9,15 +9,30 @@ export type ProductKey =
 
 export interface OrderSubmission {
   product: ProductKey;
+  orderId: string;
   customer: {
     fullName: string;
     phone: string;
     city: string;
     address: string;
   };
-  details: string; // récapitulatif complet (offre, tailles, dimensions…)
+  details: string; // récapitulatif complet (secours / lecture rapide)
   total: number;   // MAD
   lang: "fr" | "ar";
+  /* Colonnes structurées pour les produits à offres (offre + variante) */
+  fields?: {
+    offer?: string;   // ex. "2 pièces"
+    variant?: string; // ex. "140×190 cm, 160×200 cm" / "17 cm"
+  };
+  /* Nappes : une ligne par nappe configurée */
+  rows?: Array<{
+    type: string;       // Transparente / Mate / Dorée
+    shape: string;      // Carré, Cercle…
+    thickness: string;  // 1,5 mm / 2 mm
+    dimensions: string; // Côté 100 cm · …
+    qty: number;
+    price: number;      // prix de la ligne (unitaire × qté)
+  }>;
 }
 
 export async function submitOrder(order: OrderSubmission): Promise<void> {

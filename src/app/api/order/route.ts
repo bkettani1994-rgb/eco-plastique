@@ -21,10 +21,13 @@ export async function POST(request: Request) {
 
   const order = payload as {
     product?: string;
+    orderId?: string;
     customer?: { fullName?: string; phone?: string; city?: string; address?: string };
     details?: string;
     total?: number;
     lang?: string;
+    fields?: { offer?: string; variant?: string };
+    rows?: Array<Record<string, string | number>>;
   };
 
   if (!order.product || !VALID_PRODUCTS.has(order.product) || !order.customer?.phone) {
@@ -44,6 +47,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         product: order.product,
+        orderId: order.orderId ?? "",
         fullName: order.customer.fullName ?? "",
         phone: order.customer.phone ?? "",
         city: order.customer.city ?? "",
@@ -51,6 +55,9 @@ export async function POST(request: Request) {
         details: order.details ?? "",
         total: order.total ?? 0,
         lang: order.lang ?? "fr",
+        offer: order.fields?.offer ?? "",
+        variant: order.fields?.variant ?? "",
+        rows: order.rows ?? [],
       }),
       // Apps Script répond par une redirection 302 vers le résultat
       redirect: "follow",

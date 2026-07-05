@@ -171,8 +171,9 @@ export default function ProtegeMatelasPage() {
     clearCart();
     addItem(orderItem, selectedOffer.qty);
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
       customer: { ...form, notes: orderNotes },
       total: totalPrice,
@@ -181,10 +182,12 @@ export default function ProtegeMatelasPage() {
 
     await submitOrder({
       product: "protege-matelas",
+      orderId,
       customer: form,
       details: orderNotes,
       total: totalPrice,
       lang: "fr",
+      fields: { offer: selectedOffer.label, variant: sizeSummary },
     });
 
     router.push("/commande/confirmation");

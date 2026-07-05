@@ -160,8 +160,9 @@ export default function OreillercervicalPage() {
     clearCart();
     addItem(orderItem, selectedOffer.qty);
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
       customer: { ...form, notes: orderNotes },
       total: totalPrice,
@@ -170,10 +171,12 @@ export default function OreillercervicalPage() {
 
     await submitOrder({
       product: "oreiller-cervical",
+      orderId,
       customer: form,
       details: orderNotes,
       total: totalPrice,
       lang: "fr",
+      fields: { offer: selectedOffer.label, variant: sizeSummary },
     });
 
     router.push("/commande/confirmation");

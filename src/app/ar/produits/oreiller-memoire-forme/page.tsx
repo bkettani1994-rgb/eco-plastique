@@ -161,8 +161,9 @@ export default function OreilleMemoireFormePageAr() {
     clearCart();
     addItem(orderItem, selectedOffer.qty);
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
       customer: { ...form, notes: `العرض: ${selectedOffer.label} | السماكات: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
       total: totalPrice,
@@ -171,10 +172,12 @@ export default function OreilleMemoireFormePageAr() {
 
     await submitOrder({
       product: "oreiller-memoire",
+      orderId,
       customer: form,
       details: `العرض: ${selectedOffer.label} | السماكات: ${sizeSummary} | المجموع: ${totalPrice} درهم`,
       total: totalPrice,
       lang: "ar",
+      fields: { offer: selectedOffer.label, variant: sizeSummary },
     });
 
     router.push("/commande/confirmation");

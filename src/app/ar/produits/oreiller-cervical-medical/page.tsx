@@ -159,8 +159,9 @@ export default function OreillercervicalPageAr() {
     clearCart();
     addItem(orderItem, selectedOffer.qty);
 
+    const orderId = generateOrderId();
     saveLastOrder({
-      id: generateOrderId(),
+      id: orderId,
       items: [{ ...orderItem, quantity: selectedOffer.qty }],
       customer: { ...form, notes: `العرض: ${selectedOffer.label} | المنتج: ${sizeSummary} | المجموع: ${totalPrice} درهم` },
       total: totalPrice,
@@ -169,10 +170,12 @@ export default function OreillercervicalPageAr() {
 
     await submitOrder({
       product: "oreiller-cervical",
+      orderId,
       customer: form,
       details: `العرض: ${selectedOffer.label} | المنتج: ${sizeSummary} | المجموع: ${totalPrice} درهم`,
       total: totalPrice,
       lang: "ar",
+      fields: { offer: selectedOffer.label, variant: sizeSummary },
     });
 
     router.push("/commande/confirmation");
