@@ -269,7 +269,7 @@ export default function NappePvcPage() {
 
   const [model, setModel] = useState<Model>(MODELS[0]);
   const [thickness, setThickness] = useState<Thickness>("1,5 mm");
-  const [shape, setShape] = useState<ShapeId>("rectangulaire");
+  const [shape, setShape] = useState<ShapeId>("carree");
   const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showMeasureGuide, setShowMeasureGuide] = useState(false);
