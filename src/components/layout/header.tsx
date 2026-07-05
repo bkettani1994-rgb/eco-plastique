@@ -12,6 +12,7 @@ import { useCart } from "@/lib/cart-context";
 // Pages that have an Arabic version (FR base paths)
 const AR_ENABLED = new Set([
   "/",
+  "/produits",
   "/produits/nappe-pvc-sur-mesure",
   "/produits/protege-matelas-impermeable",
   "/produits/oreiller-cervical-medical",
