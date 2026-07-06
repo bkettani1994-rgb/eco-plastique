@@ -324,6 +324,7 @@ export default function NappePvcPage() {
   const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showMeasureGuide, setShowMeasureGuide] = useState(false);
+  const [showThicknessCompare, setShowThicknessCompare] = useState(false);
 
   const thicknessOptions = availableThicknesses(model);
 
@@ -601,9 +602,19 @@ export default function NappePvcPage() {
               </div>
 
               {/* Étape 3 : épaisseur */}
-              <div className="mb-3 mt-5 flex items-center gap-2">
+              <div className="mb-3 mt-5 flex flex-wrap items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ backgroundColor: "#8ec63f" }}>3</span>
                 <p className="text-sm font-semibold text-dark-gray">Épaisseur :</p>
+                {thicknessOptions.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowThicknessCompare(true)}
+                    className="ml-auto inline-flex flex-shrink-0 items-center gap-0.5 whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold transition-colors hover:bg-primary/10"
+                    style={{ borderColor: "#8ec63f", color: "#8ec63f" }}
+                  >
+                    ⚖️ Comparer les épaisseurs
+                  </button>
+                )}
               </div>
               <div className={`grid gap-2 ${thicknessOptions.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
                 {thicknessOptions.map((t) => {
@@ -927,6 +938,59 @@ export default function NappePvcPage() {
             <button
               type="button"
               onClick={() => setShowMeasureGuide(false)}
+              className="mt-4 w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+            >
+              J&apos;ai compris
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── POPUP « Comparer les épaisseurs » ───────────────────────── */}
+      {showThicknessCompare && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setShowThicknessCompare(false)}
+        >
+          <div
+            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-dark-gray">⚖️ Comparer les épaisseurs</h3>
+              <button
+                type="button"
+                aria-label="Fermer"
+                onClick={() => setShowThicknessCompare(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-dark-gray"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {[
+                { label: "Épaisseur 1,5 mm", src: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783369185/Gemini_Generated_Image_4wf26z4wf26z4wf2_rhjxw7.png" },
+                { label: "Épaisseur 2 mm", src: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783369185/Gemini_Generated_Image_73phdh73phdh73ph_agyrks.png" },
+              ].map((item) => (
+                <div key={item.label} className="flex flex-col gap-2">
+                  <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-gray-100 bg-light-gray">
+                    <Image src={item.src} alt={item.label} fill sizes="(max-width:640px) 100vw, 240px" className="object-contain" />
+                  </div>
+                  <p className="text-center text-sm font-semibold text-dark-gray">{item.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-4 rounded-xl px-4 py-3 text-sm text-gray-600" style={{ backgroundColor: "#f4faea" }}>
+              L&apos;épaisseur <strong>1,5 mm</strong> convient à un usage quotidien classique.
+              L&apos;épaisseur <strong>2 mm</strong> est plus rigide et plus durable, recommandée
+              pour les grandes tables ou un usage intensif.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setShowThicknessCompare(false)}
               className="mt-4 w-full rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               J&apos;ai compris
