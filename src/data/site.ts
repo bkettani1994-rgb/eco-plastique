@@ -13,6 +13,7 @@ export interface SiteTestimonial {
   city: string;
   review: string;
   rating: number;
+  product?: string;
 }
 
 export interface FaqItem {
@@ -68,36 +69,42 @@ export const testimonials: SiteTestimonial[] = [
     city: "Casablanca",
     review: "Exactement les dimensions demandées, qualité top et livraison rapide !",
     rating: 5,
+    product: "Nappe PVC sur mesure",
   },
   {
     name: "Youssef A.",
     city: "Rabat",
     review: "Très facile à nettoyer, parfait pour une famille avec enfants.",
     rating: 5,
+    product: "Nappe PVC sur mesure",
   },
   {
     name: "Salma T.",
     city: "Marrakech",
     review: "Parfait pour mon enfant, je ne m'inquiète plus des petits accidents nocturnes.",
     rating: 5,
+    product: "Protège-matelas imperméable",
   },
   {
     name: "Nadia L.",
     city: "Tanger",
     review: "Mes douleurs au cou ont nettement diminué après deux semaines.",
     rating: 5,
+    product: "Oreiller cervical médical",
   },
   {
     name: "Karim S.",
     city: "Agadir",
     review: "Très confortable et la housse se lave facilement.",
     rating: 4,
+    product: "Oreiller à mémoire de forme",
   },
   {
     name: "Imane R.",
     city: "Fès",
     review: "Le meilleur oreiller que j'ai eu, je me réveille sans douleurs au cou.",
     rating: 5,
+    product: "Oreiller cervical médical",
   },
 ];
 

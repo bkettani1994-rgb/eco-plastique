@@ -94,6 +94,11 @@ export function Testimonials({ lang = "fr" }: { lang?: "fr" | "ar" }) {
                     />
                   ))}
                 </div>
+                {testimonial.product ? (
+                  <span className="inline-block w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                    {testimonial.product}
+                  </span>
+                ) : null}
                 <p className="text-sm leading-relaxed text-gray-600">&laquo; {testimonial.review} &raquo;</p>
                 <div className="mt-auto flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
