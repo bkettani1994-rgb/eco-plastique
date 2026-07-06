@@ -85,7 +85,7 @@ export const products: Product[] = [
     longDescription:
       "Notre nappe en PVC sur mesure est découpée selon les dimensions exactes de votre table, qu'elle soit ronde, carrée, ovale ou rectangulaire. Fabriquée à partir d'un PVC épais et de haute qualité, elle protège durablement votre table contre les taches, l'eau, l'huile et la chaleur des plats, tout en restant agréable au toucher. Disponible dans une large gamme de motifs et de couleurs pour s'harmoniser avec votre décoration intérieure, elle est devenue un incontournable des foyers marocains qui veulent allier praticité, hygiène et style sans sacrifier l'esthétique de leur salle à manger.",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783181083/IMG_20240416_161146_515_olg26v.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783343454/dd0001.jpg_axu6l2.jpg",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-2/800/800",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-3/800/800",
       "https://picsum.photos/seed/nappe-pvc-sur-mesure-4/800/800",
@@ -224,7 +224,7 @@ export const products: Product[] = [
     longDescription:
       "Notre protège-matelas imperméable forme une barrière efficace contre les liquides, la transpiration et les acariens, tout en restant doux et respirant au contact de la peau. Idéal pour les enfants, les personnes âgées ou simplement pour prolonger la durée de vie de votre matelas, il se glisse facilement grâce à ses élastiques renforcés aux quatre coins et reste parfaitement en place toute la nuit. Disponible dans toutes les tailles standards marocaines, il se lave en machine et sèche rapidement, pour une hygiène irréprochable au quotidien.",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783343454/dd0001.jpg_axu6l2.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
       "https://picsum.photos/seed/protege-matelas-impermeable-2/800/800",
       "https://picsum.photos/seed/protege-matelas-impermeable-3/800/800",
     ],
