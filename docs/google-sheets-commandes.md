@@ -37,8 +37,8 @@ avec **une feuille par produit** et des **colonnes structurées**.
 **Oreiller mousse**
 `Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Offre · Épaisseurs · Total (MAD) · Langue`
 
-**Nappes PVC** *(une ligne par nappe ; le N° commande regroupe les nappes d'une même commande)*
-`Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Type de nappe · Forme · Épaisseur · Dimensions · Quantité · Prix ligne (MAD) · Total commande (MAD) · Langue`
+**Nappes PVC** *(une seule ligne par commande ; toutes les nappes regroupées dans une cellule)*
+`Date · N° commande · Nom complet · Téléphone · Ville · Adresse · Détail des nappes · Nombre de nappes · Total (MAD) · Langue`
 
 **Messages contact** *(formulaire de la page Contact)*
 `Date · Nom · Email · Téléphone · Message`
@@ -62,10 +62,10 @@ const CONFIG = {
 
 const NAPPE_SHEET = "Nappes PVC";
 
+// Une seule ligne par commande ; toutes les nappes regroupées dans « Détail des nappes »
 const NAPPE_HEADERS = [
   "Date", "N° commande", "Nom complet", "Téléphone", "Ville", "Adresse",
-  "Type de nappe", "Forme", "Épaisseur", "Dimensions", "Quantité",
-  "Prix ligne (MAD)", "Total commande (MAD)", "Langue",
+  "Détail des nappes", "Nombre de nappes", "Total (MAD)", "Langue",
 ];
 
 function getSheet(name, headers) {
@@ -114,15 +114,20 @@ function doPost(e) {
 
     if (data.product === "nappe-pvc") {
       const sheet = getSheet(NAPPE_SHEET, NAPPE_HEADERS);
-      const rows = data.rows && data.rows.length ? data.rows : [{}];
-      rows.forEach(function (r) {
-        sheet.appendRow([
-          new Date(), data.orderId || "", data.fullName || "", phone,
-          data.city || "", data.address || "",
-          r.type || "", r.shape || "", r.thickness || "", r.dimensions || "",
-          r.qty || "", r.price || "", data.total || 0, lang,
-        ]);
-      });
+      const rows = data.rows && data.rows.length ? data.rows : [];
+      // Regroupe toutes les nappes de la commande dans une seule cellule
+      const detail = rows.map(function (r, i) {
+        return (i + 1) + ") " + [r.type, r.shape, r.thickness, r.dimensions,
+          "×" + (r.qty || 1), (r.price || 0) + " MAD"].join(" | ");
+      }).join("\n");
+      const nbNappes = rows.reduce(function (sum, r) {
+        return sum + (Number(r.qty) || 1);
+      }, 0);
+      sheet.appendRow([
+        new Date(), data.orderId || "", data.fullName || "", phone,
+        data.city || "", data.address || "",
+        detail, nbNappes, data.total || 0, lang,
+      ]);
     } else {
       const cfg = CONFIG[data.product];
       if (!cfg) {
