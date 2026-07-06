@@ -32,7 +32,7 @@ const GALLERY = [
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-3_1_lydfvm.jpg",
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-1_1_ln75yv.jpg",
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-4_1_pspeqa.jpg",
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093865/Poste-1-1-Memory-Foam-Pillow-5_1_mtysbd.jpg",
+  "https://res.cloudinary.com/diptsoc4h/image/upload/v1783343454/Poste-1-1-Memory-Foam-Pillow-5.jpg_qiuiw3.jpg",
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-2_1_jhkk7z.jpg",
 ];
 
@@ -77,7 +77,7 @@ const LIFESTYLE_BLOCKS = [
     imageLeft: true,
   },
   {
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093865/Poste-1-1-Memory-Foam-Pillow-5_1_mtysbd.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783343454/Poste-1-1-Memory-Foam-Pillow-5.jpg_qiuiw3.jpg",
     title: "Housse douce et hygiénique",
     text: "La housse en microfibre ultra-douce est amovible et lavable en machine à 40 °C. Traitée anti-acariens, elle maintient un environnement sain nuit après nuit, idéal pour les personnes allergiques. Elle sèche rapidement et conserve sa douceur après chaque lavage.",
     imageLeft: false,
