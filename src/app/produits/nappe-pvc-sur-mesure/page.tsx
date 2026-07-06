@@ -70,6 +70,32 @@ function IconOctogone({ size = 32 }: ShapeIconProps) {
     </svg>
   );
 }
+
+/* Schéma de mesure pour le carré (aucune photo fournie). */
+function SquareMeasureDiagram({ label }: { label: string }) {
+  return (
+    <svg viewBox="0 0 260 210" className="h-full w-full" role="img" aria-label={label}>
+      {/* Plateau */}
+      <rect x="60" y="55" width="140" height="140" rx="6" fill="#f4faea" stroke="#8ec63f" strokeWidth="2" />
+      {/* Ligne de cote (haut) */}
+      <line x1="60" y1="35" x2="200" y2="35" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="60" y1="28" x2="60" y2="42" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="200" y1="28" x2="200" y2="42" stroke="#8ec63f" strokeWidth="1.6" />
+      <polygon points="60,35 68,31 68,39" fill="#8ec63f" />
+      <polygon points="200,35 192,31 192,39" fill="#8ec63f" />
+      {/* Ligne de cote (côté) */}
+      <line x1="220" y1="55" x2="220" y2="195" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="213" y1="55" x2="227" y2="55" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="213" y1="195" x2="227" y2="195" stroke="#8ec63f" strokeWidth="1.6" />
+      <text x="130" y="24" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#333333">
+        {label}
+      </text>
+      <text x="238" y="130" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#333333" transform="rotate(90 238 130)">
+        {label}
+      </text>
+    </svg>
+  );
+}
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
 import { submitOrder } from "@/lib/submit-order";
@@ -164,13 +190,37 @@ const SHAPES = [
 type ShapeId = (typeof SHAPES)[number]["id"];
 
 /* Guide de mesure affiché dans le popup « Comment mesurer ? » */
-const MEASURE_GUIDE: { id: ShapeId; how: string }[] = [
-  { id: "carree", how: "Mesurez un côté du plateau, d'un bord à l'autre." },
-  { id: "rectangulaire", how: "Mesurez la longueur puis la largeur du plateau." },
-  { id: "ronde", how: "Mesurez le diamètre : d'un bord à l'autre en passant par le centre." },
-  { id: "coins-coupes", how: "Mesurez la longueur et la largeur totales, puis la longueur de chaque pan coupé (Arc A et Arc B)." },
-  { id: "coins-arrondis", how: "Mesurez la longueur et la largeur totales, puis le rayon de l'arrondi d'un coin." },
-  { id: "octogonale", how: "Mesurez la longueur totale (d'une face à la face opposée), puis la longueur d'un pan coupé (Arc)." },
+const MEASURE_GUIDE: { id: ShapeId; how: string; image?: string }[] = [
+  {
+    id: "carree",
+    how: "Mesurez un côté du plateau, d'un bord à l'autre.",
+    // Pas de photo fournie : schéma SVG généré (voir SquareMeasureDiagram)
+  },
+  {
+    id: "rectangulaire",
+    how: "Mesurez la longueur puis la largeur du plateau.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344490/1_awcbvg.jpg",
+  },
+  {
+    id: "ronde",
+    how: "Mesurez le diamètre : d'un bord à l'autre en passant par le centre.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344491/3_dmwkjt.jpg",
+  },
+  {
+    id: "coins-coupes",
+    how: "Mesurez la longueur et la largeur totales, puis la longueur de chaque pan coupé (Arc A et Arc B).",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344490/5_iwwwmc.jpg",
+  },
+  {
+    id: "coins-arrondis",
+    how: "Mesurez la longueur et la largeur totales, puis le rayon de l'arrondi d'un coin.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344490/2_qbyxbu.jpg",
+  },
+  {
+    id: "octogonale",
+    how: "Mesurez la longueur totale (d'une face à la face opposée), puis la longueur d'un pan coupé (Arc).",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344492/4_fo2kfz.jpg",
+  },
 ];
 
 const TRUST_BADGES = [
@@ -853,18 +903,22 @@ export default function NappePvcPage() {
             </p>
 
             <div className="flex flex-col divide-y divide-gray-100">
-              {MEASURE_GUIDE.map(({ id, how }) => {
+              {MEASURE_GUIDE.map(({ id, how, image }) => {
                 const shapeDef = SHAPES.find((s) => s.id === id)!;
-                const Icon = shapeDef.icon;
                 return (
-                  <div key={id} className="flex items-start gap-3 py-3">
-                    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border" style={{ borderColor: "#8ec63f", color: "#8ec63f" }}>
-                      <Icon size={28} />
-                    </span>
-                    <div>
+                  <div key={id} className="py-4">
+                    <div className="mb-2 flex items-center gap-2">
+                      <shapeDef.icon size={20} />
                       <p className="text-sm font-semibold text-dark-gray">{shapeDef.label}</p>
-                      <p className="text-sm text-gray-500">{how}</p>
                     </div>
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-gray-100 bg-light-gray">
+                      {image ? (
+                        <Image src={image} alt={`Comment mesurer : ${shapeDef.label}`} fill sizes="(max-width:640px) 100vw, 480px" className="object-contain" />
+                      ) : (
+                        <SquareMeasureDiagram label="Côté" />
+                      )}
+                    </div>
+                    <p className="mt-2 text-sm text-gray-500">{how}</p>
                   </div>
                 );
               })}

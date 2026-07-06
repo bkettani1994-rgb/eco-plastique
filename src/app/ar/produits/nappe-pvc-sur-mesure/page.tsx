@@ -74,6 +74,29 @@ function IconOctogone({ size = 32 }: ShapeIconProps) {
   );
 }
 
+/* مخطط قياس المربع (لا توجد صورة). */
+function SquareMeasureDiagram({ label }: { label: string }) {
+  return (
+    <svg viewBox="0 0 260 210" className="h-full w-full" role="img" aria-label={label}>
+      <rect x="60" y="55" width="140" height="140" rx="6" fill="#f4faea" stroke="#8ec63f" strokeWidth="2" />
+      <line x1="60" y1="35" x2="200" y2="35" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="60" y1="28" x2="60" y2="42" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="200" y1="28" x2="200" y2="42" stroke="#8ec63f" strokeWidth="1.6" />
+      <polygon points="60,35 68,31 68,39" fill="#8ec63f" />
+      <polygon points="200,35 192,31 192,39" fill="#8ec63f" />
+      <line x1="220" y1="55" x2="220" y2="195" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="213" y1="55" x2="227" y2="55" stroke="#8ec63f" strokeWidth="1.6" />
+      <line x1="213" y1="195" x2="227" y2="195" stroke="#8ec63f" strokeWidth="1.6" />
+      <text x="130" y="24" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#333333">
+        {label}
+      </text>
+      <text x="238" y="130" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#333333" transform="rotate(90 238 130)">
+        {label}
+      </text>
+    </svg>
+  );
+}
+
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
 const PRODUCT = {
@@ -140,13 +163,33 @@ const SHAPES = [
 type ShapeId = (typeof SHAPES)[number]["id"];
 
 /* دليل القياس المعروض في نافذة « كيف أقيس؟ » */
-const MEASURE_GUIDE: { id: ShapeId; how: string }[] = [
+const MEASURE_GUIDE: { id: ShapeId; how: string; image?: string }[] = [
   { id: "carree", how: "قس ضلعاً واحداً من سطح الطاولة، من حافة إلى أخرى." },
-  { id: "rectangulaire", how: "قس الطول ثم العرض لسطح الطاولة." },
-  { id: "ronde", how: "قس القطر : من حافة إلى الحافة المقابلة مروراً بالمركز." },
-  { id: "coins-coupes", how: "قس الطول والعرض الكليين، ثم طول كل زاوية مقصوصة (القوس أ والقوس ب)." },
-  { id: "coins-arrondis", how: "قس الطول والعرض الكليين، ثم نصف قطر استدارة الزاوية." },
-  { id: "octogonale", how: "قس الطول الكلي (من وجه إلى الوجه المقابل)، ثم طول الضلع المائل (القوس)." },
+  {
+    id: "rectangulaire",
+    how: "قس الطول ثم العرض لسطح الطاولة.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344490/1_awcbvg.jpg",
+  },
+  {
+    id: "ronde",
+    how: "قس القطر : من حافة إلى الحافة المقابلة مروراً بالمركز.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344491/3_dmwkjt.jpg",
+  },
+  {
+    id: "coins-coupes",
+    how: "قس الطول والعرض الكليين، ثم طول كل زاوية مقصوصة (القوس أ والقوس ب).",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344490/5_iwwwmc.jpg",
+  },
+  {
+    id: "coins-arrondis",
+    how: "قس الطول والعرض الكليين، ثم نصف قطر استدارة الزاوية.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344490/2_qbyxbu.jpg",
+  },
+  {
+    id: "octogonale",
+    how: "قس الطول الكلي (من وجه إلى الوجه المقابل)، ثم طول الضلع المائل (القوس).",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783344492/4_fo2kfz.jpg",
+  },
 ];
 
 const TRUST_BADGES = [
@@ -822,18 +865,22 @@ export default function NappePvcPageAr() {
             </p>
 
             <div className="flex flex-col divide-y divide-gray-100">
-              {MEASURE_GUIDE.map(({ id, how }) => {
+              {MEASURE_GUIDE.map(({ id, how, image }) => {
                 const shapeDef = SHAPES.find((s) => s.id === id)!;
-                const Icon = shapeDef.icon;
                 return (
-                  <div key={id} className="flex items-start gap-3 py-3">
-                    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border" style={{ borderColor: "#8ec63f", color: "#8ec63f" }}>
-                      <Icon size={28} />
-                    </span>
-                    <div>
+                  <div key={id} className="py-4">
+                    <div className="mb-2 flex items-center gap-2">
+                      <shapeDef.icon size={20} />
                       <p className="text-sm font-semibold text-dark-gray">{shapeDef.label}</p>
-                      <p className="text-sm text-gray-500">{how}</p>
                     </div>
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-gray-100 bg-light-gray">
+                      {image ? (
+                        <Image src={image} alt={`كيف تقيس : ${shapeDef.label}`} fill sizes="(max-width:640px) 100vw, 480px" className="object-contain" />
+                      ) : (
+                        <SquareMeasureDiagram label="الضلع" />
+                      )}
+                    </div>
+                    <p className="mt-2 text-sm text-gray-500">{how}</p>
                   </div>
                 );
               })}
