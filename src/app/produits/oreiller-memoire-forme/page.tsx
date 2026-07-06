@@ -72,8 +72,8 @@ const LIFESTYLE_BLOCKS = [
   },
   {
     image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-4_1_pspeqa.jpg",
-    title: "Disponible en deux fermetés pour votre confort",
-    text: "Chaque personne a ses préférences : certains aiment un oreiller moelleux qui enveloppe, d'autres préfèrent un soutien plus ferme. C'est pourquoi nous proposons deux niveaux de fermeté pour que vous trouviez exactement ce dont vous avez besoin.",
+    title: "Trois épaisseurs pour un soutien sur mesure",
+    text: "Chaque morphologie a ses besoins. Notre oreiller est disponible en trois épaisseurs — 15 cm, 17 cm et 19 cm — pour s'adapter à votre position de sommeil et à la largeur de vos épaules. Le 15 cm convient aux dormeurs sur le dos, le 17 cm offre un équilibre polyvalent, et le 19 cm apporte un maintien plus haut, idéal pour dormir sur le côté.",
     imageLeft: true,
   },
   {
