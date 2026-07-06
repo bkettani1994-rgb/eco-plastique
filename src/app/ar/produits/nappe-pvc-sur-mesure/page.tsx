@@ -164,7 +164,11 @@ type ShapeId = (typeof SHAPES)[number]["id"];
 
 /* دليل القياس المعروض في نافذة « كيف أقيس؟ » */
 const MEASURE_GUIDE: { id: ShapeId; how: string; image?: string }[] = [
-  { id: "carree", how: "قس ضلعاً واحداً من سطح الطاولة، من حافة إلى أخرى." },
+  {
+    id: "carree",
+    how: "قس ضلعاً واحداً من سطح الطاولة، من حافة إلى أخرى.",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783349423/6_bwk49i.jpg",
+  },
   {
     id: "rectangulaire",
     how: "قس الطول ثم العرض لسطح الطاولة.",

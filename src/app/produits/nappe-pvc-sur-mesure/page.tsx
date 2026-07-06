@@ -194,7 +194,7 @@ const MEASURE_GUIDE: { id: ShapeId; how: string; image?: string }[] = [
   {
     id: "carree",
     how: "Mesurez un côté du plateau, d'un bord à l'autre.",
-    // Pas de photo fournie : schéma SVG généré (voir SquareMeasureDiagram)
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783349423/6_bwk49i.jpg",
   },
   {
     id: "rectangulaire",
