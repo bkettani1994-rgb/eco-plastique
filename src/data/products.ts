@@ -224,7 +224,7 @@ export const products: Product[] = [
     longDescription:
       "Notre protège-matelas imperméable forme une barrière efficace contre les liquides, la transpiration et les acariens, tout en restant doux et respirant au contact de la peau. Idéal pour les enfants, les personnes âgées ou simplement pour prolonger la durée de vie de votre matelas, il se glisse facilement grâce à ses élastiques renforcés aux quatre coins et reste parfaitement en place toute la nuit. Disponible dans toutes les tailles standards marocaines, il se lave en machine et sèche rapidement, pour une hygiène irréprochable au quotidien.",
     images: [
-      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783075174/004_r6e6y5.jpg",
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1783343454/dd0001.jpg_axu6l2.jpg",
       "https://picsum.photos/seed/protege-matelas-impermeable-2/800/800",
       "https://picsum.photos/seed/protege-matelas-impermeable-3/800/800",
     ],
