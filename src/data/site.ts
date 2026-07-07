@@ -37,7 +37,7 @@ export const siteConfig = {
   businessName: "Eco Plastique",
   description:
     "Eco Plastique propose des solutions sur mesure pour protéger et améliorer votre quotidien : nappes PVC, protège-matelas et oreillers médicaux.",
-  whatsappNumber: "212663310060",
+  whatsappNumber: "212711433811",
   phoneDisplay: "+212 6 63 31 00 60",
   email: "contact@ecoplastique.ma",
   address: "Casablanca, Maroc",
