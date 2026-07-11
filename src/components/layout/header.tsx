@@ -43,10 +43,16 @@ function LanguageSwitch({ className = "" }: { className?: string }) {
   const frHref = frBase;
   const arHref = `/ar${frBase === "/" ? "" : frBase}`;
 
+  // Mémorise la langue choisie (l'arabe reste la langue par défaut des nouveaux visiteurs)
+  const rememberLang = (lang: "fr" | "ar") => {
+    document.cookie = `lang=${lang};path=/;max-age=31536000;samesite=lax`;
+  };
+
   return (
     <div className={`flex items-center rounded-xl border border-gray-200 p-0.5 text-xs font-semibold ${className}`}>
       <Link
         href={frHref}
+        onClick={() => rememberLang("fr")}
         className={`rounded-lg px-2.5 py-1.5 transition-colors ${
           !isAr ? "bg-primary text-white" : "text-dark-gray hover:text-primary"
         }`}
@@ -55,6 +61,7 @@ function LanguageSwitch({ className = "" }: { className?: string }) {
       </Link>
       <Link
         href={arHref}
+        onClick={() => rememberLang("ar")}
         className={`rounded-lg px-2.5 py-1.5 transition-colors ${
           isAr ? "bg-primary text-white" : "text-dark-gray hover:text-primary"
         }`}
