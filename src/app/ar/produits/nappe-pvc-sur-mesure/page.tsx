@@ -282,6 +282,25 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
   }
 }
 
+/* العرض الأقصى للفة PVC (بالسنتيمتر). يجب أن تدخل كل مفرش في هذا العرض. */
+const MAX_WIDTH_CM = 140;
+
+function widthOverLimit(shape: ShapeId, dims: Dimensions): boolean {
+  const L = parseDim(dims.length);
+  const W = parseDim(dims.width);
+  switch (shape) {
+    case "ronde":
+    case "carree":
+    case "octogonale":
+      return L > 0 && L > MAX_WIDTH_CM;
+    case "rectangulaire":
+    case "coins-arrondis":
+    case "coins-coupes":
+      return L > 0 && W > 0 && Math.min(L, W) > MAX_WIDTH_CM;
+  }
+  return false;
+}
+
 /* ─── PAGE ──────────────────────────────────────────────────────────── */
 
 export default function NappePvcPageAr() {
@@ -314,7 +333,9 @@ export default function NappePvcPageAr() {
   const pricePerM2 = model.pricePerM2[thickness] ?? 0;
   // رسوم إضافية حسب النتيجة (م²) : أقل من 0,5 : +30 | من 0,5 إلى 0,99 : +50 | 1 وأكثر : +30
   const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
-  const totalPrice = area && pricePerM2 ? Math.round(area * pricePerM2 + surcharge) : null;
+  const overWidth = widthOverLimit(shape, dims);
+  const totalPrice =
+    area && pricePerM2 && !overWidth ? Math.round(area * pricePerM2 + surcharge) : null;
 
   /* ─── الكمية ─── */
   const [qty, setQty] = useState(1);
@@ -621,10 +642,19 @@ export default function NappePvcPageAr() {
                     onChange={(e) =>
                       setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
                     }
-                    className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                    className={`min-w-0 rounded-xl border bg-white px-4 py-3 text-sm text-dark-gray focus:outline-none ${
+                      overWidth ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
+                    }`}
                   />
                 ))}
               </div>
+
+              {overWidth && (
+                <p className="mt-2 rounded-xl bg-red-50 px-4 py-3 text-xs font-medium text-red-600">
+                  ⚠️ العرض الأقصى للفاتنا هو <strong>1,40 م (140 سم)</strong>.
+                  يرجى تقليل هذا البعد. للحصول على مفرش أعرض، تواصلوا معنا مباشرة.
+                </p>
+              )}
 
               {/* الخطوة 5 : الكمية */}
               <div className="mb-3 mt-5 flex items-center gap-2">

@@ -312,6 +312,28 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
   }
 }
 
+/* Largeur maximale du rouleau de PVC (en cm). Toute nappe doit tenir dans
+   cette largeur : au moins une dimension ≤ 140 cm. */
+const MAX_WIDTH_CM = 140;
+
+function widthOverLimit(shape: ShapeId, dims: Dimensions): boolean {
+  const L = parseDim(dims.length);
+  const W = parseDim(dims.width);
+  switch (shape) {
+    // Une seule dimension de base (côté / diamètre / longueur)
+    case "ronde":
+    case "carree":
+    case "octogonale":
+      return L > 0 && L > MAX_WIDTH_CM;
+    // Rectangles : il faut qu'au moins un côté rentre dans le rouleau
+    case "rectangulaire":
+    case "coins-arrondis":
+    case "coins-coupes":
+      return L > 0 && W > 0 && Math.min(L, W) > MAX_WIDTH_CM;
+  }
+  return false;
+}
+
 /* ─── PAGE ──────────────────────────────────────────────────────────── */
 
 export default function NappePvcPage() {
@@ -346,7 +368,9 @@ export default function NappePvcPage() {
   // Frais supplémentaires selon le résultat longueur × largeur (m²)
   // 0 à 0,49 : +30 | 0,5 à 0,99 : +50 | 1 et plus : +30
   const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
-  const totalPrice = area && pricePerM2 ? Math.round(area * pricePerM2 + surcharge) : null;
+  const overWidth = widthOverLimit(shape, dims);
+  const totalPrice =
+    area && pricePerM2 && !overWidth ? Math.round(area * pricePerM2 + surcharge) : null;
 
   /* ─── Quantité de la nappe en cours ─── */
   const [qty, setQty] = useState(1);
@@ -656,10 +680,19 @@ export default function NappePvcPage() {
                     onChange={(e) =>
                       setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
                     }
-                    className="min-w-0 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-dark-gray focus:border-primary focus:outline-none"
+                    className={`min-w-0 rounded-xl border bg-white px-4 py-3 text-sm text-dark-gray focus:outline-none ${
+                      overWidth ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
+                    }`}
                   />
                 ))}
               </div>
+
+              {overWidth && (
+                <p className="mt-2 rounded-xl bg-red-50 px-4 py-3 text-xs font-medium text-red-600">
+                  ⚠️ La largeur maximale de nos rouleaux est de <strong>1,40 m (140 cm)</strong>.
+                  Merci de réduire cette dimension. Pour une nappe plus large, contactez-nous directement.
+                </p>
+              )}
 
               {/* Quantité */}
               <div className="mb-3 mt-5 flex items-center gap-2">
