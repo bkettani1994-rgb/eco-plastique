@@ -6,6 +6,7 @@ import { TopBanner } from "@/components/layout/top-banner";
 import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { MetaPixel } from "@/components/meta-pixel";
+import { LanguageGate } from "@/components/language-gate";
 import { META_PIXEL_ID } from "@/lib/meta-pixel";
 import { CartProvider } from "@/lib/cart-context";
 import { LanguageProvider } from "@/lib/language-context";
@@ -62,6 +63,7 @@ export default function RootLayout({
         </noscript>
         <LanguageProvider>
           <CartProvider>
+            <LanguageGate />
             <div className="sticky top-0 z-50">
               <TopBanner />
               <Header />
