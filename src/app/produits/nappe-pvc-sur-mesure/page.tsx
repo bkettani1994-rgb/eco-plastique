@@ -23,14 +23,6 @@ import {
 
 type ShapeIconProps = { size?: number };
 
-function IconCarre({ size = 32 }: ShapeIconProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
-      <rect x="4.5" y="4.5" width="15" height="15" rx="0.5" />
-    </svg>
-  );
-}
-
 function IconRectangulaire({ size = 32 }: ShapeIconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
@@ -179,7 +171,6 @@ function availableThicknesses(model: Model): Thickness[] {
 }
 
 const SHAPES = [
-  { id: "carree", label: "Carré", icon: IconCarre },
   { id: "rectangulaire", label: "Rectangulaire", icon: IconRectangulaire },
   { id: "ronde", label: "Cercle", icon: IconCercle },
   { id: "coins-coupes", label: "Rectangle octogonal", icon: IconRectOctogonal },
@@ -191,11 +182,6 @@ type ShapeId = (typeof SHAPES)[number]["id"];
 
 /* Guide de mesure affiché dans le popup « Comment mesurer ? » */
 const MEASURE_GUIDE: { id: ShapeId; how: string; image?: string }[] = [
-  {
-    id: "carree",
-    how: "Mesurez un côté du plateau, d'un bord à l'autre.",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783349423/6_bwk49i.jpg",
-  },
   {
     id: "rectangulaire",
     how: "Mesurez la longueur puis la largeur du plateau.",
@@ -260,7 +246,6 @@ const EMPTY_DIMS: Dimensions = { length: "", width: "", arcA: "", arcB: "", radi
 
 /* Champs de dimensions demandés pour chaque forme */
 const SHAPE_FIELDS: Record<ShapeId, { key: DimKey; label: string }[]> = {
-  carree: [{ key: "length", label: "Côté (cm)" }],
   rectangulaire: [
     { key: "length", label: "Longueur (cm)" },
     { key: "width", label: "Largeur (cm)" },
@@ -297,7 +282,6 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
 
   switch (shape) {
     case "ronde":
-    case "carree":
     case "octogonale": {
       if (!L || L <= 0) return null;
       const c = L / 100;
@@ -320,9 +304,8 @@ function widthOverLimit(shape: ShapeId, dims: Dimensions): boolean {
   const L = parseDim(dims.length);
   const W = parseDim(dims.width);
   switch (shape) {
-    // Une seule dimension de base (côté / diamètre / longueur)
+    // Une seule dimension de base (diamètre / longueur)
     case "ronde":
-    case "carree":
     case "octogonale":
       return L > 0 && L > MAX_WIDTH_CM;
     // Rectangles : il faut qu'au moins un côté rentre dans le rouleau
@@ -342,7 +325,7 @@ export default function NappePvcPage() {
 
   const [model, setModel] = useState<Model>(MODELS[0]);
   const [thickness, setThickness] = useState<Thickness>("1,5 mm");
-  const [shape, setShape] = useState<ShapeId>("carree");
+  const [shape, setShape] = useState<ShapeId>("rectangulaire");
   const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showMeasureGuide, setShowMeasureGuide] = useState(false);

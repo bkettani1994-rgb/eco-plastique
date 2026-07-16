@@ -26,13 +26,6 @@ import { submitOrder } from "@/lib/submit-order";
 
 type ShapeIconProps = { size?: number };
 
-function IconCarre({ size = 32 }: ShapeIconProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.4} aria-hidden="true">
-      <rect x="4.5" y="4.5" width="15" height="15" rx="0.5" />
-    </svg>
-  );
-}
 
 function IconRectangulaire({ size = 32 }: ShapeIconProps) {
   return (
@@ -152,7 +145,6 @@ function availableThicknesses(model: Model): Thickness[] {
 }
 
 const SHAPES = [
-  { id: "carree", label: "مربع", icon: IconCarre },
   { id: "rectangulaire", label: "مستطيل", icon: IconRectangulaire },
   { id: "ronde", label: "دائرة", icon: IconCercle },
   { id: "coins-coupes", label: "مستطيل ثماني", icon: IconRectOctogonal },
@@ -164,11 +156,6 @@ type ShapeId = (typeof SHAPES)[number]["id"];
 
 /* دليل القياس المعروض في نافذة « كيف أقيس؟ » */
 const MEASURE_GUIDE: { id: ShapeId; how: string; image?: string }[] = [
-  {
-    id: "carree",
-    how: "قس ضلعاً واحداً من سطح الطاولة، من حافة إلى أخرى.",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783349423/6_bwk49i.jpg",
-  },
   {
     id: "rectangulaire",
     how: "قس الطول ثم العرض لسطح الطاولة.",
@@ -233,7 +220,6 @@ const EMPTY_DIMS: Dimensions = { length: "", width: "", arcA: "", arcB: "", radi
 
 /* حقول الأبعاد المطلوبة لكل شكل */
 const SHAPE_FIELDS: Record<ShapeId, { key: DimKey; label: string }[]> = {
-  carree: [{ key: "length", label: "الضلع (سم)" }],
   rectangulaire: [
     { key: "length", label: "الطول (سم)" },
     { key: "width", label: "العرض (سم)" },
@@ -267,7 +253,6 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
 
   switch (shape) {
     case "ronde":
-    case "carree":
     case "octogonale": {
       if (!L || L <= 0) return null;
       const c = L / 100;
@@ -290,7 +275,6 @@ function widthOverLimit(shape: ShapeId, dims: Dimensions): boolean {
   const W = parseDim(dims.width);
   switch (shape) {
     case "ronde":
-    case "carree":
     case "octogonale":
       return L > 0 && L > MAX_WIDTH_CM;
     case "rectangulaire":
@@ -309,7 +293,7 @@ export default function NappePvcPageAr() {
 
   const [model, setModel] = useState<Model>(MODELS[0]);
   const [thickness, setThickness] = useState<Thickness>("1,5 ملم");
-  const [shape, setShape] = useState<ShapeId>("carree");
+  const [shape, setShape] = useState<ShapeId>("rectangulaire");
   const [dims, setDims] = useState<Dimensions>(EMPTY_DIMS);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showMeasureGuide, setShowMeasureGuide] = useState(false);
