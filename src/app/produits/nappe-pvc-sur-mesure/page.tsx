@@ -585,7 +585,7 @@ export default function NappePvcPage() {
                   📏 <span className="hidden min-[400px]:inline">Comment&nbsp;</span>mesurer ?
                 </button>
               </div>
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
                   const isSelected = shape === id;
                   return (

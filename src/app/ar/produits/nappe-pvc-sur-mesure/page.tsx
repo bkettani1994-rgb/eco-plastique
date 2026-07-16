@@ -548,7 +548,7 @@ export default function NappePvcPageAr() {
                   📏 كيف أقيس؟
                 </button>
               </div>
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 {SHAPES.map(({ id, label, icon: Icon }) => {
                   const isSelected = shape === id;
                   return (
