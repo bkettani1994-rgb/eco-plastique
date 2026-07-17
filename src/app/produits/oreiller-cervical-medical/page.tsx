@@ -18,6 +18,7 @@ import {
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
 import { submitOrder } from "@/lib/submit-order";
+import { whatsappLink } from "@/data/site";
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -27,6 +28,9 @@ const PRODUCT = {
   price: 250,
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937215/Oreiller_cervicale_jpyife.png",
 };
+
+// Produit temporairement indisponible (pas encore en stock)
+const OUT_OF_STOCK = true;
 
 const GALLERY = [
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-1_1_knigst.jpg",
@@ -218,9 +222,16 @@ export default function OreillercervicalPage() {
           {/* Info + form */}
           <div className="flex flex-col gap-6">
             <div>
-              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                Oreiller médical
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Oreiller médical
+                </span>
+                {OUT_OF_STOCK && (
+                  <span className="inline-block rounded-full bg-red-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-600">
+                    Rupture de stock
+                  </span>
+                )}
+              </div>
               <h1 className="mt-2 text-3xl font-bold text-dark-gray">
                 Oreiller ergonomique cervical médical
               </h1>
@@ -236,7 +247,24 @@ export default function OreillercervicalPage() {
               </div>
             </div>
 
-            {/* Quantity offers + order form — single orange bordered section */}
+            {OUT_OF_STOCK ? (
+              <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-6 text-center">
+                <p className="text-lg font-bold text-red-600">Rupture de stock</p>
+                <p className="mt-2 text-sm text-gray-600">
+                  Ce produit n&apos;est pas encore disponible. Il sera bientôt de retour —
+                  contactez-nous sur WhatsApp pour être prévenu dès son réapprovisionnement.
+                </p>
+                <a
+                  href={whatsappLink("Bonjour, je souhaite être prévenu(e) dès que l'oreiller cervical médical sera de nouveau disponible.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+                >
+                  Me prévenir du retour en stock
+                </a>
+              </div>
+            ) : (
+            /* Quantity offers + order form — single orange bordered section */
             <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#8ec63f" }}>
               <p className="mb-3 text-sm font-semibold text-dark-gray">Choisissez votre offre :</p>
               <div className="flex flex-col gap-3">
@@ -365,6 +393,7 @@ export default function OreillercervicalPage() {
                 </p>
               </form>
             </div>
+            )}
           </div>
         </div>
       </section>

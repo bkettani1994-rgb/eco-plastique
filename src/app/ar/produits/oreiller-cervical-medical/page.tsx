@@ -18,6 +18,7 @@ import {
 import { useCart } from "@/lib/cart-context";
 import { generateOrderId, saveLastOrder } from "@/lib/order";
 import { submitOrder } from "@/lib/submit-order";
+import { whatsappLink } from "@/data/site";
 
 /* ─── DATA ─────────────────────────────────────────────────────────── */
 
@@ -27,6 +28,9 @@ const PRODUCT = {
   price: 249,
   image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1782937215/Oreiller_cervicale_jpyife.png",
 };
+
+// المنتج غير متوفر مؤقتاً (لم يتوفر في المخزون بعد)
+const OUT_OF_STOCK = true;
 
 const GALLERY = [
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-1_1_knigst.jpg",
@@ -217,9 +221,16 @@ export default function OreillercervicalPageAr() {
           {/* Info + form */}
           <div className="flex flex-col gap-6">
             <div>
-              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                وسادة طبية
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                  وسادة طبية
+                </span>
+                {OUT_OF_STOCK && (
+                  <span className="inline-block rounded-full bg-red-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-600">
+                    نفذ من المخزون
+                  </span>
+                )}
+              </div>
               <h1 className="mt-2 text-3xl font-bold text-dark-gray">
                 وسادة طبية مريحة لدعم الرقبة
               </h1>
@@ -235,7 +246,24 @@ export default function OreillercervicalPageAr() {
               </div>
             </div>
 
-            {/* Quantity offers + order form — single orange bordered section */}
+            {OUT_OF_STOCK ? (
+              <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-6 text-center">
+                <p className="text-lg font-bold text-red-600">نفذ من المخزون</p>
+                <p className="mt-2 text-sm text-gray-600">
+                  هذا المنتج غير متوفر بعد. سيعود قريباً — تواصلوا معنا عبر واتساب
+                  ليصلكم إشعار فور توفره من جديد.
+                </p>
+                <a
+                  href={whatsappLink("مرحباً، أرغب في تلقّي إشعار عند توفّر الوسادة الطبية لدعم الرقبة من جديد.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"
+                >
+                  أشعروني عند توفّره
+                </a>
+              </div>
+            ) : (
+            /* Quantity offers + order form — single orange bordered section */
             <div className="rounded-2xl border-2 p-5" style={{ borderColor: "#8ec63f" }}>
               <p className="mb-3 text-sm font-semibold text-dark-gray">اختر عرضك :</p>
               <div className="flex flex-col gap-3">
@@ -364,6 +392,7 @@ export default function OreillercervicalPageAr() {
                 </p>
               </form>
             </div>
+            )}
           </div>
         </div>
       </section>
