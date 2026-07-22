@@ -300,6 +300,26 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
    cette largeur : au moins une dimension ≤ 140 cm. */
 const MAX_WIDTH_CM = 140;
 
+/* Dimension minimale fabricable (en cm). */
+const MIN_DIM_CM = 10;
+
+function dimUnderMin(shape: ShapeId, dims: Dimensions): boolean {
+  const L = parseDim(dims.length);
+  const W = parseDim(dims.width);
+  switch (shape) {
+    // Une seule dimension de base (diamètre / longueur)
+    case "ronde":
+    case "octogonale":
+      return L > 0 && L < MIN_DIM_CM;
+    // Rectangles : les deux côtés doivent respecter le minimum
+    case "rectangulaire":
+    case "coins-arrondis":
+    case "coins-coupes":
+      return (L > 0 && L < MIN_DIM_CM) || (W > 0 && W < MIN_DIM_CM);
+  }
+  return false;
+}
+
 function widthOverLimit(shape: ShapeId, dims: Dimensions): boolean {
   const L = parseDim(dims.length);
   const W = parseDim(dims.width);
@@ -352,8 +372,10 @@ export default function NappePvcPage() {
   // 0 à 0,49 : +30 | 0,5 à 0,99 : +50 | 1 et plus : +30
   const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
   const overWidth = widthOverLimit(shape, dims);
+  const underMin = dimUnderMin(shape, dims);
+  const dimError = overWidth || underMin;
   const totalPrice =
-    area && pricePerM2 && !overWidth ? Math.round(area * pricePerM2 + surcharge) : null;
+    area && pricePerM2 && !dimError ? Math.round(area * pricePerM2 + surcharge) : null;
 
   /* ─── Quantité de la nappe en cours ─── */
   const [qty, setQty] = useState(1);
@@ -664,7 +686,7 @@ export default function NappePvcPage() {
                       setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
                     }
                     className={`min-w-0 rounded-xl border bg-white px-4 py-3 text-sm text-dark-gray focus:outline-none ${
-                      overWidth ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
+                      dimError ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
                     }`}
                   />
                 ))}
@@ -674,6 +696,11 @@ export default function NappePvcPage() {
                 <p className="mt-2 rounded-xl bg-red-50 px-4 py-3 text-xs font-medium text-red-600">
                   ⚠️ La largeur maximale de nos rouleaux est de <strong>1,40 m (140 cm)</strong>.
                   Merci de réduire cette dimension. Pour une nappe plus large, contactez-nous directement.
+                </p>
+              )}
+              {underMin && (
+                <p className="mt-2 rounded-xl bg-red-50 px-4 py-3 text-xs font-medium text-red-600">
+                  ⚠️ La dimension minimale est de <strong>10 cm</strong>. Merci d&apos;augmenter cette dimension.
                 </p>
               )}
 

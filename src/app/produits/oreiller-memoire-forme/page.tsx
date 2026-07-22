@@ -36,11 +36,14 @@ const GALLERY = [
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783093864/Poste-1-1-Memory-Foam-Pillow-2_1_jhkk7z.jpg",
 ];
 
-const SIZES: { label: string; price: number }[] = [
-  { label: "15 cm", price: 199 },
+const SIZES: { label: string; price: number; soldOut?: boolean }[] = [
+  { label: "15 cm", price: 199, soldOut: true },
   { label: "17 cm", price: 229 },
   { label: "19 cm", price: 249 },
 ];
+
+// Première taille disponible (par défaut, en évitant les tailles en rupture)
+const DEFAULT_SIZE = SIZES.find((s) => !s.soldOut) ?? SIZES[0];
 
 const OFFERS = [
   { qty: 1, label: "1 pièce",  discount: 1,    badge: null,   popular: false },
@@ -126,16 +129,16 @@ export default function OreilleMemoireFormePage() {
 
   const [activeImg, setActiveImg] = useState(0);
   const [selectedOffer, setSelectedOffer] = useState(OFFERS[0]);
-  const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([SIZES[0]]);
+  const [chosenSizes, setChosenSizes] = useState<{ label: string; price: number }[]>([DEFAULT_SIZE]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   function handleOfferChange(offer: typeof OFFERS[0]) {
     setSelectedOffer(offer);
-    setChosenSizes(Array.from({ length: offer.qty }, (_, i) => chosenSizes[i] ?? SIZES[0]));
+    setChosenSizes(Array.from({ length: offer.qty }, (_, i) => chosenSizes[i] ?? DEFAULT_SIZE));
   }
 
   function handleSizeChange(slotIndex: number, sizeLabel: string) {
-    const found = SIZES.find((s) => s.label === sizeLabel) ?? SIZES[0];
+    const found = SIZES.find((s) => s.label === sizeLabel) ?? DEFAULT_SIZE;
     setChosenSizes((prev) => prev.map((s, i) => (i === slotIndex ? found : s)));
   }
 
@@ -244,7 +247,7 @@ export default function OreilleMemoireFormePage() {
               <div className="flex flex-col gap-3">
                 {OFFERS.map((offer) => {
                   const isSelected = selectedOffer.qty === offer.qty;
-                  const previewBase = isSelected ? baseTotal : SIZES[0].price * offer.qty;
+                  const previewBase = isSelected ? baseTotal : DEFAULT_SIZE.price * offer.qty;
                   const previewTotal = Math.round(previewBase * offer.discount);
                   const previewOld = Math.round(previewBase);
 
@@ -295,13 +298,13 @@ export default function OreilleMemoireFormePage() {
                                 Pièce {slotIndex + 1}
                               </span>
                               <select
-                                value={chosenSizes[slotIndex]?.label ?? SIZES[0].label}
+                                value={chosenSizes[slotIndex]?.label ?? DEFAULT_SIZE.label}
                                 onChange={(e) => handleSizeChange(slotIndex, e.target.value)}
                                 className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-dark-gray focus:border-primary focus:outline-none"
                               >
                                 {SIZES.map((s) => (
-                                  <option key={s.label} value={s.label}>
-                                    {s.label} — {s.price} MAD
+                                  <option key={s.label} value={s.label} disabled={s.soldOut}>
+                                    {s.label} — {s.price} MAD{s.soldOut ? " (rupture de stock)" : ""}
                                   </option>
                                 ))}
                               </select>

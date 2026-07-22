@@ -270,6 +270,24 @@ function computeArea(shape: ShapeId, dims: Dimensions): number | null {
 /* العرض الأقصى للفة PVC (بالسنتيمتر). يجب أن تدخل كل مفرش في هذا العرض. */
 const MAX_WIDTH_CM = 140;
 
+/* الحد الأدنى للبُعد القابل للتصنيع (بالسنتيمتر). */
+const MIN_DIM_CM = 10;
+
+function dimUnderMin(shape: ShapeId, dims: Dimensions): boolean {
+  const L = parseDim(dims.length);
+  const W = parseDim(dims.width);
+  switch (shape) {
+    case "ronde":
+    case "octogonale":
+      return L > 0 && L < MIN_DIM_CM;
+    case "rectangulaire":
+    case "coins-arrondis":
+    case "coins-coupes":
+      return (L > 0 && L < MIN_DIM_CM) || (W > 0 && W < MIN_DIM_CM);
+  }
+  return false;
+}
+
 function widthOverLimit(shape: ShapeId, dims: Dimensions): boolean {
   const L = parseDim(dims.length);
   const W = parseDim(dims.width);
@@ -318,8 +336,10 @@ export default function NappePvcPageAr() {
   // رسوم إضافية حسب النتيجة (م²) : أقل من 0,5 : +30 | من 0,5 إلى 0,99 : +50 | 1 وأكثر : +30
   const surcharge = area === null ? 0 : area < 0.5 ? 30 : area < 1 ? 50 : 30;
   const overWidth = widthOverLimit(shape, dims);
+  const underMin = dimUnderMin(shape, dims);
+  const dimError = overWidth || underMin;
   const totalPrice =
-    area && pricePerM2 && !overWidth ? Math.round(area * pricePerM2 + surcharge) : null;
+    area && pricePerM2 && !dimError ? Math.round(area * pricePerM2 + surcharge) : null;
 
   /* ─── الكمية ─── */
   const [qty, setQty] = useState(1);
@@ -627,7 +647,7 @@ export default function NappePvcPageAr() {
                       setDims((d) => ({ ...d, [field.key]: e.target.value.replace(/[^0-9.,]/g, "") }))
                     }
                     className={`min-w-0 rounded-xl border bg-white px-4 py-3 text-sm text-dark-gray focus:outline-none ${
-                      overWidth ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
+                      dimError ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
                     }`}
                   />
                 ))}
@@ -637,6 +657,11 @@ export default function NappePvcPageAr() {
                 <p className="mt-2 rounded-xl bg-red-50 px-4 py-3 text-xs font-medium text-red-600">
                   ⚠️ العرض الأقصى للفاتنا هو <strong>1,40 م (140 سم)</strong>.
                   يرجى تقليل هذا البعد. للحصول على مفرش أعرض، تواصلوا معنا مباشرة.
+                </p>
+              )}
+              {underMin && (
+                <p className="mt-2 rounded-xl bg-red-50 px-4 py-3 text-xs font-medium text-red-600">
+                  ⚠️ الحد الأدنى للبُعد هو <strong>10 سم</strong>. يرجى زيادة هذا البعد.
                 </p>
               )}
 
