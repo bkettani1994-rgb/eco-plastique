@@ -106,8 +106,9 @@ const MODELS = [
   {
     id: "transparent",
     label: "شفافة",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/8_p5gcls.jpg",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1785179304/Site-web1x1_qo6qiu.png",
     images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785179304/Site-web1x1_qo6qiu.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/8_p5gcls.jpg",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205186/9_ip7mi9.jpg",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205253/7_1_y53ss8.jpg",
@@ -117,8 +118,9 @@ const MODELS = [
   {
     id: "matte",
     label: "مطفية",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/4_54_kde86n.png",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1785179304/Site-web1x1x_nxlpvy.png",
     images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785179304/Site-web1x1x_nxlpvy.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/4_54_kde86n.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/6_33_ub21es.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205254/5_41_of5vzg.png",
@@ -128,8 +130,9 @@ const MODELS = [
   {
     id: "dore",
     label: "ذهبية",
-    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/3_71_nyvpla.png",
+    image: "https://res.cloudinary.com/diptsoc4h/image/upload/v1785179304/Site-web1x1xx_komwop.png",
     images: [
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785179304/Site-web1x1xx_komwop.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/3_71_nyvpla.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/2_85_tfzvfs.png",
       "https://res.cloudinary.com/diptsoc4h/image/upload/v1783205255/1_81_vyaqks.png",
@@ -497,6 +500,10 @@ export default function NappePvcPageAr() {
                   </div>
                 </>
               )}
+            </div>
+            <div className="flex items-center justify-center gap-2 rounded-xl bg-light-gray py-2 text-sm">
+              <span className="text-gray-500">النوع المختار :</span>
+              <span className="font-semibold text-primary">غطاء PVC {model.label}</span>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {MODELS.map((m) => {
