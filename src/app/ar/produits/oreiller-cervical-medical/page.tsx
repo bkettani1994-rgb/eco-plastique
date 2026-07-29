@@ -30,7 +30,7 @@ const PRODUCT = {
 };
 
 // المنتج غير متوفر مؤقتاً (لم يتوفر في المخزون بعد)
-const OUT_OF_STOCK = true;
+const OUT_OF_STOCK = false;
 
 const GALLERY = [
   "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-1_1_knigst.jpg",

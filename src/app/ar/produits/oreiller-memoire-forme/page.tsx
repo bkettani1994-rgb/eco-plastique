@@ -37,7 +37,7 @@ const GALLERY = [
 ];
 
 const SIZES: { label: string; price: number; soldOut?: boolean }[] = [
-  { label: "15 سم", price: 199, soldOut: true },
+  { label: "15 سم", price: 199 },
   { label: "17 سم", price: 229 },
   { label: "19 سم", price: 249 },
 ];
