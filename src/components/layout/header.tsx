@@ -16,6 +16,7 @@ const AR_ENABLED = new Set([
   "/produits/protege-matelas-impermeable",
   "/produits/oreiller-cervical-medical",
   "/produits/oreiller-memoire-forme",
+  "/produits/oreillers",
   "/a-propos",
   "/contact",
 ]);
