@@ -14,6 +14,7 @@ const VALID_PRODUCTS = new Set([
   "protege-matelas",
   "oreiller-cervical",
   "oreiller-memoire",
+  "oreiller-combo",
 ]);
 
 interface OrderPayload {

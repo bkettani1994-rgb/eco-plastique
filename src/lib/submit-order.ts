@@ -5,7 +5,8 @@ export type ProductKey =
   | "nappe-pvc"
   | "protege-matelas"
   | "oreiller-cervical"
-  | "oreiller-memoire";
+  | "oreiller-memoire"
+  | "oreiller-combo";
 
 export interface OrderSubmission {
   product: ProductKey;

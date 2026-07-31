@@ -310,14 +310,15 @@ export default function OreillersPageAr() {
       createdAt: new Date().toISOString(),
     });
 
+    const typeLabel = variant === "cervical" ? "Cervical" : "Mousse";
     await submitOrder({
-      product: data.submitProduct,
+      product: "oreiller-combo",
       orderId,
       customer: form,
       details: orderNotes,
       total: totalPrice,
       lang: "ar",
-      fields: { offer: selectedOffer.label, variant: sizeSummary },
+      fields: { offer: selectedOffer.label, variant: `${typeLabel} — ${sizeSummary}` },
     });
 
     router.push("/commande/confirmation");
