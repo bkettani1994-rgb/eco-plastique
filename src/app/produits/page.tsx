@@ -5,18 +5,40 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, PackageX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { products } from "@/data/products";
+import { products, type Product } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
-const categories = ["Tous", ...Array.from(new Set(products.map((product) => product.category)))];
+// Carte supplémentaire : page combinée des 2 oreillers (n'existe que dans la liste,
+// pas dans les données partagées pour ne pas l'ajouter à la page d'accueil).
+type CardItem = Pick<
+  Product,
+  "id" | "slug" | "name" | "shortDescription" | "images" | "price" | "category"
+> & { oldPrice?: number };
+
+const comboOreillers: CardItem = {
+  id: "oreillers-combo",
+  slug: "oreillers",
+  name: "Oreillers médicaux — cervical & mousse",
+  shortDescription:
+    "Une seule page pour choisir entre l'oreiller cervical médical ou l'oreiller en mousse à mémoire de forme.",
+  images: [
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-2_1_jxnez8.jpg",
+  ],
+  price: 199,
+  category: "Oreillers médicaux",
+};
+
+const listItems: CardItem[] = [...products, comboOreillers];
+
+const categories = ["Tous", ...Array.from(new Set(listItems.map((product) => product.category)))];
 
 export default function ProduitsPage() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("Tous");
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return listItems.filter((product) => {
       const matchesQuery = product.name.toLowerCase().includes(query.toLowerCase());
       const matchesCategory = activeCategory === "Tous" || product.category === activeCategory;
       return matchesQuery && matchesCategory;

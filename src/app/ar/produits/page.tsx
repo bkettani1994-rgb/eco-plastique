@@ -5,14 +5,45 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, PackageX } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { products } from "@/data/products";
+import { products, type Product } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+
+// بطاقة إضافية : صفحة تجمع الوسادتين (موجودة فقط في القائمة، وليست ضمن
+// البيانات المشتركة حتى لا تظهر في الصفحة الرئيسية).
+type CardItem = Pick<
+  Product,
+  "id" | "slug" | "name" | "shortDescription" | "images" | "price" | "category"
+> & {
+  nameAr?: string;
+  shortDescriptionAr?: string;
+  categoryAr?: string;
+  fromPrice?: boolean;
+  oldPrice?: number;
+};
+
+const comboOreillers: CardItem = {
+  id: "oreillers-combo",
+  slug: "oreillers",
+  name: "Oreillers médicaux — cervical & mousse",
+  nameAr: "الوسائد الطبية — للرقبة وإسفنج الذاكرة",
+  shortDescription: "Choisissez entre l'oreiller cervical ou en mousse.",
+  shortDescriptionAr: "صفحة واحدة للاختيار بين الوسادة الطبية للرقبة أو وسادة إسفنج ذاكرة الشكل.",
+  images: [
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1783097525/Poste_1-1_Memory-2_1_jxnez8.jpg",
+  ],
+  price: 199,
+  fromPrice: true,
+  category: "Oreillers médicaux",
+  categoryAr: "الوسائد الطبية",
+};
+
+const listItems: CardItem[] = [...products, comboOreillers];
 
 const ALL = "الكل";
 const categories = [
   ALL,
-  ...Array.from(new Set(products.map((product) => product.categoryAr ?? product.category))),
+  ...Array.from(new Set(listItems.map((product) => product.categoryAr ?? product.category))),
 ];
 
 export default function ProduitsPageAr() {
@@ -20,7 +51,7 @@ export default function ProduitsPageAr() {
   const [activeCategory, setActiveCategory] = useState(ALL);
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return listItems.filter((product) => {
       const name = product.nameAr ?? product.name;
       const category = product.categoryAr ?? product.category;
       const matchesQuery =
