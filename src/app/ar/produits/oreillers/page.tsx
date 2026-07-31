@@ -327,23 +327,33 @@ export default function OreillersPageAr() {
     <main dir="rtl" className="bg-white">
       {/* ── سلكتور نوع الوسادة ─────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-md rounded-2xl border border-gray-200 bg-light-gray p-1">
-          {(Object.keys(VARIANTS) as VariantKey[]).map((key) => {
-            const v = VARIANTS[key];
-            const active = key === variant;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => selectVariant(key)}
-                className={`flex-1 rounded-xl px-3 py-2.5 text-center text-xs font-semibold transition-all sm:text-sm ${
-                  active ? "bg-primary text-white shadow" : "text-dark-gray hover:text-primary"
-                }`}
-              >
-                {v.tabLabel}
-              </button>
-            );
-          })}
+        <div className="mx-auto max-w-md text-center">
+          <p className="mb-2 inline-flex items-center gap-2 text-sm font-semibold text-primary">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+            </span>
+            اختر نوع وسادتك
+            <span className="animate-bounce">👇</span>
+          </p>
+          <div className="flex rounded-2xl border-2 border-primary bg-light-gray p-1 shadow-[0_0_0_4px_rgba(142,198,63,0.15)] ring-1 ring-primary/30 animate-attention">
+            {(Object.keys(VARIANTS) as VariantKey[]).map((key) => {
+              const v = VARIANTS[key];
+              const active = key === variant;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => selectVariant(key)}
+                  className={`flex-1 rounded-xl px-3 py-2.5 text-center text-xs font-semibold transition-all sm:text-sm ${
+                    active ? "bg-primary text-white shadow" : "text-dark-gray hover:bg-primary/10 hover:text-primary"
+                  }`}
+                >
+                  {v.tabLabel}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 

@@ -51,8 +51,18 @@ body {
   animation: shake 2.2s ease-in-out infinite;
 }
 
+@keyframes attention {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(142, 198, 63, 0.15); }
+  50% { box-shadow: 0 0 0 8px rgba(142, 198, 63, 0.35); }
+}
+
+.animate-attention {
+  animation: attention 1.6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-shake {
+  .animate-shake,
+  .animate-attention {
     animation: none;
   }
 }
