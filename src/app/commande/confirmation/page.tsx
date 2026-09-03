@@ -92,8 +92,13 @@ export default function CommandeConfirmationPage() {
 
   const whatsappMessage = `Bonjour, je viens de passer la commande ${order.id} sur le site :\n${recapLines}\nTotal : ${formatPrice(order.total)}\nNom : ${order.customer.fullName}\nTéléphone : ${order.customer.phone}\nVille : ${order.customer.city}\nAdresse : ${order.customer.address}`;
 
-  // Numéro WhatsApp selon le produit commandé (ex. nappe PVC → numéro dédié)
-  const waNumber = PRODUCT_WHATSAPP[order.items[0]?.slug] ?? siteConfig.whatsappNumber;
+  // Numéro WhatsApp selon le produit commandé (ex. nappe PVC → numéro dédié).
+  // Le slug peut être suffixé (ex. "nappe-pvc-sur-mesure-1") → on matche par préfixe.
+  const orderSlug = order.items[0]?.slug ?? "";
+  const waKey = Object.keys(PRODUCT_WHATSAPP).find(
+    (key) => orderSlug === key || orderSlug.startsWith(`${key}-`),
+  );
+  const waNumber = waKey ? PRODUCT_WHATSAPP[waKey] : siteConfig.whatsappNumber;
   const whatsappHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
   const actionButtons = (
