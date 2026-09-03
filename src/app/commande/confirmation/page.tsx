@@ -14,9 +14,14 @@ import {
   Home,
 } from "lucide-react";
 import { getLastOrder, type Order } from "@/lib/order";
-import { whatsappLink } from "@/data/site";
+import { siteConfig } from "@/data/site";
 import { formatPrice } from "@/lib/utils";
 import { trackPixel } from "@/lib/meta-pixel";
+
+// Numéro WhatsApp spécifique selon le produit commandé (sinon numéro par défaut)
+const PRODUCT_WHATSAPP: Record<string, string> = {
+  "nappe-pvc-sur-mesure": "212663310060",
+};
 
 const NEXT_STEPS = [
   {
@@ -87,6 +92,30 @@ export default function CommandeConfirmationPage() {
 
   const whatsappMessage = `Bonjour, je viens de passer la commande ${order.id} sur le site :\n${recapLines}\nTotal : ${formatPrice(order.total)}\nNom : ${order.customer.fullName}\nTéléphone : ${order.customer.phone}\nVille : ${order.customer.city}\nAdresse : ${order.customer.address}`;
 
+  // Numéro WhatsApp selon le produit commandé (ex. nappe PVC → numéro dédié)
+  const waNumber = PRODUCT_WHATSAPP[order.items[0]?.slug] ?? siteConfig.whatsappNumber;
+  const whatsappHref = `https://wa.me/${waNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+  const actionButtons = (
+    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+      <Link
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg"
+      >
+        <MessageCircle size={18} />
+        Confirmer sur WhatsApp
+      </Link>
+      <Link
+        href="/produits"
+        className="inline-flex items-center justify-center rounded-xl border-2 border-primary bg-white px-6 py-3.5 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-white"
+      >
+        Continuer mes achats
+      </Link>
+    </div>
+  );
+
   return (
     <section className="bg-light-gray py-12 sm:py-16">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
@@ -107,6 +136,9 @@ export default function CommandeConfirmationPage() {
             <span className="text-gray-500">N° de commande :</span>
             <span className="font-bold text-dark-gray">{order.id}</span>
           </div>
+
+          {/* CTA de confirmation directement sous le n° de commande */}
+          {actionButtons}
         </div>
 
         {/* ── Et maintenant ? ── */}
@@ -174,25 +206,6 @@ export default function CommandeConfirmationPage() {
               {order.customer.address}
             </div>
           </div>
-        </div>
-
-        {/* ── Actions ── */}
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Link
-            href={whatsappLink(whatsappMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-medium text-white shadow-md transition-all hover:bg-primary-dark hover:shadow-lg"
-          >
-            <MessageCircle size={18} />
-            Confirmer sur WhatsApp
-          </Link>
-          <Link
-            href="/produits"
-            className="inline-flex items-center justify-center rounded-xl border-2 border-primary bg-white px-6 py-3.5 text-sm font-medium text-primary transition-all hover:bg-primary hover:text-white"
-          >
-            Continuer mes achats
-          </Link>
         </div>
 
         <p className="mt-6 text-center text-xs text-gray-400">
